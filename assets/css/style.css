@@ -1,8 +1,6 @@
-/* Palette Diploval
-   Bleu institutionnel : #0c2c50
-   Bleu clair : #4a90e2
-   Vert feuille : #3ca64c
-*/
+/* ================================
+   Palette Diploval & variables
+   ================================ */
 
 *,
 *::before,
@@ -26,10 +24,15 @@
     --transition-med: 260ms ease-out;
 }
 
-html, body {
+/* Global */
+
+html,
+body {
     margin: 0;
     padding: 0;
     scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 body {
@@ -38,7 +41,9 @@ body {
     background: radial-gradient(circle at top left, #e9f1ff 0, #f7f5f1 40%, #f5faf7 100%);
 }
 
-/* Loader d'ouverture */
+/* ================================
+   Loader d'ouverture
+   ================================ */
 
 .page-loader {
     position: fixed;
@@ -103,7 +108,9 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* En-tête */
+/* ================================
+   En-tête
+   ================================ */
 
 .site-header {
     position: sticky;
@@ -130,6 +137,8 @@ body {
     gap: 0.9rem;
 }
 
+/* Conteneur du logo */
+
 .brand-mark {
     position: relative;
     width: auto;
@@ -141,32 +150,36 @@ body {
     justify-content: center;
     box-shadow: none;
     overflow: visible;
-    margin-right: 0.8rem; /* petit espace entre logo et texte */
+    margin-right: 0.8rem;
 }
 
+/* Logo Diploval (SVG) */
+
+.brand-mark img {
+    height: 96px;
+    width: auto;
+    display: block;
+    transition: transform 0.6s ease;
 }
 
+/* Toupie au survol (PC) */
+
+.brand-mark img:hover {
+    transform: rotate(360deg);
+}
+
+/* Taille logo mobile */
+
+@media (max-width: 480px) {
+    .brand-mark img {
+        height: 80px;
+    }
+}
+
+/* Anciennes plumes/feuilles (désactivées mais conservées si besoin)
 .brand-plume,
-.brand-leaf {
-    position: absolute;
-    border-radius: 999px;
-}
-
-.brand-plume {
-    width: 4px;
-    height: 28px;
-    background: linear-gradient(180deg, #ffffff, rgba(255,255,255,0.6));
-    transform: rotate(-18deg) translateX(-4px);
-    opacity: 0.95;
-}
-
-.brand-leaf {
-    width: 18px;
-    height: 18px;
-    border-radius: 18px 18px 2px 18px;
-    background: linear-gradient(135deg, #b5ffb8, #3ca64c);
-    transform: rotate(32deg) translate(8px, 2px);
-}
+.brand-leaf { ... }
+*/
 
 .brand-text {
     display: flex;
@@ -245,7 +258,9 @@ body {
     width: 100%;
 }
 
-/* Sections */
+/* ================================
+   Sections génériques
+   ================================ */
 
 .section {
     max-width: 1180px;
@@ -278,11 +293,18 @@ body {
     line-height: 1.7;
 }
 
-/* Hero */
+/* ================================
+   Hero Diploval
+   ================================ */
 
-.hero {
+/* On gère .hero et .hero-section au cas où */
+
+.hero,
+.hero-section {
     position: relative;
     padding-top: 5rem;
+    border-radius: 24px;
+    overflow: hidden;
 }
 
 .hero-bg-layer {
@@ -296,6 +318,9 @@ body {
 }
 
 .hero-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2.8rem 2.4rem 2.8rem;
     display: grid;
     grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1.2fr);
     gap: 2.6rem;
@@ -329,6 +354,8 @@ body {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.2rem;
 }
+
+/* Petites pastilles du hero */
 
 .hero-pill {
     background: rgba(9,24,48,0.92);
@@ -373,12 +400,18 @@ body {
     color: rgba(231,240,255,0.95);
 }
 
+/* Carte "Champs d'intervention" dans le hero */
+
 .hero-sidecard {
     background: rgba(247,245,241,0.96);
     border-radius: 1.8rem;
     padding: 1.6rem 1.5rem;
     box-shadow: 0 18px 40px rgba(0,0,0,0.2);
     border: 1px solid rgba(255,255,255,0.7);
+    max-width: 420px;
+    justify-self: end;   /* ancrée à droite dans la grille */
+    margin-right: 2.2rem;
+    margin-bottom: 0.5rem;
 }
 
 .hero-sidecard h2 {
@@ -418,7 +451,9 @@ body {
     filter: brightness(1.05);
 }
 
-/* Grilles et cartes */
+/* ================================
+   Grilles & cartes génériques
+   ================================ */
 
 .cards-grid {
     display: grid;
@@ -527,7 +562,9 @@ body {
     transform: translateX(3px) rotate(45deg);
 }
 
-/* Diplomag filtres */
+/* ================================
+   Diplomag – filtres
+   ================================ */
 
 .diplomag-filters {
     display: flex;
@@ -574,7 +611,9 @@ body {
     transform: translateY(-1px);
 }
 
-/* Agenda */
+/* ================================
+   Agenda
+   ================================ */
 
 .agenda-timeline {
     border-left: 1px solid rgba(12,44,80,0.2);
@@ -622,7 +661,9 @@ body {
     font-size: 0.9rem;
 }
 
-/* Charte */
+/* ================================
+   Charte – blocs
+   ================================ */
 
 .charte-grid {
     display: grid;
@@ -694,7 +735,9 @@ body {
     color: var(--text-muted);
 }
 
-/* Services */
+/* ================================
+   Services
+   ================================ */
 
 .services-grid {
     display: grid;
@@ -725,25 +768,9 @@ body {
     color: var(--text-muted);
 }
 
-/* Ajustements globaux du bloc "Champs d'intervention" */
-.service-card {
-  max-width: 420px;
-  margin: 1.5rem auto 0 auto;   /* centré sur mobile/tablette */
-}
-
-/* Sur écran large : positionner la carte dans le bloc bleu du hero */
-@media (min-width: 1024px) {
-  .hero-section .service-card {
-    max-width: 380px;
-    margin-top: 3.2rem;   /* descend un peu la carte */
-    margin-right: 3rem;   /* espace à droite */
-    margin-left: auto;    /* l’ancre à droite */
-  }
-}
-
-
-
-/* Contact */
+/* ================================
+   Contact
+   ================================ */
 
 .contact-layout {
     display: grid;
@@ -776,7 +803,9 @@ body {
     color: var(--blue-light);
 }
 
-/* Overlay "Consulter +" */
+/* ================================
+   Overlay "Consulter +"
+   ================================ */
 
 .overlay {
     position: fixed;
@@ -854,191 +883,9 @@ body {
     transform: translateY(0);
 }
 
-/* Responsive */
-
-@media (max-width: 980px) {
-    .hero-inner {
-        grid-template-columns: minmax(0, 1.8fr);
-    }
-    .hero-sidecard {
-        margin-top: 1.8rem;
-    }
-    .hero-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .cards-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .charte-grid,
-    .services-grid,
-    .contact-layout {
-        grid-template-columns: minmax(0, 1fr);
-    }
-}
-
-@media (max-width: 720px) {
-    .header-inner {
-        padding-inline: 1.2rem;
-    }
-
-    .nav-toggle {
-        display: flex;
-    }
-
-    .nav-list {
-        position: absolute;
-        right: 0;
-        top: calc(100% + 0.6rem);
-        flex-direction: column;
-        align-items: flex-end;
-        background: rgba(247,245,241,0.98);
-        padding: 0.6rem 0.9rem;
-        border-radius: 1rem;
-        box-shadow: 0 16px 40px rgba(12,44,80,0.25);
-        transform-origin: top right;
-        transform: scale(0.9);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 160ms ease-out, transform 160ms ease-out;
-    }
-
-    .nav-list.open {
-        opacity: 1;
-        transform: scale(1);
-        pointer-events: auto;
-    }
-
-    .nav-list li {
-        width: 100%;
-        text-align: right;
-    }
-
-    .hero {
-        padding-top: 4rem;
-    }
-
-    .hero-title {
-        font-size: 2rem;
-    }
-
-    .hero-title .accent {
-        font-size: 1.8rem;
-    }
-
-    .hero-grid {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .cards-grid {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .section {
-        padding-inline: 1.2rem;
-    }
-
-    .section-alt {
-        border-radius: 1.4rem;
-    }
-}
-
-
-
-.muted {
-    color: var(--text-muted);
-    font-size: 0.85em;
-}
-
-.site-footer {
-    border-top: 1px solid rgba(12,44,80,0.08);
-    background: rgba(247,245,241,0.96);
-}
-
-.footer-inner {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 1rem 1.6rem 1.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-}
-
-.footer-brand {
-    font-weight: 600;
-    color: var(--blue-dark);
-}
-
-.footer-note {
-    margin-left: 0.6rem;
-}
-
-.footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-}
-
-.footer-links a {
-    text-decoration: none;
-    color: var(--text-muted);
-}
-
-.footer-links a:hover {
-    color: var(--blue-dark);
-}
-
-@media (max-width: 720px) {
-    .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-.cookie-banner {
-    position: fixed;
-    inset-inline: 0;
-    bottom: 0;
-    z-index: 90;
-    background: rgba(5,13,26,0.96);
-    color: #ffffff;
-    padding: 0.8rem 0.4rem;
-    font-size: 0.82rem;
-}
-
-.cookie-inner {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding-inline: 1.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.8rem;
-}
-
-.cookie-inner p {
-    margin: 0;
-    line-height: 1.4;
-}
-
-.cookie-btn {
-    border-radius: 999px;
-    border: none;
-    padding: 0.4rem 1rem;
-    font-size: 0.82rem;
-    cursor: pointer;
-    background: linear-gradient(135deg, var(--blue-light), var(--green));
-    color: #ffffff;
-}
-
-@media (max-width: 720px) {
-    .cookie-inner {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
+/* ================================
+   Formulaire & contact
+   ================================ */
 
 .contact-layout-form {
     align-items: flex-start;
@@ -1104,12 +951,95 @@ form {
     margin-top: 0.7rem;
 }
 
-@media (max-width: 720px) {
-    .contact-layout-form {
-        grid-template-columns: minmax(0, 1fr);
-    }
+/* ================================
+   Pied de page & cookies
+   ================================ */
+
+.muted {
+    color: var(--text-muted);
+    font-size: 0.85em;
 }
 
+.site-footer {
+    border-top: 1px solid rgba(12,44,80,0.08);
+    background: rgba(247,245,241,0.96);
+}
+
+.footer-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 1rem 1.6rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.footer-brand {
+    font-weight: 600;
+    color: var(--blue-dark);
+}
+
+.footer-note {
+    margin-left: 0.6rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+}
+
+.footer-links a:hover {
+    color: var(--blue-dark);
+}
+
+.cookie-banner {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 90;
+    background: rgba(5,13,26,0.96);
+    color: #ffffff;
+    padding: 0.8rem 0.4rem;
+    font-size: 0.82rem;
+}
+
+.cookie-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-inline: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+}
+
+.cookie-inner p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.cookie-btn {
+    border-radius: 999px;
+    border: none;
+    padding: 0.4rem 1rem;
+    font-size: 0.82rem;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--blue-light), var(--green));
+    color: #ffffff;
+}
+
+/* ================================
+   Logo animé (optionnel)
+   ================================ */
 
 .brand-mark-logo {
     display: flex;
@@ -1142,54 +1072,133 @@ form {
     transition: transform 0.25s ease-out;
 }
 
+/* ================================
+   Responsive
+   ================================ */
+
+@media (max-width: 980px) {
+
+    .hero-inner {
+        grid-template-columns: minmax(0, 1.8fr);
+        padding: 2.4rem 1.8rem 2.6rem;
+    }
+
+    .hero-sidecard {
+        margin-top: 1.8rem;
+        margin-right: 0;
+        justify-self: stretch;
+    }
+
+    .hero-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .charte-grid,
+    .services-grid,
+    .contact-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+
+    .header-inner {
+        padding-inline: 1.2rem;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-list {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 0.6rem);
+        flex-direction: column;
+        align-items: flex-end;
+        background: rgba(247,245,241,0.98);
+        padding: 0.6rem 0.9rem;
+        border-radius: 1rem;
+        box-shadow: 0 16px 40px rgba(12,44,80,0.25);
+        transform-origin: top right;
+        transform: scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 160ms ease-out, transform 160ms.ease-out;
+    }
+
+    .nav-list.open {
+        opacity: 1;
+        transform: scale(1);
+        pointer-events: auto;
+    }
+
+    .nav-list li {
+        width: 100%;
+        text-align: right;
+    }
+
+    .hero,
+    .hero-section {
+        padding-top: 4rem;
+        margin: 1.2rem 1rem 2.4rem;
+    }
+
+    .hero-bg-layer {
+        margin: 0;
+        border-radius: 2rem;
+    }
+
+    .hero-inner {
+        padding: 2.2rem 1.6rem 2.4rem;
+        gap: 2rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-title .accent {
+        font-size: 1.8rem;
+    }
+
+    .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cards-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .section {
+        padding-inline: 1.2rem;
+    }
+
+    .section-alt {
+        border-radius: 1.4rem;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cookie-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .brand-mark img {
+        height: 72px;
+    }
+}
+
 @media (max-width: 600px) {
     .brand-logo-img {
         height: 40px;
     }
 }
-
-/* Logo Diploval dans le header – plus grand */
-.brand-mark img {
-  height: 96px;    /* ~x2 par rapport à avant */
-  width: auto;
-  display: block;
-  transition: transform 0.6s ease;  /* pour l’animation */
-}
-
-/* Version mobile (smartphones) – plus grand aussi */
-@media (max-width: 480px) {
-  .brand-mark img {
-    height: 80px;  /* plus grand que les 40px d’avant */
-  }
-}
-
-
-/* --- Ajustement du bloc hero sur mobile --- */
-
-.hero,
-.hero-section {
-  border-radius: 24px;
-  overflow: hidden;
-}
-
-/* Sur mobile : on laisse de l'air sur les côtés */
-@media (max-width: 768px) {
-  .hero,
-  .hero-section {
-    margin: 1.2rem 1rem 2.4rem;   /* marge gauche/droite comme les autres cartes */
-  }
-
-  .hero-inner {
-    padding: 2.4rem 1.6rem 2.4rem; /* plus de respiration autour du texte */
-  }
-}
-
-
-/* Empêcher le défilement horizontal parasite */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-
-
