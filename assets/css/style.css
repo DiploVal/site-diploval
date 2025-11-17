@@ -132,15 +132,18 @@ body {
 
 .brand-mark {
     position: relative;
-    width: 40px;
-    height: 40px;
-    border-radius: 40%;
-    background: radial-gradient(circle at 20% 20%, #4a90e2, #0c2c50);
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 24px rgba(12,44,80,0.35);
-    overflow: hidden;
+    box-shadow: none;
+    overflow: visible;
+    margin-right: 0.8rem; /* petit espace entre logo et texte */
+}
+
 }
 
 .brand-plume,
