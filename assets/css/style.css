@@ -1127,16 +1127,18 @@ form {
     }
 }
 
-/* Logo Diploval dans le header */
+/* Logo Diploval dans le header – plus grand */
 .brand-mark img {
-  height: 52px;
+  height: 96px;    /* ~x2 par rapport à avant */
   width: auto;
   display: block;
+  transition: transform 0.6s ease;  /* pour l’animation */
 }
 
-/* Version mobile (smartphones) */
+/* Version mobile (smartphones) – plus grand aussi */
 @media (max-width: 480px) {
   .brand-mark img {
-    height: 44px;
+    height: 80px;  /* plus grand que les 40px d’avant */
   }
 }
+
