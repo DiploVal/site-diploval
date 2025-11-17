@@ -1126,3 +1126,17 @@ form {
         height: 34px;
     }
 }
+
+/* Logo Diploval dans le header */
+.brand-mark img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+/* Version mobile (smartphones) */
+@media (max-width: 480px) {
+  .brand-mark img {
+    height: 40px;
+  }
+}
