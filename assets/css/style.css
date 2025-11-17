@@ -743,15 +743,6 @@ body {
 
 
 
-
-/* Sur écran large : espace à droite dans le bloc bleu */
-@media (min-width: 1024px) {
-  .service-card {
-    margin-top: 2.5rem;
-    margin-right: 3rem;  /* espace entre le bord droit du pavé bleu et la carte */
-  }
-}
-
 /* Contact */
 
 .contact-layout {
