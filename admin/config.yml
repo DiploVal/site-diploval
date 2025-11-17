@@ -1,0 +1,78 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - label: "Diplomag – Articles"
+    name: "diplomag"
+    file: "content/diplomag.json"
+    fields:
+      - label: "Articles"
+        name: "articles"
+        widget: "list"
+        allow_add: true
+        fields:
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Slug (identifiant)", name: "slug", widget: "string", hint: "Sans espace, utilisé pour l'identifiant interne." }
+          - label: "Région"
+            name: "region"
+            widget: "select"
+            options:
+              - { label: "France", value: "france" }
+              - { label: "Europe", value: "europe" }
+              - { label: "Monde", value: "monde" }
+          - label: "Thème"
+            name: "theme"
+            widget: "select"
+            options:
+              - { label: "Géopolitique", value: "geopolitique" }
+              - { label: "Politique", value: "politique" }
+              - { label: "Santé", value: "sante" }
+              - { label: "Écologie", value: "ecologie" }
+              - { label: "Finances", value: "finances" }
+              - { label: "Société", value: "societe" }
+          - { label: "Tag affiché (ex : France · Géopolitique)", name: "tag", widget: "string" }
+          - { label: "Résumé", name: "excerpt", widget: "text" }
+          - { label: "Texte complet", name: "body", widget: "text" }
+
+  - label: "Mémorandums"
+    name: "memorandums"
+    file: "content/memorandums.json"
+    fields:
+      - label: "Mémorandums"
+        name: "items"
+        widget: "list"
+        fields:
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Tag (ex : Conflits, Territoires…)", name: "tag", widget: "string" }
+          - { label: "Résumé", name: "excerpt", widget: "text" }
+          - { label: "Texte complet", name: "body", widget: "text" }
+          - { label: "Lien vers un PDF (facultatif)", name: "link", widget: "string", required: false }
+
+  - label: "Agenda"
+    name: "agenda"
+    file: "content/agenda.json"
+    fields:
+      - label: "Évènements"
+        name: "events"
+        widget: "list"
+        fields:
+          - { label: "Libellé de date (ex : Automne 2025)", name: "dateLabel", widget: "string" }
+          - { label: "Titre", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+
+  - label: "Dossiers en cours"
+    name: "dossiers"
+    file: "content/dossiers.json"
+    fields:
+      - label: "Dossiers"
+        name: "dossiers"
+        widget: "list"
+        fields:
+          - { label: "Tag (ex : Commune · Sud de la France)", name: "tag", widget: "string" }
+          - { label: "Titre du dossier", name: "title", widget: "string" }
+          - { label: "Résumé court", name: "excerpt", widget: "text" }
+          - { label: "Texte complet (anonymisé)", name: "body", widget: "text" }
