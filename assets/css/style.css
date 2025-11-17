@@ -733,13 +733,14 @@ body {
 
 /* Sur écran large : positionner la carte dans le bloc bleu du hero */
 @media (min-width: 1024px) {
-  .hero .service-card {
+  .hero-section .service-card {
     max-width: 380px;
-    margin-top: 3.5rem;   /* espace en haut pour descendre la carte */
-    margin-right: 4rem;   /* espace à droite */
-    margin-left: auto;    /* pousse la carte vers la droite */
+    margin-top: 3.2rem;   /* descend un peu la carte */
+    margin-right: 3rem;   /* espace à droite */
+    margin-left: auto;    /* l’ancre à droite */
   }
 }
+
 
 
 
