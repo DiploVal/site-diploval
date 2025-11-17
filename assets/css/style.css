@@ -1145,3 +1145,23 @@ form {
   }
 }
 
+
+/* --- Ajustement du bloc hero sur mobile --- */
+
+.hero,
+.hero-section {
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* Sur mobile : on laisse de l'air sur les côtés */
+@media (max-width: 768px) {
+  .hero,
+  .hero-section {
+    margin: 1.2rem 1rem 2.4rem;   /* marge gauche/droite comme les autres cartes */
+  }
+
+  .hero-inner {
+    padding: 2.4rem 1.6rem 2.4rem; /* plus de respiration autour du texte */
+  }
+}
