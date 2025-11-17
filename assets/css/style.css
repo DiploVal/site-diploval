@@ -1172,3 +1172,18 @@ html, body {
   max-width: 100%;
   overflow-x: hidden;
 }
+
+
+/* Carte "Champs d'intervention" */
+.services-card {
+  max-width: 420px;
+  margin: 1.5rem auto 0 auto;   /* centrée par défaut */
+}
+
+/* Sur écran large : on lui donne de l'air dans le bloc bleu */
+@media (min-width: 1024px) {
+  .services-card {
+    margin-top: 2.5rem;
+    margin-right: 3rem;   /* espace par rapport au bord droit du bloc bleu */
+  }
+}
