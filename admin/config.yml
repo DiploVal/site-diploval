@@ -6,17 +6,19 @@ media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
-  - label: "Diplomag – Articles"
-    name: "diplomag"
+  - name: "diplomag"
+    label: "Diplomag – Articles"
+    label_singular: "Article Diplomag"
     file: "content/diplomag.json"
+    format: "json"
     fields:
       - label: "Articles"
-        name: "articles"
+        name: "items"
         widget: "list"
-        allow_add: true
+        summary: "{{title}} — {{region}} · {{theme}}"
         fields:
           - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Slug (identifiant)", name: "slug", widget: "string", hint: "Sans espace, utilisé pour l'identifiant interne." }
+          - { label: "Résumé court", name: "excerpt", widget: "text" }
           - label: "Région"
             name: "region"
             widget: "select"
@@ -30,49 +32,56 @@ collections:
             options:
               - { label: "Géopolitique", value: "geopolitique" }
               - { label: "Politique", value: "politique" }
+              - { label: "Économie / finances", value: "finances" }
               - { label: "Santé", value: "sante" }
-              - { label: "Écologie", value: "ecologie" }
-              - { label: "Finances", value: "finances" }
-              - { label: "Société", value: "societe" }
-          - { label: "Tag affiché (ex : France · Géopolitique)", name: "tag", widget: "string" }
-          - { label: "Résumé", name: "excerpt", widget: "text" }
-          - { label: "Texte complet", name: "body", widget: "text" }
+              - { label: "Écologie / climat", value: "ecologie" }
+              - { label: "Société / justice", value: "societe" }
+          - { label: "Texte complet", name: "body", widget: "markdown" }
 
-  - label: "Mémorandums"
-    name: "memorandums"
+  - name: "memorandums"
+    label: "Mémorandums"
+    label_singular: "Mémorandum"
     file: "content/memorandums.json"
+    format: "json"
     fields:
       - label: "Mémorandums"
         name: "items"
         widget: "list"
+        summary: "{{date}} — {{title}}"
         fields:
           - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Tag (ex : Conflits, Territoires…)", name: "tag", widget: "string" }
+          - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+          - { label: "Type de dossier", name: "type", widget: "string", required: false }
           - { label: "Résumé", name: "excerpt", widget: "text" }
-          - { label: "Texte complet", name: "body", widget: "text" }
-          - { label: "Lien vers un PDF (facultatif)", name: "link", widget: "string", required: false }
+          - { label: "Texte", name: "body", widget: "markdown", required: false }
+          - { label: "Lien vers PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
 
-  - label: "Agenda"
-    name: "agenda"
+  - name: "agenda"
+    label: "Agenda"
     file: "content/agenda.json"
+    format: "json"
     fields:
       - label: "Évènements"
-        name: "events"
+        name: "items"
         widget: "list"
+        summary: "{{date}} — {{title}}"
         fields:
-          - { label: "Libellé de date (ex : Automne 2025)", name: "dateLabel", widget: "string" }
+          - { label: "Date (texte libre)", name: "date", widget: "string" }
           - { label: "Titre", name: "title", widget: "string" }
           - { label: "Description", name: "description", widget: "text" }
 
-  - label: "Dossiers en cours"
-    name: "dossiers"
+  - name: "dossiers"
+    label: "Dossiers en cours"
     file: "content/dossiers.json"
+    format: "json"
     fields:
       - label: "Dossiers"
-        name: "dossiers"
+        name: "items"
         widget: "list"
+        summary: "{{zone}} — {{title}}"
         fields:
-          - { label: "Tag (ex : Commune · Sud de la France)", name: "tag", widget: "string" }
           - { label: "Titre du dossier", name: "title", widget: "string" }
+          - { label: "Zone / territoire (anonyme)", name: "zone", widget: "string" }
           - { label: "Résumé court", name: "excerpt", widget: "text" }
-          - { label: "Texte complet (anonymisé)", name: "body", widget: "text" }
+          - { label: "Texte détaillé", name: "body", widget: "markdown" }
+
