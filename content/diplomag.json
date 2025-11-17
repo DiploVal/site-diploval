@@ -1,13 +1,3 @@
 {
-  "articles": [
-    {
-      "title": "Entre sécheresses et concessions privées : qui gouverne vraiment l'eau ?",
-      "slug": "eau-et-pouvoirs",
-      "region": "france",
-      "theme": "ecologie",
-      "tag": "France · Écologie",
-      "excerpt": "Analyse des conflits d'usage autour de l'eau, des arbitrages politiques et des conséquences sur les territoires.",
-      "body": "Texte complet de l'article sur l'eau, les concessions privées, les conflits d'usage et les enjeux démocratiques."
-    }
-  ]
+  "items": []
 }
