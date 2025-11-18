@@ -8,80 +8,89 @@ public_folder: "/assets/uploads"
 collections:
   - name: "diplomag"
     label: "Diplomag – Articles"
-    label_singular: "Article Diplomag"
-    file: "content/diplomag.json"
-    format: "json"
-    fields:
-      - label: "Articles"
-        name: "items"
-        widget: "list"
-        summary: "{{title}} — {{region}} · {{theme}}"
+    files:
+      - label: "Articles Diplomag"
+        name: "diplomag_data"
+        file: "content/diplomag.json"
+        format: "json"
         fields:
-          - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Résumé court", name: "excerpt", widget: "text" }
-          - label: "Région"
-            name: "region"
-            widget: "select"
-            options:
-              - { label: "France", value: "france" }
-              - { label: "Europe", value: "europe" }
-              - { label: "Monde", value: "monde" }
-          - label: "Thème"
-            name: "theme"
-            widget: "select"
-            options:
-              - { label: "Géopolitique", value: "geopolitique" }
-              - { label: "Politique", value: "politique" }
-              - { label: "Économie / finances", value: "finances" }
-              - { label: "Santé", value: "sante" }
-              - { label: "Écologie / climat", value: "ecologie" }
-              - { label: "Société / justice", value: "societe" }
-          - { label: "Texte complet", name: "body", widget: "markdown" }
+          - label: "Articles"
+            name: "items"
+            widget: "list"
+            summary: "{{title}} — {{region}} · {{theme}}"
+            fields:
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Résumé court", name: "excerpt", widget: "text" }
+              - label: "Région"
+                name: "region"
+                widget: "select"
+                options:
+                  - { label: "France", value: "france" }
+                  - { label: "Europe", value: "europe" }
+                  - { label: "Monde", value: "monde" }
+              - label: "Thème"
+                name: "theme"
+                widget: "select"
+                options:
+                  - { label: "Géopolitique", value: "geopolitique" }
+                  - { label: "Politique", value: "politique" }
+                  - { label: "Économie / finances", value: "finances" }
+                  - { label: "Santé", value: "sante" }
+                  - { label: "Écologie / climat", value: "ecologie" }
+                  - { label: "Société / justice", value: "societe" }
+              - { label: "Texte complet", name: "body", widget: "markdown" }
 
   - name: "memorandums"
     label: "Mémorandums"
-    label_singular: "Mémorandum"
-    file: "content/memorandums.json"
-    format: "json"
-    fields:
+    files:
       - label: "Mémorandums"
-        name: "items"
-        widget: "list"
-        summary: "{{date}} — {{title}}"
+        name: "memorandums_data"
+        file: "content/memorandums.json"
+        format: "json"
         fields:
-          - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-          - { label: "Type de dossier", name: "type", widget: "string", required: false }
-          - { label: "Résumé", name: "excerpt", widget: "text" }
-          - { label: "Texte", name: "body", widget: "markdown", required: false }
-          - { label: "Lien vers PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
+          - label: "Mémorandums"
+            name: "items"
+            widget: "list"
+            summary: "{{date}} — {{title}}"
+            fields:
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Type de dossier", name: "type", widget: "string", required: false }
+              - { label: "Résumé", name: "excerpt", widget: "text" }
+              - { label: "Texte", name: "body", widget: "markdown", required: false }
+              - { label: "Lien vers PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
 
   - name: "agenda"
     label: "Agenda"
-    file: "content/agenda.json"
-    format: "json"
-    fields:
-      - label: "Évènements"
-        name: "items"
-        widget: "list"
-        summary: "{{date}} — {{title}}"
+    files:
+      - label: "Agenda Diploval"
+        name: "agenda_data"
+        file: "content/agenda.json"
+        format: "json"
         fields:
-          - { label: "Date (texte libre)", name: "date", widget: "string" }
-          - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Description", name: "description", widget: "text" }
+          - label: "Évènements"
+            name: "items"
+            widget: "list"
+            summary: "{{date}} — {{title}}"
+            fields:
+              - { label: "Date (texte libre)", name: "date", widget: "string" }
+              - { label: "Titre", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
 
   - name: "dossiers"
     label: "Dossiers en cours"
-    file: "content/dossiers.json"
-    format: "json"
-    fields:
+    files:
       - label: "Dossiers"
-        name: "items"
-        widget: "list"
-        summary: "{{zone}} — {{title}}"
+        name: "dossiers_data"
+        file: "content/dossiers.json"
+        format: "json"
         fields:
-          - { label: "Titre du dossier", name: "title", widget: "string" }
-          - { label: "Zone / territoire (anonyme)", name: "zone", widget: "string" }
-          - { label: "Résumé court", name: "excerpt", widget: "text" }
-          - { label: "Texte détaillé", name: "body", widget: "markdown" }
-
+          - label: "Dossiers"
+            name: "items"
+            widget: "list"
+            summary: "{{zone}} — {{title}}"
+            fields:
+              - { label: "Titre du dossier", name: "title", widget: "string" }
+              - { label: "Zone / territoire (anonyme)", name: "zone", widget: "string" }
+              - { label: "Résumé court", name: "excerpt", widget: "text" }
+              - { label: "Texte détaillé", name: "body", widget: "markdown" }
