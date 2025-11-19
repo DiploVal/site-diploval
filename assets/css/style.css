@@ -176,11 +176,6 @@ body {
     }
 }
 
-/* Anciennes plumes/feuilles (désactivées mais conservées si besoin)
-.brand-plume,
-.brand-leaf { ... }
-*/
-
 .brand-text {
     display: flex;
     flex-direction: column;
@@ -297,8 +292,6 @@ body {
    Hero Diploval
    ================================ */
 
-/* On gère .hero et .hero-section au cas où */
-
 .hero,
 .hero-section {
     position: relative;
@@ -310,10 +303,13 @@ body {
 .hero-bg-layer {
     position: absolute;
     inset: 0;
-    margin: 0 1.6rem;
-    border-radius: 2.2rem;
-    background: radial-gradient(circle at top left, rgba(74,144,226,0.16), rgba(12,44,80,0.96));
-    opacity: 0.9;
+    margin: 0 1.2rem;
+    border-radius: 20px;
+    background:
+        linear-gradient(135deg, rgba(74,144,226,0.06), rgba(60,166,76,0.02)),
+        #f7f5f1;
+    border: 1px solid rgba(12,44,80,0.08);
+    opacity: 1;
     z-index: -1;
 }
 
@@ -328,25 +324,36 @@ body {
 }
 
 .hero-content {
-    color: #f7f9ff;
+    color: var(--text-main);
+}
+
+.hero-intro {
+    background: #ffffff;
+    border-radius: 1.4rem;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 14px 32px rgba(12,44,80,0.10);
+    border: 1px solid rgba(12,44,80,0.10);
+    margin-bottom: 1.6rem;
 }
 
 .hero-title {
     font-family: "Lora", "Times New Roman", serif;
-    font-size: 2.3rem;
-    margin: 0 0 1rem;
+    font-size: 2.4rem;
+    margin: 0 0 0.7rem;
+    color: var(--blue-dark);
 }
 
 .hero-title .accent {
-    color: #b9ffca;
-    font-size: 2.1rem;
+    color: var(--blue-light);
+    font-size: 2.2rem;
 }
 
 .hero-subtitle {
-    margin: 0 0 1.8rem;
-    max-width: 580px;
+    margin: 0 0 1.6rem;
+    max-width: 620px;
     line-height: 1.7;
-    color: rgba(238,244,255,0.86);
+    color: var(--text-muted);
+    font-size: 1rem;
 }
 
 .hero-grid {
@@ -358,11 +365,11 @@ body {
 /* Petites pastilles du hero */
 
 .hero-pill {
-    background: rgba(9,24,48,0.92);
+    background: rgba(255,255,255,0.96);
     border-radius: 1.4rem;
     padding: 1rem 1.1rem;
-    border: 1px solid rgba(185,255,202,0.24);
-    box-shadow: 0 14px 40px rgba(0,0,0,0.3);
+    border: 1px solid rgba(12,44,80,0.15);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.08);
     position: relative;
     overflow: hidden;
     transition: transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med);
@@ -372,15 +379,15 @@ body {
     content: "";
     position: absolute;
     inset: -40%;
-    background: radial-gradient(circle at top right, rgba(74,144,226,0.22), transparent 60%);
+    background: radial-gradient(circle at top right, rgba(74,144,226,0.10), transparent 60%);
     opacity: 0;
     transition: opacity var(--transition-med);
 }
 
 .hero-pill:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-    border-color: rgba(185,255,202,0.5);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    border-color: rgba(12,44,80,0.25);
 }
 
 .hero-pill:hover::before {
@@ -391,13 +398,13 @@ body {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.16em;
-    color: #b9ffca;
+    color: var(--blue-dark);
 }
 
 .hero-pill p {
     margin: 0.4rem 0 0.8rem;
     font-size: 0.9rem;
-    color: rgba(231,240,255,0.95);
+    color: var(--text-muted);
 }
 
 /* Carte "Champs d'intervention" dans le hero */
@@ -406,10 +413,10 @@ body {
     background: rgba(247,245,241,0.96);
     border-radius: 1.8rem;
     padding: 1.6rem 1.5rem;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
     border: 1px solid rgba(255,255,255,0.7);
     max-width: 420px;
-    justify-self: end;   /* ancrée à droite dans la grille */
+    justify-self: end;
     margin-right: 2.2rem;
     margin-bottom: 0.5rem;
 }
@@ -429,26 +436,34 @@ body {
     line-height: 1.6;
 }
 
+/* ================================
+   Boutons principaux
+   ================================ */
+
 .btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.65rem 1.4rem;
+    padding: 0.65rem 1.5rem;
     border-radius: var(--radius-pill);
-    border: none;
+    border: 1px solid var(--blue-dark);
     font-size: 0.9rem;
     text-decoration: none;
     cursor: pointer;
-    background: linear-gradient(135deg, var(--blue-light), var(--green));
-    color: #ffffff;
-    box-shadow: 0 12px 26px rgba(12,44,80,0.35);
-    transition: transform var(--transition-med), box-shadow var(--transition-med), filter var(--transition-med);
+    background: #ffffff;
+    color: var(--blue-dark);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 18px rgba(12,44,80,0.14);
+    transition: transform var(--transition-med), box-shadow var(--transition-med), background var(--transition-med), color var(--transition-med);
 }
 
 .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 16px 32px rgba(12,44,80,0.38);
-    filter: brightness(1.05);
+    box-shadow: 0 10px 26px rgba(12,44,80,0.16);
+    background: var(--blue-dark);
+    color: #ffffff;
 }
 
 /* ================================
@@ -476,7 +491,7 @@ body {
     content: "";
     position: absolute;
     inset: -40%;
-    background: radial-gradient(circle at top right, rgba(74,144,226,0.18), transparent 55%);
+    background: radial-gradient(circle at top right, rgba(74,144,226,0.08), transparent 55%);
     opacity: 0;
     transition: opacity var(--transition-med);
 }
@@ -529,7 +544,7 @@ body {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
-    color: rgba(255,255,255,0.9);
+    color: var(--blue-dark);
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -537,7 +552,7 @@ body {
 }
 
 .hero-pill .link-more {
-    color: rgba(185,255,202,0.95);
+    color: var(--blue-dark);
 }
 
 .link-more::after {
@@ -545,17 +560,11 @@ body {
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.9);
+    border: 1px solid var(--blue-dark);
     border-left-color: transparent;
     border-bottom-color: transparent;
     transform: rotate(45deg);
     transition: transform var(--transition-fast);
-}
-
-.hero-pill .link-more::after {
-    border-color: rgba(185,255,202,0.95);
-    border-left-color: transparent;
-    border-bottom-color: transparent;
 }
 
 .link-more:hover::after {
@@ -605,9 +614,9 @@ body {
 }
 
 .chip.active {
-    background: linear-gradient(135deg, var(--blue-light), var(--green));
+    background: var(--blue-dark);
     color: #ffffff;
-    border-color: transparent;
+    border-color: var(--blue-dark);
     transform: translateY(-1px);
 }
 
@@ -713,7 +722,7 @@ body {
 
 .charte-block.open .charte-icon {
     transform: rotate(45deg);
-    background: linear-gradient(135deg, var(--blue-light), var(--green));
+    background: var(--blue-dark);
     color: #ffffff;
 }
 
@@ -1128,7 +1137,7 @@ form {
         transform: scale(0.9);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 160ms ease-out, transform 160ms.ease-out;
+        transition: opacity 160ms ease-out, transform 160ms ease-out;
     }
 
     .nav-list.open {
