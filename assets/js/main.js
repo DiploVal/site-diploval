@@ -304,6 +304,14 @@ async function loadDiplomag() {
                    </p>`
                 : ""
             }
+            ${
+              item.signature
+                ? `<p class="article-signature">${escapeHtml(
+                    item.signature
+                  )}</p>`
+                : ""
+            }
+            ${buildShareBlockHtml(slug, item.titre || "")}
           </div>
         `;
 
@@ -409,6 +417,14 @@ async function loadMemorandums() {
                    </p>`
                 : ""
             }
+            ${
+              item.signature
+                ? `<p class="article-signature">${escapeHtml(
+                    item.signature
+                  )}</p>`
+                : ""
+            }
+            ${buildShareBlockHtml(slug, item.title || "")}
           </div>
         `;
         overlaysRoot.appendChild(panel);
@@ -527,6 +543,14 @@ async function loadDossiers() {
 
           <div class="article-body">
             ${markdownToHtml(item.body || "")}
+            ${
+              item.signature
+                ? `<p class="article-signature">${escapeHtml(
+                    item.signature
+                  )}</p>`
+                : ""
+            }
+            ${buildShareBlockHtml(slug, item.title || "")}
           </div>
         `;
         overlaysRoot.appendChild(panel);
@@ -536,6 +560,35 @@ async function loadDossiers() {
     console.error("Erreur chargement Dossiers :", err);
   }
 }
+
+/* ========== Partage des articles ========== */
+
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".share-btn");
+  if (!btn) return;
+
+  const container = btn.closest(".article-share");
+  if (!container) return;
+
+  const slug = container.dataset.shareSlug || "";
+  const panel = btn.closest(".overlay-panel");
+  let title = document.title;
+
+  if (panel) {
+    const h2 = panel.querySelector("h2");
+    if (h2 && h2.textContent) {
+      title = h2.textContent.trim();
+    }
+  }
+
+  const pageUrl = window.location.origin + window.location.pathname;
+  const url = pageUrl + (slug ? "#" + slug : "");
+
+  const shareUrl = buildShareUrl(btn.dataset.share, url, title);
+  if (shareUrl) {
+    window.open(shareUrl, "_blank", "noopener");
+  }
+});
 
 /* ========== Helpers ========== */
 
@@ -586,4 +639,34 @@ function escapeHtml(str) {
 
 function escapeAttr(str) {
   return String(str).replace(/"/g, "&quot;");
+}
+
+function buildShareBlockHtml(slug, title) {
+  if (!slug) return "";
+  return `
+    <div class="article-share" data-share-slug="${escapeAttr(slug)}">
+      <span class="article-share-label">Partager :</span>
+      <button type="button" class="share-btn" data-share="x">X</button>
+      <button type="button" class="share-btn" data-share="facebook">Facebook</button>
+      <button type="button" class="share-btn" data-share="linkedin">LinkedIn</button>
+      <button type="button" class="share-btn" data-share="mail">E-mail</button>
+    </div>
+  `;
+}
+
+function buildShareUrl(type, url, title) {
+  const u = encodeURIComponent(url);
+  const t = encodeURIComponent(title || "");
+  switch (type) {
+    case "x":
+      return `https://twitter.com/intent/tweet?url=${u}&text=${t}`;
+    case "facebook":
+      return `https://www.facebook.com/sharer/sharer.php?u=${u}`;
+    case "linkedin":
+      return `https://www.linkedin.com/sharing/share-offsite/?url=${u}`;
+    case "mail":
+      return `mailto:?subject=${t}&body=${u}`;
+    default:
+      return "";
+  }
 }
