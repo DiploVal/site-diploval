@@ -7,38 +7,37 @@ public_folder: "/assets/uploads"
 
 collections:
   # ✅ 1. DIPLOMAG – ARTICLES
- - name: "diplomag"
-  label: "Diplomag – Articles"
-  files:
-    - label: "Articles Diplomag"
-      name: "diplomag_data"
-      file: "content/diplomag.json"
-      format: "json"
-      fields:
-        - label: "Articles"
-          name: "items"
-          widget: "list"
-          summary: "{{fields.date}} — {{fields.pays}} — {{fields.titre}}"
-          fields:
-            - { label: "Slug (sans espace, ex : russie-otan-2025)", name: "slug", widget: "string" }
-            - { label: "Titre", name: "titre", widget: "string" }
-            - { label: "Pays / Région", name: "pays", widget: "string" }
-            - { label: "Date (ex : Novembre 2025)", name: "date", widget: "string" }
-            - label: "Thème principal"
-              name: "theme"
-              widget: "select"
-              options:
-                - { label: "Géopolitique", value: "geopolitique" }
-                - { label: "Politique", value: "politique" }
-                - { label: "Écologie / climat", value: "ecologie" }
-                - { label: "Économie / finances", value: "finances" }
-                - { label: "Santé / société", value: "sante" }
-                - { label: "Autre", value: "autre" }
-            - { label: "Image de mise en avant", name: "image", widget: "image", required: false }
-            - { label: "Extrait court (accroche)", name: "extrait", widget: "text" }
-            - { label: "Texte complet de l’article", name: "body", widget: "markdown", required: false }
-            - { label: "Lien vers le PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
-
+  - name: "diplomag"
+    label: "Diplomag – Articles"
+    files:
+      - label: "Articles Diplomag"
+        name: "diplomag_data"
+        file: "content/diplomag.json"
+        format: "json"
+        fields:
+          - label: "Articles"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.pays}} — {{fields.titre}}"
+            fields:
+              - { label: "Slug (sans espace, ex : russie-otan-2025)", name: "slug", widget: "string" }
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Pays / Région", name: "pays", widget: "string" }
+              - { label: "Date (ex : Novembre 2025)", name: "date", widget: "string" }
+              - label: "Thème principal"
+                name: "theme"
+                widget: "select"
+                options:
+                  - { label: "Géopolitique", value: "geopolitique" }
+                  - { label: "Politique", value: "politique" }
+                  - { label: "Écologie / climat", value: "ecologie" }
+                  - { label: "Économie / finances", value: "finances" }
+                  - { label: "Santé / société", value: "sante" }
+                  - { label: "Autre", value: "autre" }
+              - { label: "Image de mise en avant", name: "image", widget: "image", required: false }
+              - { label: "Extrait court (accroche)", name: "extrait", widget: "text" }
+              - { label: "Texte complet de l’article", name: "body", widget: "markdown", required: false }
+              - { label: "Lien vers le PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
 
   # ✅ 2. MEMORANDUMS
   - name: "memorandums"
@@ -97,4 +96,3 @@ collections:
               - { label: "Zone / territoire (anonyme)", name: "zone", widget: "string" }
               - { label: "Résumé court", name: "excerpt", widget: "text" }
               - { label: "Texte détaillé", name: "body", widget: "markdown" }
-
