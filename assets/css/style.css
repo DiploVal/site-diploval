@@ -813,60 +813,39 @@ body {
 }
 
 /* ================================
-   Overlay "Consulter +"
+   Overlay "Consulter +" – articles
    ================================ */
 
 .overlay {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, rgba(12,44,80,0.45), rgba(5,13,26,0.94));
-    display: flex;
+    background: rgba(5,13,26,0.86);
+    display: none;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity var(--transition-med), visibility var(--transition-med);
-    z-index: 80;
+    padding: 2rem 1rem;
+    z-index: 1000;
 }
 
 .overlay.open {
-    opacity: 1;
-    visibility: visible;
+    display: flex;
 }
+
+/* Fenêtre d'article */
 
 .overlay-panel {
-    position: absolute;
-    max-width: min(640px, 90vw);
-    max-height: 80vh;
+    position: relative;
+    background: #ffffff;
+    width: 100%;
+    max-width: 900px;
+    max-height: calc(100vh - 3rem);
     overflow-y: auto;
-    background: #f7f5f1;
-    border-radius: 1.6rem;
-    padding: 1.6rem 1.8rem 1.4rem;
+    border-radius: var(--radius-xl);
+    padding: 2.5rem 2rem;
     box-shadow: var(--shadow-soft);
-    transform: translateY(10px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 220ms ease, transform 220ms ease;
 }
 
-.overlay-panel.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-.overlay-panel h2 {
-    margin-top: 0;
-    font-family: "Lora", "Times New Roman", serif;
-    font-size: 1.4rem;
-    color: var(--blue-dark);
-}
-
-.overlay-panel p {
-    color: var(--text-main);
-    font-size: 0.95rem;
-    line-height: 1.7;
-}
+/* Bouton de fermeture */
 
 .overlay-close {
     position: absolute;
@@ -874,9 +853,105 @@ body {
     top: 1rem;
     border: none;
     background: none;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     cursor: pointer;
     color: var(--text-muted);
+}
+
+/* En-tête d’article (image + méta + titre) */
+
+.article-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.article-cover {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.article-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.article-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.article-tagline {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.overlay-panel h2 {
+    margin: 0;
+    font-family: "Lora", "Times New Roman", serif;
+    font-size: 1.6rem;
+    line-height: 1.3;
+    color: var(--blue-dark);
+}
+
+.article-chapeau {
+    margin: 0.6rem 0 0;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+/* Corps de l’article */
+
+.article-body {
+    margin-top: 1.5rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--text-main);
+}
+
+.article-body p {
+    margin: 0 0 1rem;
+}
+
+.article-pdf a {
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Masquer la bannière cookies pendant la lecture */
+
+.overlay.open ~ .cookie-banner {
+    display: none;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .overlay {
+        padding: 0;
+    }
+
+    .overlay-panel {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+        padding: 1.25rem 1rem 2rem;
+    }
+
+    .overlay-panel h2 {
+        font-size: 1.4rem;
+    }
+
+    .article-body {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
 }
 
 /* Apparition progressive */
