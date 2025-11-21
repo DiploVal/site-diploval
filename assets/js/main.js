@@ -1,298 +1,474 @@
+// assets/js/main.js
+
 document.addEventListener("DOMContentLoaded", () => {
-    // Loader initial
-    const loader = document.querySelector(".page-loader");
-    setTimeout(() => {
-        loader.classList.add("hidden");
-    }, 1200);
+  initLoader();
+  initNav();
+  initReveal();
+  initCharte();
+  initOverlay();
+  initFilters();
+  initCookies();
 
-    // Menu mobile
-    const navToggle = document.querySelector(".nav-toggle");
-    const navList = document.querySelector(".nav-list");
-    if (navToggle && navList) {
-        navToggle.addEventListener("click", () => {
-            navList.classList.toggle("open");
-        });
-
-        navList.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", () => {
-                navList.classList.remove("open");
-            });
-        });
-    }
-
-    // Apparition des blocs au scroll
-    const revealEls = document.querySelectorAll(".reveal");
-    const observer = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                    observer.unobserve(entry.target);
-                }
-            });
-        },
-        { threshold: 0.15 }
-    );
-    revealEls.forEach(el => observer.observe(el));
-
-    // Charte accordeon
-    document.querySelectorAll(".charte-block").forEach(block => {
-        const toggle = block.querySelector(".charte-toggle");
-        toggle.addEventListener("click", () => {
-            const isOpen = block.classList.contains("open");
-            document.querySelectorAll(".charte-block").forEach(b => b.classList.remove("open"));
-            if (!isOpen) {
-                block.classList.add("open");
-            }
-        });
-    });
-
-    // Overlay "Consulter +"
-    const overlay = document.querySelector("[data-overlay]");
-    const panels = overlay ? overlay.querySelectorAll(".overlay-panel") : [];
-    function openPanel(id) {
-        if (!overlay) return;
-        overlay.classList.add("open");
-        panels.forEach(p => p.classList.remove("active"));
-        const target = document.getElementById(id);
-        if (target) {
-            target.classList.add("active");
-        }
-    }
-    function closeOverlay() {
-        if (!overlay) return;
-        overlay.classList.remove("open");
-        panels.forEach(p => p.classList.remove("active"));
-    }
-
-    document.querySelectorAll("[data-panel]").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const id = btn.getAttribute("data-panel");
-            openPanel(id);
-        });
-    });
-
-    if (overlay) {
-        overlay.addEventListener("click", e => {
-            if (e.target === overlay) {
-                closeOverlay();
-            }
-        });
-        overlay.querySelectorAll(".overlay-close").forEach(btn => {
-            btn.addEventListener("click", closeOverlay);
-        });
-        document.addEventListener("keydown", e => {
-            if (e.key === "Escape") {
-                closeOverlay();
-            }
-        });
-    }
-
-    // Filtres Diplomag
-    const filterGroups = document.querySelectorAll(".filter-chips");
-    const cards = document.querySelectorAll(".diplomag-card");
-
-    function applyFilters() {
-        const activeRegion = document
-            .querySelector('[data-filter-group="region"] .chip.active')
-            ?.getAttribute("data-filter-value") || "all";
-        const activeTheme = document
-            .querySelector('[data-filter-group="theme"] .chip.active')
-            ?.getAttribute("data-filter-value") || "all";
-
-        cards.forEach(card => {
-            const region = card.getAttribute("data-region");
-            const theme = card.getAttribute("data-theme");
-            const matchRegion = activeRegion === "all" || region === activeRegion;
-            const matchTheme = activeTheme === "all" || theme === activeTheme;
-            card.style.display = matchRegion && matchTheme ? "" : "none";
-        });
-    }
-
-    filterGroups.forEach(group => {
-        group.querySelectorAll(".chip").forEach(chip => {
-            chip.addEventListener("click", () => {
-                group.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-                chip.classList.add("active");
-                applyFilters();
-            });
-        });
-    });
-
-    applyFilters();
-
-
-    async function loadJSON(path) {
-        try {
-            const response = await fetch(path, { cache: "no-store" });
-            if (!response.ok) return null;
-            return await response.json();
-        } catch (e) {
-            return null;
-        }
-    }
-
-    function nl2br(str) {
-        return (str || "").replace(/\n/g, "<br>");
-    }
-
-    async function loadDynamicContent() {
-        const overlayDynamic = document.querySelector("[data-dynamic-overlays]");
-
-        // Diplomag
-        const diplomagList = document.querySelector("[data-diplomag-list]");
-        if (diplomagList && overlayDynamic) {
-            const data = await loadJSON("content/diplomag.json");
-            if (data && Array.isArray(data.articles) && data.articles.length) {
-                diplomagList.innerHTML = "";
-                data.articles.forEach((article, index) => {
-                    const slug = article.slug || `article-${index + 1}`;
-                    const panelId = `panel-article-${slug}`;
-                    const card = document.createElement("article");
-                    card.className = "card diplomag-card reveal";
-                    card.setAttribute("data-region", article.region || "all");
-                    card.setAttribute("data-theme", article.theme || "all");
-                    card.innerHTML = `
-                        <div class="card-heading">
-                            <span class="card-tag">${article.tag || ""}</span>
-                            <h3>${article.title || ""}</h3>
-                        </div>
-                        <p class="card-excerpt">
-                            ${article.excerpt || ""}
-                        </p>
-                        <button class="link-more" data-panel="${panelId}">Lire l'article</button>
-                    `;
-                    diplomagList.appendChild(card);
-
-                    const panel = document.createElement("div");
-                    panel.className = "overlay-panel";
-                    panel.id = panelId;
-                    panel.innerHTML = `
-                        <button class="overlay-close" aria-label="Fermer">×</button>
-                        <h2>${article.title || ""}</h2>
-                        <p>${nl2br(article.body || "")}</p>
-                    `;
-                    overlayDynamic.appendChild(panel);
-                });
-            }
-        }
-
-        // Memorandums
-        const memoList = document.querySelector("[data-memo-list]");
-        if (memoList && overlayDynamic) {
-            const data = await loadJSON("content/memorandums.json");
-            if (data && Array.isArray(data.items) && data.items.length) {
-                memoList.innerHTML = "";
-                data.items.forEach((item, index) => {
-                    const slug = item.slug || `memo-${index + 1}`;
-                    const panelId = `panel-memo-${index + 1}`;
-                    const card = document.createElement("article");
-                    card.className = "card reveal";
-                    card.innerHTML = `
-                        <div class="card-heading">
-                            <span class="card-tag">${item.tag || ""}</span>
-                            <h3>${item.title || ""}</h3>
-                        </div>
-                        <p class="card-excerpt">
-                            ${item.excerpt || ""}
-                        </p>
-                        <button class="link-more" data-panel="${panelId}">Consulter +</button>
-                    `;
-                    memoList.appendChild(card);
-
-                    const panel = document.createElement("div");
-                    panel.className = "overlay-panel";
-                    panel.id = panelId;
-                    panel.innerHTML = `
-                        <button class="overlay-close" aria-label="Fermer">×</button>
-                        <h2>${item.title || ""}</h2>
-                        <p>${nl2br(item.body || "")}</p>
-                        ${item.link ? `<p><a href="${item.link}" target="_blank" rel="noopener">Télécharger le mémorandum (PDF)</a></p>` : ""}
-                    `;
-                    overlayDynamic.appendChild(panel);
-                });
-            }
-        }
-
-        // Agenda
-        const agendaList = document.querySelector("[data-agenda-list]");
-        if (agendaList) {
-            const data = await loadJSON("content/agenda.json");
-            if (data && Array.isArray(data.events) && data.events.length) {
-                agendaList.innerHTML = "";
-                data.events.forEach(event => {
-                    const block = document.createElement("div");
-                    block.className = "agenda-item reveal";
-                    block.innerHTML = `
-                        <div class="agenda-date">${event.dateLabel || ""}</div>
-                        <div class="agenda-content">
-                            <h3>${event.title || ""}</h3>
-                            <p>${event.description || ""}</p>
-                        </div>
-                    `;
-                    agendaList.appendChild(block);
-                });
-            }
-        }
-
-        // Dossiers
-        const dossierList = document.querySelector("[data-dossier-list]");
-        if (dossierList && overlayDynamic) {
-            const data = await loadJSON("content/dossiers.json");
-            if (data && Array.isArray(data.dossiers) && data.dossiers.length) {
-                dossierList.innerHTML = "";
-                data.dossiers.forEach((dossier, index) => {
-                    const panelId = `panel-dossier-${index + 1}`;
-                    const card = document.createElement("article");
-                    card.className = "card reveal";
-                    card.innerHTML = `
-                        <div class="card-heading">
-                            <span class="card-tag">${dossier.tag || ""}</span>
-                            <h3>${dossier.title || ""}</h3>
-                        </div>
-                        <p class="card-excerpt">
-                            ${dossier.excerpt || ""}
-                        </p>
-                        <button class="link-more" data-panel="${panelId}">Consulter +</button>
-                    `;
-                    dossierList.appendChild(card);
-
-                    const panel = document.createElement("div");
-                    panel.className = "overlay-panel";
-                    panel.id = panelId;
-                    panel.innerHTML = `
-                        <button class="overlay-close" aria-label="Fermer">×</button>
-                        <h2>${dossier.title || ""}</h2>
-                        <p>${nl2br(dossier.body || "")}</p>
-                    `;
-                    overlayDynamic.appendChild(panel);
-                });
-            }
-        }
-    }
-
-    loadDynamicContent();
-
-    // Bandeau cookies (uniquement cookies essentiels)
-    const cookieBanner = document.querySelector("[data-cookie-banner]");
-    const cookieAcceptBtn = document.querySelector("[data-cookie-accept]");
-    try {
-        const consentGiven = window.localStorage.getItem("diploval_cookie_consent");
-        if (cookieBanner && consentGiven === "1") {
-            cookieBanner.style.display = "none";
-        }
-        if (cookieBanner && cookieAcceptBtn) {
-            cookieAcceptBtn.addEventListener("click", () => {
-                cookieBanner.style.display = "none";
-                try {
-                    window.localStorage.setItem("diploval_cookie_consent", "1");
-                } catch (e) {
-                    // Si le stockage est désactivé, on ne fait rien de plus
-                }
-            });
-        }
-    } catch (e) {
-        // Pas de localStorage disponible : le bandeau restera visible
-    }
-
+  loadDiplomag();
+  loadMemorandums();
+  loadAgenda();
+  loadDossiers();
 });
+
+/* ========== Loader ========== */
+
+function initLoader() {
+  window.addEventListener("load", () => {
+    const loader = document.querySelector(".page-loader");
+    if (loader) loader.classList.add("hidden");
+  });
+}
+
+/* ========== Navigation mobile ========== */
+
+function initNav() {
+  const toggle = document.querySelector(".nav-toggle");
+  const navList = document.querySelector(".nav-list");
+
+  if (!toggle || !navList) return;
+
+  toggle.addEventListener("click", () => {
+    navList.classList.toggle("open");
+  });
+
+  navList.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navList.classList.remove("open");
+    });
+  });
+}
+
+/* ========== Apparition des blocs (reveal) ========== */
+
+let revealObserver = null;
+
+function initReveal() {
+  const elems = document.querySelectorAll(".reveal");
+
+  if ("IntersectionObserver" in window) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    elems.forEach((el) => revealObserver.observe(el));
+  } else {
+    elems.forEach((el) => el.classList.add("visible"));
+  }
+}
+
+function observeReveal(el) {
+  if (revealObserver && el) revealObserver.observe(el);
+}
+
+/* ========== Charte (accordéon) ========== */
+
+function initCharte() {
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".charte-toggle");
+    if (!btn) return;
+    const block = btn.closest(".charte-block");
+    if (!block) return;
+    block.classList.toggle("open");
+  });
+}
+
+/* ========== Overlays "Consulter +" ========== */
+
+function initOverlay() {
+  document.addEventListener("click", (e) => {
+    const moreBtn = e.target.closest(".link-more");
+    if (moreBtn && moreBtn.dataset.panel) {
+      openOverlay(moreBtn.dataset.panel);
+      return;
+    }
+
+    const closeBtn = e.target.closest(".overlay-close");
+    if (closeBtn) {
+      closeOverlay();
+      return;
+    }
+
+    if (e.target.matches("[data-overlay]")) {
+      closeOverlay();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeOverlay();
+  });
+}
+
+function openOverlay(panelId) {
+  const overlay = document.querySelector("[data-overlay]");
+  if (!overlay) return;
+
+  overlay.classList.add("open");
+
+  overlay
+    .querySelectorAll(".overlay-panel")
+    .forEach((p) => p.classList.remove("active"));
+
+  const panel = overlay.querySelector("#" + panelId);
+  if (panel) panel.classList.add("active");
+}
+
+function closeOverlay() {
+  const overlay = document.querySelector("[data-overlay]");
+  if (!overlay) return;
+
+  overlay.classList.remove("open");
+  overlay
+    .querySelectorAll(".overlay-panel")
+    .forEach((p) => p.classList.remove("active"));
+}
+
+/* ========== Filtres Diplomag ========== */
+
+function initFilters() {
+  document.addEventListener("click", (e) => {
+    const chip = e.target.closest(".chip");
+    if (!chip || !chip.dataset.filterValue) return;
+
+    const group = chip.closest("[data-filter-group]");
+    if (!group) return;
+
+    group.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+    chip.classList.add("active");
+
+    applyDiplomagFilters();
+  });
+}
+
+function applyDiplomagFilters() {
+  const list = document.querySelector("[data-diplomag-list]");
+  if (!list) return;
+
+  const cards = list.querySelectorAll(".diplomag-card");
+
+  const activeRegion =
+    document.querySelector(
+      '[data-filter-group="region"] .chip.active'
+    )?.dataset.filterValue || "all";
+  const activeTheme =
+    document.querySelector(
+      '[data-filter-group="theme"] .chip.active'
+    )?.dataset.filterValue || "all";
+
+  cards.forEach((card) => {
+    const cardRegion = card.dataset.region || "all";
+    const cardTheme = card.dataset.theme || "all";
+
+    const regionMatch =
+      activeRegion === "all" || cardRegion === activeRegion;
+    const themeMatch = activeTheme === "all" || cardTheme === activeTheme;
+
+    card.style.display = regionMatch && themeMatch ? "" : "none";
+  });
+}
+
+/* ========== Cookies ========== */
+
+function initCookies() {
+  const banner = document.querySelector("[data-cookie-banner]");
+  if (!banner) return;
+
+  const accepted = localStorage.getItem("diploval_cookies_ok") === "1";
+  if (accepted) {
+    banner.style.display = "none";
+    return;
+  }
+
+  const btn = banner.querySelector("[data-cookie-accept]");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    localStorage.setItem("diploval_cookies_ok", "1");
+    banner.style.display = "none";
+  });
+}
+
+/* =========================================================
+   1) Diplomag → content/diplomag.json
+   ========================================================= */
+
+async function loadDiplomag() {
+  const list = document.querySelector("[data-diplomag-list]");
+  if (!list) return;
+
+  try {
+    const res = await fetch("content/diplomag.json");
+    if (!res.ok) return;
+    const data = await res.json();
+    const items = Array.isArray(data.items) ? data.items : [];
+
+    // On vide les cartes de démo
+    list.innerHTML = "";
+
+    const overlaysRoot = document.querySelector("[data-dynamic-overlays]");
+
+    items.forEach((item) => {
+      const slug = (item.slug || "").trim();
+      if (!slug) return;
+
+      const themeKey = (item.theme || "autre").toLowerCase().trim();
+      const regionKey = (item.pays || "").toLowerCase().trim();
+
+      const card = document.createElement("article");
+      card.className = "card diplomag-card reveal";
+      card.dataset.region = normalizeRegion(regionKey);
+      card.dataset.theme = themeKey;
+
+      card.innerHTML = `
+        <div class="card-heading">
+          <span class="card-tag">${escapeHtml(
+            item.pays || ""
+          )} · ${escapeHtml(themeLabel(themeKey))}</span>
+          <h3>${escapeHtml(item.titre || "")}</h3>
+        </div>
+        <p class="card-excerpt">${escapeHtml(item.extrait || "")}</p>
+        <button class="link-more" data-panel="panel-article-${slug}">Lire l'article</button>
+      `;
+
+      list.appendChild(card);
+      observeReveal(card);
+
+      if (overlaysRoot) {
+        const panel = document.createElement("div");
+        panel.className = "overlay-panel";
+        panel.id = `panel-article-${slug}`;
+        panel.innerHTML = `
+          <button class="overlay-close" aria-label="Fermer">×</button>
+          <h2>${escapeHtml(item.titre || "")}</h2>
+          <p class="article-chapeau">${escapeHtml(item.extrait || "")}</p>
+          <div class="article-body">
+            ${markdownToHtml(item.body || "")}
+            ${
+              item.pdf_url
+                ? `<p><a href="${escapeAttr(
+                    item.pdf_url
+                  )}" target="_blank" rel="noopener">Télécharger l'article en PDF</a></p>`
+                : ""
+            }
+          </div>
+        `;
+        overlaysRoot.appendChild(panel);
+      }
+    });
+
+    applyDiplomagFilters();
+  } catch (err) {
+    console.error("Erreur chargement Diplomag :", err);
+  }
+}
+
+/* =========================================================
+   2) Mémorandums → content/memorandums.json
+   ========================================================= */
+
+async function loadMemorandums() {
+  const list = document.querySelector("[data-memo-list]");
+  if (!list) return;
+
+  try {
+    const res = await fetch("content/memorandums.json");
+    if (!res.ok) return;
+    const data = await res.json();
+    const items = Array.isArray(data.items) ? data.items : [];
+
+    list.innerHTML = "";
+
+    const overlaysRoot = document.querySelector("[data-dynamic-overlays]");
+
+    items.forEach((item, index) => {
+      const slug = "memo-" + index;
+
+      const card = document.createElement("article");
+      card.className = "card reveal";
+      card.innerHTML = `
+        <div class="card-heading">
+          <span class="card-tag">${escapeHtml(item.type || "Mémorandum")}</span>
+          <h3>${escapeHtml(item.title || "")}</h3>
+        </div>
+        <p class="card-excerpt">${escapeHtml(item.excerpt || "")}</p>
+        <button class="link-more" data-panel="panel-${slug}">Consulter +</button>
+      `;
+      list.appendChild(card);
+      observeReveal(card);
+
+      if (overlaysRoot) {
+        const panel = document.createElement("div");
+        panel.className = "overlay-panel";
+        panel.id = `panel-${slug}`;
+        panel.innerHTML = `
+          <button class="overlay-close" aria-label="Fermer">×</button>
+          <h2>${escapeHtml(item.title || "")}</h2>
+          <p class="article-chapeau">${escapeHtml(item.excerpt || "")}</p>
+          <div class="article-body">
+            ${markdownToHtml(item.body || "")}
+            ${
+              item.pdf_url
+                ? `<p><a href="${escapeAttr(
+                    item.pdf_url
+                  )}" target="_blank" rel="noopener">Télécharger le mémorandum (PDF)</a></p>`
+                : ""
+            }
+          </div>
+        `;
+        overlaysRoot.appendChild(panel);
+      }
+    });
+  } catch (err) {
+    console.error("Erreur chargement Mémorandums :", err);
+  }
+}
+
+/* =========================================================
+   3) Agenda → content/agenda.json
+   ========================================================= */
+
+async function loadAgenda() {
+  const list = document.querySelector("[data-agenda-list]");
+  if (!list) return;
+
+  try {
+    const res = await fetch("content/agenda.json");
+    if (!res.ok) return;
+    const data = await res.json();
+    const items = Array.isArray(data.items) ? data.items : [];
+
+    list.innerHTML = "";
+
+    items.forEach((item) => {
+      const wrap = document.createElement("div");
+      wrap.className = "agenda-item reveal";
+      wrap.innerHTML = `
+        <div class="agenda-date">${escapeHtml(item.date || "")}</div>
+        <div class="agenda-content">
+          <h3>${escapeHtml(item.title || "")}</h3>
+          <p>${escapeHtml(item.description || "")}</p>
+        </div>
+      `;
+      list.appendChild(wrap);
+      observeReveal(wrap);
+    });
+  } catch (err) {
+    console.error("Erreur chargement Agenda :", err);
+  }
+}
+
+/* =========================================================
+   4) Dossiers → content/dossiers.json
+   ========================================================= */
+
+async function loadDossiers() {
+  const list = document.querySelector("[data-dossiers-list]");
+  if (!list) return;
+
+  try {
+    const res = await fetch("content/dossiers.json");
+    if (!res.ok) return;
+    const data = await res.json();
+    const items = Array.isArray(data.items) ? data.items : [];
+
+    list.innerHTML = "";
+
+    const overlaysRoot = document.querySelector("[data-dynamic-overlays]");
+
+    items.forEach((item, index) => {
+      const slug = "dossier-" + index;
+
+      const card = document.createElement("article");
+      card.className = "card reveal";
+      card.innerHTML = `
+        <div class="card-heading">
+          <span class="card-tag">${escapeHtml(item.zone || "")}</span>
+          <h3>${escapeHtml(item.title || "")}</h3>
+        </div>
+        <p class="card-excerpt">${escapeHtml(item.excerpt || "")}</p>
+        <button class="link-more" data-panel="panel-${slug}">Consulter +</button>
+      `;
+      list.appendChild(card);
+      observeReveal(card);
+
+      if (overlaysRoot) {
+        const panel = document.createElement("div");
+        panel.className = "overlay-panel";
+        panel.id = `panel-${slug}`;
+        panel.innerHTML = `
+          <button class="overlay-close" aria-label="Fermer">×</button>
+          <h2>${escapeHtml(item.title || "")}</h2>
+          <div class="article-body">
+            ${markdownToHtml(item.body || "")}
+          </div>
+        `;
+        overlaysRoot.appendChild(panel);
+      }
+    });
+  } catch (err) {
+    console.error("Erreur chargement Dossiers :", err);
+  }
+}
+
+/* ========== Helpers ========== */
+
+function normalizeRegion(region) {
+  const r = (region || "").toLowerCase().trim();
+  if (r.includes("france")) return "france";
+  if (r.includes("europ")) return "europe";
+  if (r.includes("monde") || r.includes("global")) return "monde";
+  return "monde";
+}
+
+function themeLabel(key) {
+  switch (key) {
+    case "geopolitique":
+      return "Géopolitique";
+    case "politique":
+      return "Politique";
+    case "ecologie":
+      return "Écologie / climat";
+    case "finances":
+      return "Économie / finances";
+    case "sante":
+      return "Santé / société";
+    case "autre":
+    default:
+      return "Autre";
+  }
+}
+
+// Conversion ultra simple Markdown → HTML
+function markdownToHtml(md) {
+  if (!md) return "";
+  const escaped = escapeHtml(md);
+  const blocks = escaped.split(/\n{2,}/);
+  return blocks
+    .map((b) => `<p>${b.replace(/\n/g, "<br>")}</p>`)
+    .join("");
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escapeAttr(str) {
+  return String(str).replace(/"/g, "&quot;");
+}
