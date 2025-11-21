@@ -844,6 +844,24 @@ body {
     padding: 2.5rem 2rem;
     box-shadow: var(--shadow-soft);
 }
+.overlay-panel {
+    position: relative;
+    background: #ffffff;
+    width: 100%;
+    max-width: 900px;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    border-radius: var(--radius-xl);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-soft);
+
+    /* 👇 IMPORTANT : caché par défaut */
+    display: none;
+}
+/* Seul le panneau actif est visible */
+.overlay-panel.active {
+    display: block;
+}
 
 /* Bouton de fermeture */
 
