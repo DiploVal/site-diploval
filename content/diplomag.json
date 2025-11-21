@@ -1,9 +1,3 @@
-[
-  {
-    "titre": "Test Diplomag",
-    "date": "Novembre 2025",
-    "pays": "France",
-    "extrait": "Ceci est un premier test d’article pour vérifier l’affichage sur la page Diplomag.",
-    "url": "#"
-  }
-]
+{
+  "items": []
+}
