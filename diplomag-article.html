@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Article – Diplomag – Diploval Conseil</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+        .article-page {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .article-page h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .article-meta-line {
+            font-size: 0.95rem;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+        .article-page img {
+            max-width: 100%;
+            border-radius: 1rem;
+            margin: 20px 0;
+        }
+        .article-actions-top,
+        .article-actions-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .share-buttons a {
+            font-size: 0.85rem;
+        }
+    </style>
+    <!-- petit parseur markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+    <nav>
+        <div class="logo">
+            <img src="assets/img/logo-diploval.png" alt="Diploval Conseil">
+        </div>
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="diplomag.html" class="active">Diplomag</a></li>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="article-page">
+    <a href="diplomag.html">&larr; Retour à Diplomag</a>
+    <h1 id="article-title"></h1>
+    <div id="article-meta" class="article-meta-line"></div>
+    <div class="article-actions-top">
+        <button id="share-copy" class="btn-secondary">Copier le lien</button>
+        <div class="share-buttons">
+            <a id="share-fb" class="btn-secondary" target="_blank" rel="noopener">Facebook</a>
+            <a id="share-li" class="btn-secondary" target="_blank" rel="noopener">LinkedIn</a>
+            <a id="share-x" class="btn-secondary" target="_blank" rel="noopener">X</a>
+        </div>
+        <a id="download-pdf" class="btn-primary" style="display:none;" target="_blank" rel="noopener">
+            Télécharger le PDF
+        </a>
+    </div>
+
+    <div id="article-image"></div>
+    <article id="article-body"></article>
+
+    <div class="article-actions-bottom">
+        <a href="diplomag.html" class="btn-secondary">&larr; Retour aux articles</a>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <p>© 2025 Diploval Conseil — Tous droits réservés.</p>
+    <p>Chambonas — Ardèche, France</p>
+</footer>
+
+<script>
+async function loadArticle() {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("slug");
+    if (!slug) {
+        document.getElementById("article-title").innerText = "Article introuvable";
+        return;
+    }
+
+    const res = await fetch("content/diplomag.json");
+    const json = await res.json();
+    const articles = json.items || [];
+    const a = articles.find(item => item.slug === slug);
+
+    if (!a) {
+        document.getElementById("article-title").innerText = "Article introuvable";
+        return;
+    }
+
+    document.title = a.titre + " – Diplomag – Diploval Conseil";
+
+    document.getElementById("article-title").innerText = a.titre || "";
+    document.getElementById("article-meta").innerText =
+        (a.date || "") + " — " + (a.pays || "") + (a.theme ? " (" + a.theme + ")" : "");
+
+    if (a.image) {
+        document.getElementById("article-image").innerHTML =
+            `<img src="${a.image}" alt="${a.titre || ''}">`;
+    }
+
+    const bodyHtml = a.body ? marked.parse(a.body) : "<p>(Article en cours de rédaction)</p>";
+    document.getElementById("article-body").innerHTML = bodyHtml;
+
+    // PDF
+    if (a.pdf_url) {
+        const dl = document.getElementById("download-pdf");
+        dl.style.display = "inline-block";
+        dl.href = a.pdf_url;
+    }
+
+    // Partage
+    const pageUrl = encodeURIComponent(window.location.href);
+    const pageTitle = encodeURIComponent(a.titre || "Article Diplomag");
+
+    document.getElementById("share-fb").href =
+        `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+    document.getElementById("share-li").href =
+        `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
+    document.getElementById("share-x").href =
+        `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+
+    document.getElementById("share-copy").onclick = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            alert("Lien copié dans le presse-papiers.");
+        } catch {
+            alert("Impossible de copier le lien, mais tu peux le sélectionner dans la barre d’adresse.");
+        }
+    };
+}
+
+loadArticle();
+</script>
+
+</body>
+</html>
