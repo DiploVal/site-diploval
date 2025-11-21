@@ -6,6 +6,7 @@ media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
+  # ✅ 1. DIPLOMAG – ARTICLES
   - name: "diplomag"
     label: "Diplomag – Articles"
     files:
@@ -17,29 +18,25 @@ collections:
           - label: "Articles"
             name: "items"
             widget: "list"
-            summary: "{{title}} — {{region}} · {{theme}}"
+            summary: "{{fields.date}} — {{fields.pays}} — {{fields.titre}}"
             fields:
-              - { label: "Titre", name: "title", widget: "string" }
-              - { label: "Résumé court", name: "excerpt", widget: "text" }
-              - label: "Région"
-                name: "region"
-                widget: "select"
-                options:
-                  - { label: "France", value: "france" }
-                  - { label: "Europe", value: "europe" }
-                  - { label: "Monde", value: "monde" }
-              - label: "Thème"
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Pays / Région", name: "pays", widget: "string" }
+              - { label: "Date (ex : Novembre 2025)", name: "date", widget: "string" }
+              - label: "Thème principal"
                 name: "theme"
                 widget: "select"
                 options:
                   - { label: "Géopolitique", value: "geopolitique" }
                   - { label: "Politique", value: "politique" }
-                  - { label: "Économie / finances", value: "finances" }
-                  - { label: "Santé", value: "sante" }
                   - { label: "Écologie / climat", value: "ecologie" }
-                  - { label: "Société / justice", value: "societe" }
-              - { label: "Texte complet", name: "body", widget: "markdown" }
+                  - { label: "Économie / finances", value: "finances" }
+                  - { label: "Santé / société", value: "sante" }
+                  - { label: "Autre", value: "autre" }
+              - { label: "Extrait court (accroche)", name: "extrait", widget: "text" }
+              - { label: "Lien vers l’article complet (URL)", name: "url", widget: "string" }
 
+  # ✅ 2. MEMORANDUMS
   - name: "memorandums"
     label: "Mémorandums"
     files:
@@ -60,6 +57,7 @@ collections:
               - { label: "Texte", name: "body", widget: "markdown", required: false }
               - { label: "Lien vers PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
 
+  # ✅ 3. AGENDA
   - name: "agenda"
     label: "Agenda"
     files:
@@ -77,6 +75,7 @@ collections:
               - { label: "Titre", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
 
+  # ✅ 4. DOSSIERS EN COURS
   - name: "dossiers"
     label: "Dossiers en cours"
     files:
@@ -94,3 +93,4 @@ collections:
               - { label: "Zone / territoire (anonyme)", name: "zone", widget: "string" }
               - { label: "Résumé court", name: "excerpt", widget: "text" }
               - { label: "Texte détaillé", name: "body", widget: "markdown" }
+
