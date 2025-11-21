@@ -129,9 +129,9 @@ async function loadArticles() {
     try {
         const response = await fetch("content/diplomag.json");
         const json = await response.json();
-        const articles = json.items;
+        const articles = json.items || [];
 
-        if (!articles || articles.length === 0) {
+        if (!articles.length) {
             empty.style.display = "block";
             return;
         }
@@ -141,22 +141,24 @@ async function loadArticles() {
             card.className = "article-card";
 
             card.innerHTML = `
-                <div class="article-meta">${a.region} — ${a.theme}</div>
-                <h3>${a.title}</h3>
-                <p>${a.excerpt}</p>
+                <div class="article-meta">${a.date || ""} — ${a.pays || ""} (${a.theme || ""})</div>
+                <h3>${a.titre || ""}</h3>
+                <p>${a.extrait || ""}</p>
             `;
 
-            card.onclick = () => {
-                alert("La page complète de l’article sera ajoutée ensuite.");
-            };
+            if (a.url) {
+                card.onclick = () => {
+                    window.location.href = a.url;
+                };
+            }
 
             container.appendChild(card);
         });
     } catch (e) {
+        console.error(e);
         empty.style.display = "block";
     }
 }
 
 loadArticles();
 </script>
-
