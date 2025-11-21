@@ -122,43 +122,41 @@
 
     <!-- SCRIPT POUR CHARGER LES ARTICLES DU CMS (Netlify CMS) -->
     <script>
-        async function loadArticles() {
-            const container = document.getElementById("articles");
-            const empty = document.getElementById("noArticles");
+async function loadArticles() {
+    const container = document.getElementById("articles");
+    const empty = document.getElementById("noArticles");
 
-            try {
-                const response = await fetch("content/diplomag.json");
-                const articles = await response.json();
+    try {
+        const response = await fetch("content/diplomag.json");
+        const json = await response.json();
+        const articles = json.items;
 
-                if (!articles || articles.length === 0) {
-                    empty.style.display = "block";
-                    return;
-                }
-
-                articles.forEach(a => {
-                    const card = document.createElement("div");
-                    card.className = "article-card";
-
-                    card.innerHTML = `
-                        <div class="article-meta">${a.date} — ${a.pays}</div>
-                        <h3>${a.titre}</h3>
-                        <p>${a.extrait}</p>
-                    `;
-
-                    card.onclick = () => {
-                        window.location.href = a.url;
-                    };
-
-                    container.appendChild(card);
-                });
-
-            } catch (e) {
-                empty.style.display = "block";
-            }
+        if (!articles || articles.length === 0) {
+            empty.style.display = "block";
+            return;
         }
 
-        loadArticles();
-    </script>
+        articles.forEach(a => {
+            const card = document.createElement("div");
+            card.className = "article-card";
 
-</body>
-</html>
+            card.innerHTML = `
+                <div class="article-meta">${a.region} — ${a.theme}</div>
+                <h3>${a.title}</h3>
+                <p>${a.excerpt}</p>
+            `;
+
+            card.onclick = () => {
+                alert("La page complète de l’article sera ajoutée ensuite.");
+            };
+
+            container.appendChild(card);
+        });
+    } catch (e) {
+        empty.style.display = "block";
+    }
+}
+
+loadArticles();
+</script>
+
