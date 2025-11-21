@@ -226,52 +226,87 @@ async function loadDiplomag() {
       const themeKey = (item.theme || "autre").toLowerCase().trim();
       const regionKey = (item.pays || "").toLowerCase().trim();
 
+      // ---- CARTE LISTE ----
       const card = document.createElement("article");
       card.className = "card diplomag-card reveal";
       card.dataset.region = normalizeRegion(regionKey);
       card.dataset.theme = themeKey;
 
-      // Contenu de la carte
       card.innerHTML = `
         <div class="card-heading">
-          <span class="card-tag">${escapeHtml(item.pays || "")} · ${escapeHtml(themeLabel(themeKey))}</span>
+          <span class="card-tag">${escapeHtml(
+            item.pays || ""
+          )} · ${escapeHtml(themeLabel(themeKey))}</span>
           <h3>${escapeHtml(item.titre || "")}</h3>
         </div>
         <p class="card-excerpt">${escapeHtml(item.extrait || "")}</p>
-        <button class="link-more">Lire l'article</button>
+        <button class="link-more" data-panel="panel-article-${slug}">Lire l'article</button>
       `;
-
-      // On ajoute le clic direct sur le bouton
-      const btn = card.querySelector(".link-more");
-      if (btn) {
-        btn.addEventListener("click", () => {
-          openOverlay(`panel-article-${slug}`);
-        });
-      }
 
       list.appendChild(card);
       observeReveal(card);
 
-      // Création du panneau d'article
+      // ---- OVERLAY ARTICLE ----
       if (overlaysRoot) {
         const panel = document.createElement("div");
         panel.className = "overlay-panel";
         panel.id = `panel-article-${slug}`;
+
+        const metaParts = [];
+        if (item.pays) metaParts.push(item.pays);
+        if (item.date) metaParts.push(item.date);
+        if (themeKey) metaParts.push(themeLabel(themeKey));
+
+        const metaLine = metaParts
+          .map((p) => escapeHtml(p))
+          .join(" · ");
+
         panel.innerHTML = `
           <button class="overlay-close" aria-label="Fermer">×</button>
-          <h2>${escapeHtml(item.titre || "")}</h2>
-          <p class="article-chapeau">${escapeHtml(item.extrait || "")}</p>
+
+          <div class="article-header">
+            ${
+              item.image
+                ? `<figure class="article-cover">
+                     <img src="${escapeAttr(
+                       item.image
+                     )}" alt="${escapeAttr(item.titre || "")}">
+                   </figure>`
+                : ""
+            }
+            <div class="article-meta">
+              ${
+                metaLine
+                  ? `<div class="article-tagline">${metaLine}</div>`
+                  : ""
+              }
+              <h2>${escapeHtml(item.titre || "")}</h2>
+              ${
+                item.extrait
+                  ? `<p class="article-chapeau">${escapeHtml(
+                      item.extrait
+                    )}</p>`
+                  : ""
+              }
+            </div>
+          </div>
+
           <div class="article-body">
             ${markdownToHtml(item.body || "")}
             ${
               item.pdf_url
-                ? `<p><a href="${escapeAttr(
-                    item.pdf_url
-                  )}" target="_blank" rel="noopener">Télécharger l'article en PDF</a></p>`
+                ? `<p class="article-pdf">
+                     <a href="${escapeAttr(
+                       item.pdf_url
+                     )}" target="_blank" rel="noopener">
+                       Télécharger l'article en PDF
+                     </a>
+                   </p>`
                 : ""
             }
           </div>
         `;
+
         overlaysRoot.appendChild(panel);
       }
     });
@@ -281,7 +316,6 @@ async function loadDiplomag() {
     console.error("Erreur chargement Diplomag :", err);
   }
 }
-
 
 /* =========================================================
    2) Mémorandums → content/memorandums.json
@@ -304,6 +338,7 @@ async function loadMemorandums() {
     items.forEach((item, index) => {
       const slug = "memo-" + index;
 
+      // ---- CARTE LISTE ----
       const card = document.createElement("article");
       card.className = "card reveal";
       card.innerHTML = `
@@ -317,21 +352,61 @@ async function loadMemorandums() {
       list.appendChild(card);
       observeReveal(card);
 
+      // ---- OVERLAY MEMO ----
       if (overlaysRoot) {
         const panel = document.createElement("div");
         panel.className = "overlay-panel";
         panel.id = `panel-${slug}`;
+
+        const metaParts = [];
+        if (item.type) metaParts.push(item.type);
+        if (item.date) metaParts.push(item.date);
+        if (item.zone) metaParts.push(item.zone);
+        const metaLine = metaParts
+          .map((p) => escapeHtml(p))
+          .join(" · ");
+
         panel.innerHTML = `
           <button class="overlay-close" aria-label="Fermer">×</button>
-          <h2>${escapeHtml(item.title || "")}</h2>
-          <p class="article-chapeau">${escapeHtml(item.excerpt || "")}</p>
+
+          <div class="article-header">
+            ${
+              item.image
+                ? `<figure class="article-cover">
+                     <img src="${escapeAttr(
+                       item.image
+                     )}" alt="${escapeAttr(item.title || "")}">
+                   </figure>`
+                : ""
+            }
+            <div class="article-meta">
+              ${
+                metaLine
+                  ? `<div class="article-tagline">${metaLine}</div>`
+                  : ""
+              }
+              <h2>${escapeHtml(item.title || "")}</h2>
+              ${
+                item.excerpt
+                  ? `<p class="article-chapeau">${escapeHtml(
+                      item.excerpt
+                    )}</p>`
+                  : ""
+              }
+            </div>
+          </div>
+
           <div class="article-body">
             ${markdownToHtml(item.body || "")}
             ${
               item.pdf_url
-                ? `<p><a href="${escapeAttr(
-                    item.pdf_url
-                  )}" target="_blank" rel="noopener">Télécharger le mémorandum (PDF)</a></p>`
+                ? `<p class="article-pdf">
+                     <a href="${escapeAttr(
+                       item.pdf_url
+                     )}" target="_blank" rel="noopener">
+                       Télécharger le mémorandum (PDF)
+                     </a>
+                   </p>`
                 : ""
             }
           </div>
@@ -399,6 +474,7 @@ async function loadDossiers() {
     items.forEach((item, index) => {
       const slug = "dossier-" + index;
 
+      // ---- CARTE LISTE ----
       const card = document.createElement("article");
       card.className = "card reveal";
       card.innerHTML = `
@@ -412,13 +488,43 @@ async function loadDossiers() {
       list.appendChild(card);
       observeReveal(card);
 
+      // ---- OVERLAY DOSSIER ----
       if (overlaysRoot) {
         const panel = document.createElement("div");
         panel.className = "overlay-panel";
         panel.id = `panel-${slug}`;
+
+        const metaParts = [];
+        if (item.zone) metaParts.push(item.zone);
+        if (item.date) metaParts.push(item.date);
+        if (item.type) metaParts.push(item.type);
+        const metaLine = metaParts
+          .map((p) => escapeHtml(p))
+          .join(" · ");
+
         panel.innerHTML = `
           <button class="overlay-close" aria-label="Fermer">×</button>
-          <h2>${escapeHtml(item.title || "")}</h2>
+
+          <div class="article-header">
+            ${
+              item.image
+                ? `<figure class="article-cover">
+                     <img src="${escapeAttr(
+                       item.image
+                     )}" alt="${escapeAttr(item.title || "")}">
+                   </figure>`
+                : ""
+            }
+            <div class="article-meta">
+              ${
+                metaLine
+                  ? `<div class="article-tagline">${metaLine}</div>`
+                  : ""
+              }
+              <h2>${escapeHtml(item.title || "")}</h2>
+            </div>
+          </div>
+
           <div class="article-body">
             ${markdownToHtml(item.body || "")}
           </div>
