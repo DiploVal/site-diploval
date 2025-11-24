@@ -44,6 +44,7 @@
                     <li><a href="#charte">Charte</a></li>
                     <li><a href="#dossiers">Dossiers en cours</a></li>
                     <li><a href="#services">Services</a></li>
+                    <li><a href="#newsletter">Newsletter</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -378,6 +379,35 @@
             </div>
         </section>
 
+        <!-- Newsletter -->
+        <section id="newsletter" class="section section-alt">
+            <div class="section-header">
+                <h2>Rester informé</h2>
+                <p>
+                    Recevoir, à un rythme raisonnable, les analyses publiques, mémorandums ouverts et temps forts de l'agenda Diploval.
+                </p>
+            </div>
+            <div class="contact-block">
+                <form name="newsletter-diploval" method="POST" data-netlify="true">
+                    <input type="hidden" name="form-name" value="newsletter-diploval">
+                    <div class="form-row">
+                        <label for="newsletter-email">Adresse e-mail *</label>
+                        <input id="newsletter-email" name="email" type="email" required>
+                    </div>
+                    <div class="form-row form-row-inline">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="consent" required>
+                            <span>J'accepte de recevoir des informations de Diploval Conseil. Mon adresse ne sera utilisée que pour cette finalité.</span>
+                        </label>
+                    </div>
+                    <p class="muted">
+                        En moyenne : quelques envois par an, en fonction de l'actualité des dossiers. Aucun transfert ni revente des données.
+                    </p>
+                    <button type="submit" class="btn-primary form-submit">S'inscrire à la newsletter</button>
+                </form>
+            </div>
+        </section>
+
         <!-- Contact -->
         <section id="contact" class="section section-alt">
             <div class="section-header">
@@ -468,6 +498,7 @@
                 <span class="footer-note">Conseils diplomatiques – Transition éthique, vivante et souveraine.</span>
             </div>
             <div class="footer-links">
+                <a href="#newsletter">Newsletter</a>
                 <a href="mentions-legales.html">Mentions légales</a>
                 <a href="confidentialite-conditions.html">Politique de confidentialité &amp; conditions d'utilisation</a>
             </div>
@@ -596,3 +627,4 @@
     <script src="assets/js/main.js"></script>
 </body>
 </html>
+
