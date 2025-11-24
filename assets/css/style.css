@@ -1304,3 +1304,54 @@ form {
         height: 40px;
     }
 }
+
+/* --- Newsletter Diploval --- */
+
+#newsletter .contact-block {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-soft);
+    background: #ffffff;
+    box-shadow: var(--shadow-soft);
+}
+
+#newsletter .section-header h2 {
+    margin-bottom: 0.4rem;
+}
+
+#newsletter .section-header p {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#newsletter form {
+    margin-top: 0.5rem;
+}
+
+#newsletter .form-row {
+    margin-bottom: 1rem;
+}
+
+#newsletter .form-row:last-of-type {
+    margin-bottom: 0.75rem;
+}
+
+#newsletter .form-submit {
+    width: 100%;
+}
+
+/* Sur écran plus large : champ + bouton mieux équilibrés */
+@media (min-width: 768px) {
+    #newsletter .form-row {
+        max-width: 480px;
+    }
+
+    #newsletter .form-submit {
+        width: auto;
+        padding-left: 2.2rem;
+        padding-right: 2.2rem;
+    }
+}
