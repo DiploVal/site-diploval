@@ -333,7 +333,6 @@
                     ni fragiliser les acteurs concernés.
                 </p>
             </div>
-            <!-- 🔥 Ici la seule vraie modif : le data-dossiers-list -->
             <div class="cards-grid" data-dossiers-list>
             </div>
         </section>
@@ -387,7 +386,7 @@
                     Recevoir, à un rythme raisonnable, les analyses publiques, mémorandums ouverts et temps forts de l'agenda Diploval.
                 </p>
             </div>
-            <div class="contact-block">
+            <div class="contact-block newsletter-card" style="border: 1px solid var(--border-soft); border-radius: var(--radius-lg); background: #ffffff; box-shadow: var(--shadow-soft);">
                 <form name="newsletter-diploval" method="POST" data-netlify="true">
                     <input type="hidden" name="form-name" value="newsletter-diploval">
                     <div class="form-row">
@@ -459,6 +458,44 @@
                                 <option value="autre">Autre</option>
                             </select>
                         </div>
+
+                        <!-- Infos statistiques optionnelles -->
+                        <div class="form-row">
+                            <label for="contact-decouverte">Comment avez-vous connu Diploval Conseil ? (optionnel)</label>
+                            <select id="contact-decouverte" name="decouverte">
+                                <option value="">-- Sélectionner --</option>
+                                <option value="reseaux-sociaux">Réseaux sociaux</option>
+                                <option value="bouche-a-oreille">Bouche-à-oreille</option>
+                                <option value="media-article">Article / média</option>
+                                <option value="conference">Conférence / intervention</option>
+                                <option value="recherche-web">Recherche internet</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="contact-age">Tranche d'âge (optionnel)</label>
+                            <select id="contact-age" name="age">
+                                <option value="">-- Sélectionner --</option>
+                                <option value="moins-25">Moins de 25 ans</option>
+                                <option value="25-34">25 – 34 ans</option>
+                                <option value="35-44">35 – 44 ans</option>
+                                <option value="45-54">45 – 54 ans</option>
+                                <option value="55-64">55 – 64 ans</option>
+                                <option value="65-plus">65 ans et plus</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="contact-region">Région / pays (optionnel)</label>
+                            <input id="contact-region" name="region" type="text" placeholder="Ex. : Ardèche, Bretagne, Québec…">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="contact-activite">Secteur d'activité (optionnel)</label>
+                            <input id="contact-activite" name="activite" type="text" placeholder="Ex. : Élu local, citoyen, journaliste, agriculture…">
+                        </div>
+
                         <div class="form-row">
                             <label for="contact-message">Message *</label>
                             <textarea id="contact-message" name="message" rows="5" required></textarea>
@@ -627,4 +664,3 @@
     <script src="assets/js/main.js"></script>
 </body>
 </html>
-
