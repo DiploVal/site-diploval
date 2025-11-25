@@ -18,22 +18,103 @@
         .article-meta-line {
             font-size: 0.95rem;
             color: #4a90e2;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         .article-page img {
             max-width: 100%;
             border-radius: 1rem;
             margin: 20px 0;
         }
+
         .article-actions-top,
         .article-actions-bottom {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin: 15px 0;
+            align-items: center;
         }
+
         .share-buttons a {
             font-size: 0.85rem;
+        }
+
+        /* Boutons simples si non définis dans main.css */
+        .btn-primary,
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.45rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            border: 1px solid #0c2c50;
+            background: #ffffff;
+            color: #0c2c50;
+            text-decoration: none;
+            cursor: pointer;
+            gap: 0.3rem;
+        }
+
+        .btn-primary {
+            background: #0c2c50;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #4a90e2;
+            border-color: #4a90e2;
+        }
+
+        .btn-secondary:hover {
+            background: #f3f4f6;
+        }
+
+        /* Bloc de téléchargement PDF (version fine Diploval) */
+        .download-box-thin {
+            margin: 0.75rem 0 1rem;
+            padding: 0.55rem 0.85rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(12,44,80,0.16);
+            background: rgba(247, 245, 241, 0.85);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.9rem;
+        }
+
+        .download-box-thin .download-icon {
+            font-size: 1.1rem;
+        }
+
+        .download-box-thin .pdf-download {
+            text-decoration: none;
+            font-weight: 500;
+            color: #0c2c50;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .download-box-thin .pdf-download:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .article-page {
+                margin: 20px auto;
+                padding: 12px;
+            }
+
+            .article-page h1 {
+                font-size: 1.7rem;
+            }
+
+            .article-actions-top,
+            .article-actions-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
     <!-- petit parseur markdown -->
@@ -55,19 +136,26 @@
 </header>
 
 <main class="article-page">
-    <a href="diplomag.html">&larr; Retour à Diplomag</a>
+    <a href="diplomag.html" class="btn-secondary" style="margin-bottom: 10px;">&larr; Retour à Diplomag</a>
+
     <h1 id="article-title"></h1>
     <div id="article-meta" class="article-meta-line"></div>
+
+    <!-- 🔹 Bloc téléchargement PDF en haut -->
+    <div id="article-download-box" class="download-box-thin" style="display:none;">
+        <span class="download-icon">📄</span>
+        <a id="download-pdf" class="pdf-download" target="_blank" rel="noopener">
+            Télécharger l’analyse en PDF
+        </a>
+    </div>
+
     <div class="article-actions-top">
-        <button id="share-copy" class="btn-secondary">Copier le lien</button>
+        <button id="share-copy" class="btn-secondary" type="button">Copier le lien</button>
         <div class="share-buttons">
             <a id="share-fb" class="btn-secondary" target="_blank" rel="noopener">Facebook</a>
             <a id="share-li" class="btn-secondary" target="_blank" rel="noopener">LinkedIn</a>
             <a id="share-x" class="btn-secondary" target="_blank" rel="noopener">X</a>
         </div>
-        <a id="download-pdf" class="btn-primary" style="display:none;" target="_blank" rel="noopener">
-            Télécharger le PDF
-        </a>
     </div>
 
     <div id="article-image"></div>
@@ -102,7 +190,7 @@ async function loadArticle() {
         return;
     }
 
-    document.title = a.titre + " – Diplomag – Diploval Conseil";
+    document.title = (a.titre || "Article") + " – Diplomag – Diploval Conseil";
 
     document.getElementById("article-title").innerText = a.titre || "";
     document.getElementById("article-meta").innerText =
@@ -116,11 +204,14 @@ async function loadArticle() {
     const bodyHtml = a.body ? marked.parse(a.body) : "<p>(Article en cours de rédaction)</p>";
     document.getElementById("article-body").innerHTML = bodyHtml;
 
-    // PDF
+    // 🔹 PDF : on affiche le bloc fin si un pdf_url existe
     if (a.pdf_url) {
+        const dlBox = document.getElementById("article-download-box");
         const dl = document.getElementById("download-pdf");
-        dl.style.display = "inline-block";
-        dl.href = a.pdf_url;
+        if (dlBox && dl) {
+            dlBox.style.display = "inline-flex";
+            dl.href = a.pdf_url;
+        }
     }
 
     // Partage
@@ -139,7 +230,7 @@ async function loadArticle() {
             await navigator.clipboard.writeText(window.location.href);
             alert("Lien copié dans le presse-papiers.");
         } catch {
-            alert("Impossible de copier le lien, mais tu peux le sélectionner dans la barre d’adresse.");
+            alert("Impossible de copier le lien, mais vous pouvez le sélectionner dans la barre d’adresse.");
         }
     };
 }
