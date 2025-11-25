@@ -670,3 +670,46 @@ function buildShareUrl(type, url, title) {
       return "";
   }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Bannière de téléchargement automatique pour les PDF
+    var docContent = document.querySelector(".doc-content");
+    if (!docContent) return;
+
+    // On cherche le premier lien PDF dans le contenu
+    var pdfLink = docContent.querySelector('a[href$=".pdf"], a[href*=".pdf?"]');
+    if (!pdfLink) return;
+
+    // On récupère le texte du lien (ex. "Télécharger le mémorandum (PDF)")
+    var linkText = (pdfLink.textContent || "").trim();
+    if (!linkText) {
+        linkText = "Télécharger la version PDF";
+    }
+
+    // Création de la bannière
+    var banner = document.createElement("div");
+    banner.className = "download-banner";
+
+    banner.innerHTML = [
+        '<div class="download-banner-inner">',
+            '<div class="download-banner-text">',
+                '<span class="download-banner-title">Version PDF disponible</span>',
+                '<span class="download-banner-sub">' + linkText + '</span>',
+            '</div>',
+            '<a class="download-banner-btn" href="' + pdfLink.href + '" target="_blank" rel="noopener">',
+                'Télécharger',
+            '</a>',
+        '</div>'
+    ].join("");
+
+    // Insertion de la bannière en haut du contenu
+    if (docContent.firstChild) {
+        docContent.insertBefore(banner, docContent.firstChild);
+    } else {
+        docContent.appendChild(banner);
+    }
+
+    // Option : garder le lien en bas (sécurité) ou le masquer
+    // Si tu veux le masquer, décommente la ligne suivante :
+    // pdfLink.closest("p")?.classList.add("download-bottom-link-hidden");
+});
