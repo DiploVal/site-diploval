@@ -291,19 +291,10 @@ async function loadDiplomag() {
             </div>
           </div>
 
+          ${buildPdfBannerHtml(item.pdf_url, "article")}
+
           <div class="article-body">
             ${markdownToHtml(item.body || "")}
-            ${
-              item.pdf_url
-                ? `<p class="article-pdf">
-                     <a href="${escapeAttr(
-                       item.pdf_url
-                     )}" target="_blank" rel="noopener">
-                       Télécharger l'article en PDF
-                     </a>
-                   </p>`
-                : ""
-            }
             ${
               item.signature
                 ? `<p class="article-signature">${escapeHtml(
@@ -404,19 +395,10 @@ async function loadMemorandums() {
             </div>
           </div>
 
+          ${buildPdfBannerHtml(item.pdf_url, "memo")}
+
           <div class="article-body">
             ${markdownToHtml(item.body || "")}
-            ${
-              item.pdf_url
-                ? `<p class="article-pdf">
-                     <a href="${escapeAttr(
-                       item.pdf_url
-                     )}" target="_blank" rel="noopener">
-                       Télécharger le mémorandum (PDF)
-                     </a>
-                   </p>`
-                : ""
-            }
             ${
               item.signature
                 ? `<p class="article-signature">${escapeHtml(
@@ -671,45 +653,33 @@ function buildShareUrl(type, url, title) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Bannière de téléchargement automatique pour les PDF
-    var docContent = document.querySelector(".doc-content");
-    if (!docContent) return;
+/* ========== Bannière PDF commune (articles & mémos) ========== */
 
-    // On cherche le premier lien PDF dans le contenu
-    var pdfLink = docContent.querySelector('a[href$=".pdf"], a[href*=".pdf?"]');
-    if (!pdfLink) return;
+function buildPdfBannerHtml(url, kind) {
+  if (!url) return "";
+  const href = escapeAttr(url);
 
-    // On récupère le texte du lien (ex. "Télécharger le mémorandum (PDF)")
-    var linkText = (pdfLink.textContent || "").trim();
-    if (!linkText) {
-        linkText = "Télécharger la version PDF";
-    }
+  let title = "Version PDF disponible";
+  let sub = "Vous pouvez télécharger la version complète en PDF.";
+  let btn = "Télécharger (PDF)";
 
-    // Création de la bannière
-    var banner = document.createElement("div");
-    banner.className = "download-banner";
+  if (kind === "memo") {
+    title = "Mémorandum – version PDF";
+    sub = "Version complète du mémorandum en PDF.";
+    btn = "Télécharger le mémorandum";
+  }
 
-    banner.innerHTML = [
-        '<div class="download-banner-inner">',
-            '<div class="download-banner-text">',
-                '<span class="download-banner-title">Version PDF disponible</span>',
-                '<span class="download-banner-sub">' + linkText + '</span>',
-            '</div>',
-            '<a class="download-banner-btn" href="' + pdfLink.href + '" target="_blank" rel="noopener">',
-                'Télécharger',
-            '</a>',
-        '</div>'
-    ].join("");
-
-    // Insertion de la bannière en haut du contenu
-    if (docContent.firstChild) {
-        docContent.insertBefore(banner, docContent.firstChild);
-    } else {
-        docContent.appendChild(banner);
-    }
-
-    // Option : garder le lien en bas (sécurité) ou le masquer
-    // Si tu veux le masquer, décommente la ligne suivante :
-    // pdfLink.closest("p")?.classList.add("download-bottom-link-hidden");
-});
+  return `
+    <div class="download-banner">
+      <div class="download-banner-inner">
+        <div class="download-banner-text">
+          <span class="download-banner-title">${escapeHtml(title)}</span>
+          <span class="download-banner-sub">${escapeHtml(sub)}</span>
+        </div>
+        <a class="download-banner-btn" href="${href}" target="_blank" rel="noopener">
+          ${escapeHtml(btn)}
+        </a>
+      </div>
+    </div>
+  `;
+}
