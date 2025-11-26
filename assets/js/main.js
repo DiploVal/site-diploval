@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadDossiers();
 });
 
-
 /* ========== Loader ========== */
 
 function initLoader() {
