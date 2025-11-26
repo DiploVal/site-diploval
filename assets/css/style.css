@@ -1381,3 +1381,41 @@ form {
 .download-box-thin .pdf-download:hover {
     text-decoration: underline;
 }
+
+.diplomag-article .article-download-banner {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 1rem;
+    margin: 0 0 1.25rem;
+    background: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.article-download-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.article-download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    background: var(--blue-dark);
+    color: #fff;
+    transition: transform 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out;
+}
+
+.article-download-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+    background: var(--blue-light);
+}
