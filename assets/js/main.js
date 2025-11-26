@@ -9,11 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
   initFilters();
   initCookies();
 
+  // 🔹 Nouveau : gestion de l’overlay Diplomag plein écran
+  initDiplomagStandalone();
+
   loadDiplomag();
   loadMemorandums();
   loadAgenda();
   loadDossiers();
 });
+
 
 /* ========== Loader ========== */
 
