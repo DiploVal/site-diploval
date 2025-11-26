@@ -737,3 +737,50 @@ function buildPdfBannerHtml(url, kind) {
     </div>
   `;
 }
+
+/* ========== Overlay Diplomag plein écran (bouton Fermer haut + bas) ========== */
+
+function initDiplomagStandalone() {
+  const overlay = document.getElementById("diplomagOverlay");
+  const openBtn = document.getElementById("openDiplomag");
+  const closeTop = document.getElementById("diplomagCloseTop");
+  const closeBottom = document.getElementById("diplomagCloseBottom");
+
+  // Si la page ne contient pas ce bloc (autres pages du site), on sort
+  if (!overlay) return;
+
+  function openDiplomag(e) {
+    if (e) e.preventDefault();
+    overlay.classList.remove("hidden");
+  }
+
+  function closeDiplomag() {
+    overlay.classList.add("hidden");
+  }
+
+  if (openBtn) {
+    openBtn.addEventListener("click", openDiplomag);
+  }
+
+  if (closeTop) {
+    closeTop.addEventListener("click", closeDiplomag);
+  }
+
+  if (closeBottom) {
+    closeBottom.addEventListener("click", closeDiplomag);
+  }
+
+  // Fermer en cliquant sur le fond (mais pas sur la carte intérieure)
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      closeDiplomag();
+    }
+  });
+
+  // Fermer avec la touche Échap
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDiplomag();
+    }
+  });
+}
