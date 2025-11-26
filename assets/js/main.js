@@ -671,6 +671,12 @@ function buildShareBlockHtml(slug, title) {
       <button type="button" class="share-btn" data-share="linkedin">LinkedIn</button>
       <button type="button" class="share-btn" data-share="mail">E-mail</button>
     </div>
+
+    <div class="overlay-footer">
+      <button type="button" class="overlay-close overlay-footer-close">
+        Fermer
+      </button>
+    </div>
   `;
 }
 
