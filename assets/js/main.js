@@ -606,14 +606,37 @@ function themeLabel(key) {
   }
 }
 
-// Conversion ultra simple Markdown → HTML
+// Conversion Markdown → HTML (simple, avec images et liens)
 function markdownToHtml(md) {
   if (!md) return "";
-  const escaped = escapeHtml(md);
-  const blocks = escaped.split(/\n{2,}/);
-  return blocks
-    .map((b) => `<p>${b.replace(/\n/g, "<br>")}</p>`)
-    .join("");
+  let text = String(md);
+
+  // Images : ![alt](url)
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt, url) =>
+    `<figure class="article-image">
+        <img src="${escapeAttr(url.trim())}" alt="${escapeAttr(alt.trim())}">
+     </figure>`
+  );
+
+  // Liens : [label](url)
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, url) =>
+    `<a href="${escapeAttr(url.trim())}" target="_blank" rel="noopener">
+       ${escapeHtml(label)}
+     </a>`
+  );
+
+  // Gras : **texte**
+  text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+
+  // Italique : *texte*
+  text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+
+  // Paragraphes / sauts de ligne
+  const blocks = text.split(/\n{2,}/).map((b) =>
+    `<p>${b.replace(/\n/g, "<br>")}</p>`
+  );
+
+  return blocks.join("");
 }
 
 function escapeHtml(str) {
