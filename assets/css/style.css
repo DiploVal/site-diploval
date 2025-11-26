@@ -1434,3 +1434,23 @@ form {
   width: 100%;
   height: auto;
 }
+
+/* Bouton "Fermer" en bas des articles / mémos / dossiers */
+.overlay-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.overlay-footer-close {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid var(--border-soft, rgba(12,44,80,0.2));
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast, 180ms ease-out);
+}
+
+.overlay-footer-close:hover {
+  background: rgba(12,44,80,0.04);
+}
