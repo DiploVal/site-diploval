@@ -331,94 +331,59 @@ async function loadMemorandums() {
     const data = await res.json();
     const items = Array.isArray(data.items) ? data.items : [];
 
+    // On vide les cartes de démo
     list.innerHTML = "";
 
     const overlaysRoot = document.querySelector("[data-dynamic-overlays]");
 
     items.forEach((item, index) => {
-      const slug    = item.slug || "memo-" + index;
-      const tag     = item.category || item.categorie || item.tag || "";
-      const title   = item.title || item.titre || "Mémorandum";
+      const slugRaw = item.slug || `memo-${index}`;
+      const slug    = String(slugRaw).trim();
+
+      const title   = item.title   || item.titre   || "Mémorandum";
       const excerpt = item.excerpt || item.extrait || "";
-      const bodyHtml = item.body || item.texte || "";
+      const type    = item.type    || "Mémorandum";
+      const zone    = item.zone    || "";
+      const date    = item.date    || "";
+      const image   = item.image   || "";
       const pdfUrl  = item.pdf_url || item.pdf || item.lien_pdf || "";
+      const bodyMd  = item.body    || item.texte || "";
+      const signature = item.signature || "";
 
-      // Carte dans la section Mémorandums
+      // ---------- CARTE DANS LA SECTION "MÉMORANDUMS" ----------
       const card = document.createElement("article");
       card.className = "card reveal";
       card.innerHTML = `
         <div class="card-heading">
-          ${tag ? `<span class="card-tag">${tag}</span>` : ""}
-          <h3>${title}</h3>
+          <span class="card-tag">${escapeHtml(type)}</span>
+          <h3>${escapeHtml(title)}</h3>
         </div>
-        ${excerpt ? `<p class="card-excerpt">${excerpt}</p>` : ""}
-        <button class="link-more" data-panel="${slug}">Consulter +</button>
-      `;
-      list.appendChild(card);
-
-      // Panneau "Consulter +" associé
-      if (overlaysRoot) {
-        const panel = document.createElement("div");
-        panel.className = "overlay-panel";
-        panel.id = slug;
-        panel.innerHTML = `
-          <button class="overlay-close" aria-label="Fermer">×</button>
-          <h2>${title}</h2>
-          ${pdfUrl ? `
-            <a href="${pdfUrl}" class="btn-primary" target="_blank" rel="noopener">
-              Télécharger le mémorandum (PDF)
-            </a>
-          ` : ""}
-          <div class="overlay-body">
-            ${bodyHtml}
-          </div>
-        `;
-        overlaysRoot.appendChild(panel);
-      }
-    });
-  } catch (e) {
-    console.error("Erreur lors du chargement des mémorandums", e);
-  }
-}
-
-      // ---- CARTE LISTE ----
-      const card = document.createElement("article");
-      card.className = "card reveal";
-      card.innerHTML = `
-        <div class="card-heading">
-          <span class="card-tag">${escapeHtml(item.type || "Mémorandum")}</span>
-          <h3>${escapeHtml(item.title || "")}</h3>
-        </div>
-        <p class="card-excerpt">${escapeHtml(item.excerpt || "")}</p>
+        ${excerpt ? `<p class="card-excerpt">${escapeHtml(excerpt)}</p>` : ""}
         <button class="link-more" data-panel="panel-${slug}">Consulter +</button>
       `;
       list.appendChild(card);
       observeReveal(card);
 
-      // ---- OVERLAY MEMO ----
+      // ---------- OVERLAY COMPLET DU MÉMORANDUM ----------
       if (overlaysRoot) {
         const panel = document.createElement("div");
         panel.className = "overlay-panel";
         panel.id = `panel-${slug}`;
 
         const metaParts = [];
-        if (item.type) metaParts.push(item.type);
-        if (item.date) metaParts.push(item.date);
-        if (item.zone) metaParts.push(item.zone);
-        const metaLine = metaParts
-          .map((p) => escapeHtml(p))
-          .join(" · ");
+        if (type) metaParts.push(type);
+        if (date) metaParts.push(date);
+        if (zone) metaParts.push(zone);
+        const metaLine = metaParts.map((p) => escapeHtml(p)).join(" · ");
 
         panel.innerHTML = `
           <button class="overlay-close" aria-label="Fermer">×</button>
 
           <div class="article-header">
             ${
-              item.image
+              image
                 ? `<figure class="article-cover">
-                     <img src="${escapeAttr(
-                       item.image
-                     )}" alt="${escapeAttr(item.title || "")}">
+                     <img src="${escapeAttr(image)}" alt="${escapeAttr(title)}">
                    </figure>`
                 : ""
             }
@@ -428,29 +393,25 @@ async function loadMemorandums() {
                   ? `<div class="article-tagline">${metaLine}</div>`
                   : ""
               }
-              <h2>${escapeHtml(item.title || "")}</h2>
+              <h2>${escapeHtml(title)}</h2>
               ${
-                item.excerpt
-                  ? `<p class="article-chapeau">${escapeHtml(
-                      item.excerpt
-                    )}</p>`
+                excerpt
+                  ? `<p class="article-chapeau">${escapeHtml(excerpt)}</p>`
                   : ""
               }
             </div>
           </div>
 
-          ${buildPdfBannerHtml(item.pdf_url, "memo")}
+          ${buildPdfBannerHtml(pdfUrl, "memo")}
 
           <div class="article-body">
-            ${markdownToHtml(item.body || "")}
+            ${markdownToHtml(bodyMd)}
             ${
-              item.signature
-                ? `<p class="article-signature">${escapeHtml(
-                    item.signature
-                  )}</p>`
+              signature
+                ? `<p class="article-signature">${escapeHtml(signature)}</p>`
                 : ""
             }
-            ${buildShareBlockHtml(slug, item.title || "")}
+            ${buildShareBlockHtml(slug, title)}
           </div>
         `;
         overlaysRoot.appendChild(panel);
@@ -460,6 +421,7 @@ async function loadMemorandums() {
     console.error("Erreur chargement Mémorandums :", err);
   }
 }
+
 
 /* =========================================================
    3) Agenda → content/agenda.json
