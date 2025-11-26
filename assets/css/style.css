@@ -817,63 +817,63 @@ body {
    ================================ */
 
 .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(5,13,26,0.86);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-    z-index: 1000;
+  position: fixed;
+  inset: 0;
+  background: rgba(5,13,26,0.86);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  z-index: 1000;
 }
 
 .overlay.open {
-    display: flex;
+  display: flex;
 }
 
-/* Fenêtre d'article */
+/* Fenêtre d’article */
 
 .overlay-panel {
-    position: relative;
-    background: #ffffff;
-    width: 100%;
-    max-width: 900px;
-    max-height: calc(100vh - 3rem);
-    overflow-y: auto;
-    border-radius: var(--radius-xl);
-    padding: 2.5rem 2rem;
-    box-shadow: var(--shadow-soft);
+  position: relative;
+  background: #ffffff;
+  width: 100%;
+  max-width: 900px;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  border-radius: var(--radius-xl);
+  padding: 2.5rem 2rem 2.25rem;
+  box-shadow: var(--shadow-soft);
+  display: none; /* caché par défaut */
 }
-.overlay-panel {
-    position: relative;
-    background: #ffffff;
-    width: 100%;
-    max-width: 900px;
-    max-height: calc(100vh - 3rem);
-    overflow-y: auto;
-    border-radius: var(--radius-xl);
-    padding: 2.5rem 2rem;
-    box-shadow: var(--shadow-soft);
 
-    /* 👇 IMPORTANT : caché par défaut */
-    display: none;
-}
-/* Seul le panneau actif est visible */
 .overlay-panel.active {
-    display: block;
+  display: block; /* seul le panneau actif est visible */
 }
 
-/* Bouton de fermeture */
+/* Bouton Fermer (haut droite) */
 
 .overlay-close {
-    position: absolute;
-    right: 1.1rem;
-    top: 1rem;
-    border: none;
-    background: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: var(--text-muted);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: none;
+  background: none;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 0.2rem;
+  border-radius: 999px;
+  transition:
+    background 0.18s ease-out,
+    color 0.18s ease-out,
+    transform 0.18s ease-out;
+}
+
+.overlay-close:hover {
+  background: rgba(12,44,80,0.06);
+  color: var(--blue-dark);
+  transform: translateY(-1px);
 }
 
 /* En-tête d’article (image + méta + titre) */
