@@ -162,6 +162,7 @@ function applyDiplomagFilters() {
     document.querySelector(
       '[data-filter-group="region"] .chip.active'
     )?.dataset.filterValue || "all";
+
   const activeTheme =
     document.querySelector(
       '[data-filter-group="theme"] .chip.active'
@@ -171,8 +172,7 @@ function applyDiplomagFilters() {
     const cardRegion = card.dataset.region || "all";
     const cardTheme = card.dataset.theme || "all";
 
-    const regionMatch =
-      activeRegion === "all" || cardRegion === activeRegion;
+    const regionMatch = activeRegion === "all" || cardRegion === activeRegion;
     const themeMatch = activeTheme === "all" || cardTheme === activeTheme;
 
     card.style.display = regionMatch && themeMatch ? "" : "none";
@@ -223,8 +223,8 @@ async function loadDiplomag() {
       const slug = (item.slug || "").trim();
       if (!slug) return;
 
-      const themeKey = (item.theme || "autre").toLowerCase().trim();
-      const regionKey = (item.pays || "").toLowerCase().trim();
+      const themeKey = normalizeKey(item.theme || "autre");
+      const regionKey = item.pays || "";
 
       // ---- CARTE LISTE ----
       const card = document.createElement("article");
@@ -340,14 +340,14 @@ async function loadMemorandums() {
       const slugRaw = item.slug || `memo-${index}`;
       const slug    = String(slugRaw).trim();
 
-      const title   = item.title   || item.titre   || "Mémorandum";
-      const excerpt = item.excerpt || item.extrait || "";
-      const type    = item.type    || "Mémorandum";
-      const zone    = item.zone    || "";
-      const date    = item.date    || "";
-      const image   = item.image   || "";
-      const pdfUrl  = item.pdf_url || item.pdf || item.lien_pdf || "";
-      const bodyMd  = item.body    || item.texte || "";
+      const title     = item.title     || item.titre   || "Mémorandum";
+      const excerpt   = item.excerpt   || item.extrait || "";
+      const type      = item.type      || "Mémorandum";
+      const zone      = item.zone      || "";
+      const date      = item.date      || "";
+      const image     = item.image     || "";
+      const pdfUrl    = item.pdf_url   || item.pdf || item.lien_pdf || "";
+      const bodyMd    = item.body      || item.texte || "";
       const signature = item.signature || "";
 
       // ---------- CARTE DANS LA SECTION "MÉMORANDUMS" ----------
@@ -421,7 +421,6 @@ async function loadMemorandums() {
     console.error("Erreur chargement Mémorandums :", err);
   }
 }
-
 
 /* =========================================================
    3) Agenda → content/agenda.json
@@ -588,8 +587,18 @@ function normalizeRegion(region) {
   return "monde";
 }
 
+// enlève accents / espaces pour les clés (géopolitique -> geopolitique)
+function normalizeKey(str) {
+  return String(str || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "");
+}
+
 function themeLabel(key) {
-  switch (key) {
+  const k = normalizeKey(key);
+  switch (k) {
     case "geopolitique":
       return "Géopolitique";
     case "politique":
@@ -712,3 +721,4 @@ function buildPdfBannerHtml(url, kind) {
     </div>
   `;
 }
+
