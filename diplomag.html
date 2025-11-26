@@ -1,164 +1,481 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Diplomag – Diploval Conseil</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diplomag – Diploval Conseil</title>
 
-    <!-- Styles globaux -->
-    <link rel="stylesheet" href="assets/css/main.css" />
+  <!-- Styles globaux -->
+  <link rel="stylesheet" href="assets/css/main.css" />
 
-    <!-- Couleurs spécifiques Diplomag -->
-    <style>
-        .diplomag-header {
-            background: linear-gradient(135deg, #0c2c50, #4a90e2);
-            padding: 80px 20px;
-            text-align: center;
-            color: white;
-            border-bottom: 4px solid rgba(255,255,255,0.2);
-        }
+  <!-- Styles spécifiques Diplomag -->
+  <style>
+    .diplomag-header {
+      background: linear-gradient(135deg, #0c2c50, #4a90e2);
+      padding: 80px 20px 40px;
+      text-align: center;
+      color: white;
+      border-bottom: 4px solid rgba(255,255,255,0.2);
+    }
 
-        .diplomag-header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
+    .diplomag-header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
 
-        .diplomag-header p {
-            font-size: 1.3rem;
-            opacity: 0.9;
-        }
+    .diplomag-header p {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
 
-        .diplomag-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+    /* Bouton "Voir le numéro en une" */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.85);
+      background: rgba(0,0,0,0.08);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.98rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s ease-out, transform 0.18s ease-out, box-shadow 0.18s ease-out;
+    }
 
-        .article-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
+    .btn-primary:hover {
+      background: rgba(0,0,0,0.18);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
 
-        .article-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.07);
-            transition: all 0.25s ease;
-            cursor: pointer;
-        }
+    .diplomag-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
 
-        .article-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 40px rgba(0,0,0,0.12);
-        }
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
 
-        .article-card h3 {
-            margin-top: 0;
-            color: #0c2c50;
-        }
+    .article-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
 
-        .article-meta {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            color: #4a90e2;
-        }
+    .article-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    }
 
-        .no-articles {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 1.2rem;
-            color: #4a90e2;
-        }
-    </style>
+    .article-card h3 {
+      margin-top: 0;
+      color: #0c2c50;
+    }
+
+    .article-meta {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      color: #4a90e2;
+    }
+
+    .no-articles {
+      text-align: center;
+      padding: 60px 20px;
+      font-size: 1.2rem;
+      color: #4a90e2;
+    }
+
+    /* ========== Overlay Diplomag pleine page ========== */
+
+    .diplomag-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      z-index: 9999;
+    }
+
+    .diplomag-overlay.hidden {
+      display: none;
+    }
+
+    .diplomag-modal {
+      background: #f7f5f1;
+      max-width: 780px;
+      width: 100%;
+      max-height: 90vh;
+      border-radius: 1.4rem;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.25);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* Bouton Fermer en haut (plus petit) */
+    .diplomag-close-top {
+      position: fixed;
+      top: 14px;
+      right: 20px;
+      z-index: 10000;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #0c2c50;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* Header overlay */
+    .diplomag-header-overlay {
+      padding: 1.4rem 1.8rem 0.8rem;
+      border-bottom: 1px solid rgba(12,44,80,0.12);
+      background: #f7f5f1;
+    }
+
+    .diplomag-logo-block {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .diplomag-logo-symbol {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 2px solid #0c2c50;
+      position: relative;
+    }
+
+    .diplomag-logo-symbol::before,
+    .diplomag-logo-symbol::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 1px solid #0c2c50;
+      transform: rotate(45deg);
+    }
+
+    .diplomag-logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .diplomag-title {
+      font-family: "Merriweather", "Times New Roman", serif;
+      letter-spacing: 0.08em;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      color: #0c2c50;
+    }
+
+    .diplomag-subtitle {
+      font-size: 0.78rem;
+      color: #5f6b7a;
+    }
+
+    /* Couverture overlay */
+    .diplomag-cover {
+      position: relative;
+      height: 260px;
+      background-image: url("https://images.pexels.com/photos/1061640/pexels-photo-1061640.jpeg?auto=compress&cs=tinysrgb&w=1200");
+      background-size: cover;
+      background-position: center;
+      border-radius: 0 0 1.4rem 1.4rem;
+      overflow: hidden;
+    }
+
+    .diplomag-cover-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(12,44,80,0.88),
+        rgba(12,44,80,0.55),
+        transparent
+      );
+    }
+
+    .diplomag-cover-text {
+      position: absolute;
+      inset: auto 1.8rem 1.8rem;
+      color: #fff;
+    }
+
+    .cover-kicker {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .cover-title {
+      font-family: "Merriweather", "Times New Roman", serif;
+      font-size: 1.3rem;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .cover-subtitle {
+      font-size: 0.88rem;
+      max-width: 26rem;
+    }
+
+    .diplomag-content-overlay {
+      padding: 1.8rem;
+      color: #1f2a36;
+      font-family: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .diplomag-content-overlay h2 {
+      font-family: "Merriweather", "Times New Roman", serif;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #0c2c50;
+    }
+
+    .diplomag-content-overlay p {
+      margin-bottom: 0.9rem;
+    }
+
+    .diplomag-content-overlay ul {
+      margin: 0 0 1rem 1.2rem;
+      padding: 0;
+    }
+
+    .diplomag-content-overlay li {
+      margin-bottom: 0.4rem;
+    }
+
+    .diplomag-author {
+      margin-top: 1.4rem;
+      font-style: italic;
+      color: #5f6b7a;
+    }
+
+    .diplomag-footer {
+      padding: 0 1.8rem 1.6rem;
+      display: flex;
+      justify-content: center;
+      background: #f7f5f1;
+      border-radius: 0 0 1.4rem 1.4rem;
+    }
+
+    .diplomag-close-bottom {
+      padding: 6px 20px;
+      font-size: 0.88rem;
+      border-radius: 999px;
+      border: none;
+      background: #0c2c50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    @media (max-width: 640px) {
+      .diplomag-modal {
+        border-radius: 0;
+        max-height: 100vh;
+      }
+
+      .diplomag-cover {
+        border-radius: 0;
+        height: 220px;
+      }
+
+      .diplomag-content-overlay {
+        padding: 1.2rem 1.1rem;
+      }
+
+      .diplomag-footer {
+        padding: 0 1.1rem 1.3rem;
+        border-radius: 0;
+      }
+
+      .diplomag-close-top {
+        top: 10px;
+        right: 14px;
+        padding: 4px 12px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- HEADER GLOBAL DU SITE -->
-    <header class="site-header">
-        <nav>
-            <div class="logo">
-                <img src="assets/img/logo-diploval.png" alt="Diploval Conseil">
+  <!-- HEADER GLOBAL DU SITE -->
+  <header class="site-header">
+    <nav>
+      <div class="logo">
+        <img src="assets/img/logo-diploval.png" alt="Diploval Conseil">
+      </div>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="diplomag.html" class="active">Diplomag</a></li>
+        <li><a href="#memo">Mémorandums</a></li>
+        <li><a href="#agenda">Agenda</a></li>
+        <li><a href="mentions-legales.html">Mentions légales</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- SECTION D'INTRO POUR DIPLOMAG -->
+  <section class="diplomag-header">
+    <h1>DIPLOMAG</h1>
+    <p>La revue diplomatique et stratégique de Diploval Conseil</p>
+
+    <!-- Bouton qui ouvre l’overlay plein écran -->
+    <a href="#" id="openDiplomag" class="btn-primary">
+      Voir le numéro en une
+    </a>
+  </section>
+
+  <!-- CONTENU DYNAMIQUE -->
+  <main class="diplomag-container">
+    <h2>Articles publiés</h2>
+
+    <div id="articles" class="article-grid">
+      <!-- Les articles seront injectés ici -->
+    </div>
+
+    <div id="noArticles" class="no-articles" style="display:none;">
+      Aucun article n’a encore été publié pour le moment.
+    </div>
+  </main>
+
+  <!-- Overlay plein écran Diplomag -->
+  <div id="diplomagOverlay" class="diplomag-overlay hidden" aria-hidden="true">
+    <div class="diplomag-modal">
+
+      <!-- Bouton Fermer en haut -->
+      <button class="diplomag-close-top" id="diplomagCloseTop" type="button">
+        Fermer
+      </button>
+
+      <header class="diplomag-header-overlay">
+        <div class="diplomag-logo-block">
+          <div class="diplomag-logo-symbol"></div>
+          <div class="diplomag-logo-text">
+            <div class="diplomag-title">DIPLOMAG</div>
+            <div class="diplomag-subtitle">
+              La revue stratégique de la diplomatie éthique
             </div>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="diplomag.html" class="active">Diplomag</a></li>
-                <li><a href="#memo">Mémorandums</a></li>
-                <li><a href="#agenda">Agenda</a></li>
-                <li><a href="mentions-legales.html">Mentions légales</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- SECTION D'INTRO POUR DIPLOMAG -->
-    <section class="diplomag-header">
-        <h1>DIPLOMAG</h1>
-        <p>La revue diplomatique et stratégique de Diploval Conseil</p>
-    </section>
-
-    <!-- CONTENU DYNAMIQUE -->
-    <main class="diplomag-container">
-        <h2>Articles publiés</h2>
-
-        <div id="articles" class="article-grid">
-            <!-- Les articles seront injectés ici -->
+          </div>
         </div>
+      </header>
 
-        <div id="noArticles" class="no-articles" style="display:none;">
-            Aucun article n’a encore été publié pour le moment.
+      <section class="diplomag-cover">
+        <div class="diplomag-cover-gradient"></div>
+        <div class="diplomag-cover-text">
+          <p class="cover-kicker">MONDE · EUROPE · GÉOPOLITIQUE</p>
+          <h1 class="cover-title">
+            Vers une confrontation durable avec la Russie ?
+          </h1>
+          <p class="cover-subtitle">
+            Que révèle vraiment le récit officiel français, et quelles voies pour désamorcer l’escalade ?
+          </p>
         </div>
-    </main>
+      </section>
 
-    <!-- FOOTER GLOBAL -->
-    <footer class="site-footer">
-        <p>© 2025 Diploval Conseil — Tous droits réservés.</p>
-        <p>Chambonas — Ardèche, France</p>
-    </footer>
+      <main class="diplomag-content-overlay">
+        <h2>Confrontation, disaient-ils…</h2>
+        <p>
+          En parlant de « confrontation » avec la Russie, le discours politique crée une dramaturgie
+          qui enferme les élus comme les citoyens dans une logique de bloc. Ce n'est pas neutre.
+        </p>
+        <p>
+          Le rôle d’une diplomatie éthique n’est pas d’alimenter la mise en scène du conflit,
+          mais d’ouvrir des issues : clarifier les responsabilités, reconnaître les incohérences,
+          et proposer des chemins de désescalade.
+        </p>
 
-    <!-- SCRIPT du site -->
-    <script src="assets/js/main.js"></script>
+        <ul>
+          <li>✔ Nommer les faits sans travestir la réalité.</li>
+          <li>✔ Refuser le manichéisme confortable mais dangereux.</li>
+          <li>✔ Redonner à la France un rôle de médiation, pas seulement d’alignement.</li>
+        </ul>
 
-    <!-- SCRIPT POUR CHARGER LES ARTICLES DU CMS (Netlify CMS) -->
-    <script>
-async function loadArticles() {
-    const container = document.getElementById("articles");
-    const empty = document.getElementById("noArticles");
+        <p class="diplomag-author">
+          Souix Nathorod – DiploVal Conseil
+        </p>
+      </main>
 
-    try {
+      <!-- Bouton Fermer en bas -->
+      <div class="diplomag-footer">
+        <button class="diplomag-close-bottom" id="diplomagCloseBottom" type="button">
+          Fermer
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER GLOBAL -->
+  <footer class="site-footer">
+    <p>© 2025 Diploval Conseil — Tous droits réservés.</p>
+    <p>Chambonas — Ardèche, France</p>
+  </footer>
+
+  <!-- SCRIPT du site (contient initDiplomagStandalone) -->
+  <script src="assets/js/main.js"></script>
+
+  <!-- SCRIPT POUR CHARGER LES ARTICLES DU CMS (Netlify CMS) -->
+  <script>
+    async function loadArticles() {
+      const container = document.getElementById("articles");
+      const empty = document.getElementById("noArticles");
+
+      try {
         const response = await fetch("content/diplomag.json");
         const json = await response.json();
         const articles = json.items || [];
 
         if (!articles.length) {
-            empty.style.display = "block";
-            return;
+          empty.style.display = "block";
+          return;
         }
 
         articles.forEach(a => {
-            const card = document.createElement("div");
-            card.className = "article-card";
+          const card = document.createElement("div");
+          card.className = "article-card";
 
-            card.innerHTML = `
-                <div class="article-meta">${a.date || ""} — ${a.pays || ""} (${a.theme || ""})</div>
-                <h3>${a.titre || ""}</h3>
-                <p>${a.extrait || ""}</p>
-            `;
+          card.innerHTML = `
+            <div class="article-meta">${a.date || ""} — ${a.pays || ""} (${a.theme || ""})</div>
+            <h3>${a.titre || ""}</h3>
+            <p>${a.extrait || ""}</p>
+          `;
 
-            if (a.url) {
-                card.onclick = () => {
-                    window.location.href = a.url;
-                };
-            }
+          if (a.url) {
+            card.onclick = () => {
+              window.location.href = a.url;
+            };
+          }
 
-            container.appendChild(card);
+          container.appendChild(card);
         });
-    } catch (e) {
+      } catch (e) {
         console.error(e);
         empty.style.display = "block";
+      }
     }
-}
 
-loadArticles();
-</script>
+    loadArticles();
+  </script>
+</body>
+</html>
+
