@@ -1435,22 +1435,26 @@ form {
   height: auto;
 }
 
-/* Bouton "Fermer" en bas des articles / mémos / dossiers */
+/* Bouton Fermer en bas */
 .overlay-footer {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
   text-align: center;
+  border-top: 1px solid rgba(0,0,0,0.08);
 }
 
-.overlay-footer-close {
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius-pill, 999px);
-  border: 1px solid var(--border-soft, rgba(12,44,80,0.2));
-  background: transparent;
-  font-weight: 500;
+.overlay-footer button {
+  padding: 0.85rem 1.8rem;
+  border-radius: 100px;
+  background: #0c2c50;
+  color: white;
+  border: none;
+  font-size: 1rem;
   cursor: pointer;
-  transition: var(--transition-fast, 180ms ease-out);
+  transition: 0.2s ease-out;
 }
 
-.overlay-footer-close:hover {
-  background: rgba(12,44,80,0.04);
+.overlay-footer button:hover {
+  background: #4a90e2;
 }
+
