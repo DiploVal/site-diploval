@@ -327,6 +327,7 @@ async function loadMemorandums() {
   try {
     const res = await fetch("content/memorandums.json");
     if (!res.ok) return;
+
     const data = await res.json();
     const items = Array.isArray(data.items) ? data.items : [];
 
@@ -335,7 +336,50 @@ async function loadMemorandums() {
     const overlaysRoot = document.querySelector("[data-dynamic-overlays]");
 
     items.forEach((item, index) => {
-      const slug = "memo-" + index;
+      const slug    = item.slug || "memo-" + index;
+      const tag     = item.category || item.categorie || item.tag || "";
+      const title   = item.title || item.titre || "Mémorandum";
+      const excerpt = item.excerpt || item.extrait || "";
+      const bodyHtml = item.body || item.texte || "";
+      const pdfUrl  = item.pdf_url || item.pdf || item.lien_pdf || "";
+
+      // Carte dans la section Mémorandums
+      const card = document.createElement("article");
+      card.className = "card reveal";
+      card.innerHTML = `
+        <div class="card-heading">
+          ${tag ? `<span class="card-tag">${tag}</span>` : ""}
+          <h3>${title}</h3>
+        </div>
+        ${excerpt ? `<p class="card-excerpt">${excerpt}</p>` : ""}
+        <button class="link-more" data-panel="${slug}">Consulter +</button>
+      `;
+      list.appendChild(card);
+
+      // Panneau "Consulter +" associé
+      if (overlaysRoot) {
+        const panel = document.createElement("div");
+        panel.className = "overlay-panel";
+        panel.id = slug;
+        panel.innerHTML = `
+          <button class="overlay-close" aria-label="Fermer">×</button>
+          <h2>${title}</h2>
+          ${pdfUrl ? `
+            <a href="${pdfUrl}" class="btn-primary" target="_blank" rel="noopener">
+              Télécharger le mémorandum (PDF)
+            </a>
+          ` : ""}
+          <div class="overlay-body">
+            ${bodyHtml}
+          </div>
+        `;
+        overlaysRoot.appendChild(panel);
+      }
+    });
+  } catch (e) {
+    console.error("Erreur lors du chargement des mémorandums", e);
+  }
+}
 
       // ---- CARTE LISTE ----
       const card = document.createElement("article");
