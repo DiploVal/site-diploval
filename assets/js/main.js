@@ -261,53 +261,55 @@ async function loadDiplomag() {
           .map((p) => escapeHtml(p))
           .join(" · ");
 
-        panel.innerHTML = `
-          <button class="overlay-close" aria-label="Fermer">×</button>
+         panel.innerHTML = `
+    <button class="overlay-close" aria-label="Fermer">×</button>
 
-          <div class="article-header">
-            ${
-              item.image
-                ? `<figure class="article-cover">
-                     <img src="${escapeAttr(
-                       item.image
-                     )}" alt="${escapeAttr(item.titre || "")}">
-                   </figure>`
-                : ""
-            }
-            <div class="article-meta">
-              ${
-                metaLine
-                  ? `<div class="article-tagline">${metaLine}</div>`
-                  : ""
-              }
-              <h2>${escapeHtml(item.titre || "")}</h2>
-              ${
-                item.extrait
-                  ? `<p class="article-chapeau">${escapeHtml(
-                      item.extrait
-                    )}</p>`
-                  : ""
-              }
-            </div>
-          </div>
-
-          ${buildPdfBannerHtml(item.pdf_url, "article")}
-
-          <div class="article-body">
-            ${markdownToHtml(item.body || "")}
-            ${
-              item.signature
-                ? `<p class="article-signature">${escapeHtml(
-                    item.signature
-                  )}</p>`
-                : ""
-            }
-            ${buildShareBlockHtml(slug, item.titre || "")}
-          </div>
-        `;
-
-        overlaysRoot.appendChild(panel);
+    <div class="article-header">
+      ${
+        item.image
+          ? `<figure class="article-cover">
+               <img src="${escapeAttr(
+                 item.image
+               )}" alt="${escapeAttr(item.titre || "")}">
+             </figure>`
+          : ""
       }
+      <div class="article-meta">
+        ${
+          metaLine
+            ? `<div class="article-tagline">${metaLine}</div>`
+            : ""
+        }
+        <h2>${escapeHtml(item.titre || "")}</h2>
+        ${
+          item.extrait
+            ? `<p class="article-chapeau">${escapeHtml(
+                item.extrait
+              )}</p>`
+            : ""
+        }
+      </div>
+    </div>
+
+    ${buildPdfBannerHtml(item.pdf_url, "article")}
+
+    <div class="article-body">
+      ${markdownToHtml(item.body || "")}
+      ${
+        item.signature
+          ? `<p class="article-signature">${escapeHtml(
+              item.signature
+            )}</p>`
+          : ""
+      }
+      ${buildShareBlockHtml(slug, item.titre || "")}
+    </div>
+
+    <div class="overlay-footer">
+      <button type="button" class="overlay-close">Fermer</button>
+    </div>
+  `;
+
     });
 
     applyDiplomagFilters();
