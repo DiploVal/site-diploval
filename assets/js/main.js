@@ -261,55 +261,57 @@ async function loadDiplomag() {
           .map((p) => escapeHtml(p))
           .join(" · ");
 
-         panel.innerHTML = `
-    <button class="overlay-close" aria-label="Fermer">×</button>
+        panel.innerHTML = `
+          <button class="overlay-close" aria-label="Fermer">×</button>
 
-    <div class="article-header">
-      ${
-        item.image
-          ? `<figure class="article-cover">
-               <img src="${escapeAttr(
-                 item.image
-               )}" alt="${escapeAttr(item.titre || "")}">
-             </figure>`
-          : ""
-      }
-      <div class="article-meta">
-        ${
-          metaLine
-            ? `<div class="article-tagline">${metaLine}</div>`
-            : ""
-        }
-        <h2>${escapeHtml(item.titre || "")}</h2>
-        ${
-          item.extrait
-            ? `<p class="article-chapeau">${escapeHtml(
+          <div class="article-header">
+            ${
+              item.image
+                ? `<figure class="article-cover">
+                     <img src="${escapeAttr(
+                       item.image
+                     )}" alt="${escapeAttr(item.titre || "")}">
+                   </figure>`
+                : ""
+            }
+            <div class="article-meta">
+              ${
+                metaLine
+                  ? `<div class="article-tagline">${metaLine}</div>`
+                  : ""
+              }
+              <h2>${escapeHtml(item.titre || "")}</h2>
+              ${
                 item.extrait
-              )}</p>`
-            : ""
-        }
-      </div>
-    </div>
+                  ? `<p class="article-chapeau">${escapeHtml(
+                      item.extrait
+                    )}</p>`
+                  : ""
+              }
+            </div>
+          </div>
 
-    ${buildPdfBannerHtml(item.pdf_url, "article")}
+          ${buildPdfBannerHtml(item.pdf_url, "article")}
 
-    <div class="article-body">
-      ${markdownToHtml(item.body || "")}
-      ${
-        item.signature
-          ? `<p class="article-signature">${escapeHtml(
+          <div class="article-body">
+            ${markdownToHtml(item.body || "")}
+            ${
               item.signature
-            )}</p>`
-          : ""
+                ? `<p class="article-signature">${escapeHtml(
+                    item.signature
+                  )}</p>`
+                : ""
+            }
+            ${buildShareBlockHtml(slug, item.titre || "")}
+          </div>
+
+          <div class="overlay-footer">
+            <button type="button" class="overlay-close">Fermer</button>
+          </div>
+        `;
+
+        overlaysRoot.appendChild(panel);
       }
-      ${buildShareBlockHtml(slug, item.titre || "")}
-    </div>
-
-    <div class="overlay-footer">
-      <button type="button" class="overlay-close">Fermer</button>
-    </div>
-  `;
-
     });
 
     applyDiplomagFilters();
@@ -414,6 +416,10 @@ async function loadMemorandums() {
                 : ""
             }
             ${buildShareBlockHtml(slug, title)}
+          </div>
+
+          <div class="overlay-footer">
+            <button type="button" class="overlay-close">Fermer</button>
           </div>
         `;
         overlaysRoot.appendChild(panel);
@@ -540,6 +546,10 @@ async function loadDossiers() {
                 : ""
             }
             ${buildShareBlockHtml(slug, item.title || "")}
+          </div>
+
+          <div class="overlay-footer">
+            <button type="button" class="overlay-close">Fermer</button>
           </div>
         `;
         overlaysRoot.appendChild(panel);
@@ -673,12 +683,6 @@ function buildShareBlockHtml(slug, title) {
       <button type="button" class="share-btn" data-share="linkedin">LinkedIn</button>
       <button type="button" class="share-btn" data-share="mail">E-mail</button>
     </div>
-
-    <div class="overlay-footer">
-      <button type="button" class="overlay-close overlay-footer-close">
-        Fermer
-      </button>
-    </div>
   `;
 }
 
@@ -729,4 +733,3 @@ function buildPdfBannerHtml(url, kind) {
     </div>
   `;
 }
-
