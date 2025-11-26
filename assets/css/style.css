@@ -1419,3 +1419,18 @@ form {
     box-shadow: 0 10px 22px rgba(0,0,0,0.18);
     background: var(--blue-light);
 }
+
+/* Image insérée dans le texte (mémos / articles) */
+.article-body .article-image {
+  max-width: 480px;
+  margin: 1.5rem auto 1.25rem;
+  border-radius: var(--radius-lg, 1rem);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft, 0 14px 40px rgba(0,0,0,0.14));
+}
+
+.article-body .article-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
