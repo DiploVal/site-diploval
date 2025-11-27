@@ -1458,3 +1458,41 @@ form {
   background: #4a90e2;
 }
 
+/* ====== Correction taille & position des boutons Fermer dans les overlays ====== */
+
+/* Bouton de fermeture en haut des panneaux (overlay Diplomag / articles / mémos / dossiers) */
+.overlay-panel > .overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  padding: 4px 12px;      /* plus petit */
+  font-size: 0.85rem;
+  background: #0c2c50;
+  color: #fff;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Footer de l’overlay */
+.overlay-footer {
+  padding: 1.2rem 1.4rem 1.6rem;
+  text-align: center;
+  border-top: 1px solid rgba(12,44,80,0.12);
+}
+
+/* Bouton du bas */
+.overlay-footer .overlay-close {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 20px;
+  font-size: 0.88rem;
+  border-radius: 999px;
+  background: #0c2c50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
