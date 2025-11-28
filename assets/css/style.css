@@ -443,7 +443,7 @@ body {
   text-transform: uppercase;
   box-shadow: 0 5px 14px rgba(12,44,80,0.14);
   transition: transform var(--transition-med), box-shadow var(--transition-med), background var(--transition-med), color var(--transition-med);
-  white-space: nowrap; /* reste sur une seule ligne */
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -578,7 +578,7 @@ body {
 
 .diplomag-logo {
   display: block;
-  height: 92px;   /* desktop */
+  height: 92px;
   width: auto;
 }
 
@@ -589,7 +589,7 @@ body {
   text-transform: uppercase;
   font-size: 1.25rem;
   color: #ffffff;
-  white-space: nowrap; /* DIPLOMAG sur une ligne */
+  white-space: nowrap;
 }
 
 .diplomag-hero-text .diplomag-subtitle {
@@ -871,6 +871,64 @@ body {
 }
 
 /* ================================
+   Teaser Diplomag (accueil)
+   ================================ */
+
+.home-diplomag-teaser {
+  padding-top: 0;
+}
+
+.home-diplomag-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  padding: 1.8rem 2rem;
+  border-radius: 1.8rem;
+  background: linear-gradient(135deg, #0c2c50, #4a90e2);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+  color: #ffffff;
+}
+
+.home-diplomag-logo {
+  flex-shrink: 0;
+  padding: 0.9rem 1.1rem;
+  border-radius: 1.4rem;
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+}
+
+.home-diplomag-logo img {
+  display: block;
+  height: 80px;
+  width: auto;
+}
+
+.home-diplomag-text h2 {
+  margin: 0 0 0.55rem;
+  font-family: "Lora", "Times New Roman", serif;
+  font-size: 1.4rem;
+  color: #ffffff;
+}
+
+.home-diplomag-text p {
+  margin: 0 0 0.9rem;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.95);
+}
+
+.home-diplomag-text .btn-primary {
+  background: #ffffff;
+  color: #0c2c50;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.home-diplomag-text .btn-primary:hover {
+  background: #0c2c50;
+  color: #ffffff;
+}
+
+/* ================================
    Formulaire
    ================================ */
 
@@ -1045,9 +1103,16 @@ body {
     justify-content: flex-start;
   }
 
-  /* Taille tablette */
   .diplomag-logo {
     height: 82px;
+  }
+
+  .home-diplomag-inner {
+    padding: 1.6rem 1.6rem;
+  }
+
+  .home-diplomag-text h2 {
+    font-size: 1.3rem;
   }
 }
 
@@ -1170,7 +1235,6 @@ body {
     font-size: 0.86rem;
   }
 
-  /* Bouton un peu plus compact sur mobile */
   .diplomag-cta .btn-primary {
     padding: 0.45rem 1.15rem;
     font-size: 0.82rem;
@@ -1178,5 +1242,23 @@ body {
 
   .diplomag-search-wrap {
     max-width: 100%;
+  }
+
+  .home-diplomag-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.6rem 1.4rem;
+  }
+
+  .home-diplomag-logo img {
+    height: 72px;
+  }
+
+  .home-diplomag-text h2 {
+    font-size: 1.18rem;
+  }
+
+  .home-diplomag-text p {
+    font-size: 0.9rem;
   }
 }
