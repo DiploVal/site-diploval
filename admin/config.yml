@@ -1,98 +1,135 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: DiploVal/site-diploval   # propriétaire/nom-du-dépôt
   branch: main
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
+locale: "fr"
+
+publish_mode: editorial_workflow
+
 collections:
-  # ✅ 1. DIPLOMAG – ARTICLES
+  # === 1. DIPLOMAG – articles de la revue ===
   - name: "diplomag"
     label: "Diplomag – Articles"
+    label_singular: "Article Diplomag"
+    description: "Articles de la revue Diplomag."
+    format: "json"
+    editor:
+      preview: false
     files:
-      - label: "Articles Diplomag"
-        name: "diplomag_data"
-        file: "content/diplomag.json"
-        format: "json"
+      - file: "content/diplomag.json"
+        label: "Liste des articles"
+        name: "diplomag_items"
         fields:
           - label: "Articles"
             name: "items"
             widget: "list"
-            summary: "{{fields.date}} — {{fields.pays}} — {{fields.titre}}"
+            summary: "{{fields.date}} — {{fields.titre}} ({{fields.pays}} / {{fields.theme}})"
             fields:
-              - { label: "Slug (sans espace, ex : russie-otan-2025)", name: "slug", widget: "string" }
+              - { label: "ID technique", name: "id", widget: "string", hint: "Sans espace, ex : confrontation-russie" }
               - { label: "Titre", name: "titre", widget: "string" }
-              - { label: "Pays / Région", name: "pays", widget: "string" }
-              - { label: "Date (ex : Novembre 2025)", name: "date", widget: "string" }
-              - label: "Thème principal"
-                name: "theme"
-                widget: "select"
-                options:
-                  - { label: "Géopolitique", value: "geopolitique" }
-                  - { label: "Politique", value: "politique" }
-                  - { label: "Écologie / climat", value: "ecologie" }
-                  - { label: "Économie / finances", value: "finances" }
-                  - { label: "Santé / société", value: "sante" }
-                  - { label: "Autre", value: "autre" }
-              - { label: "Image de mise en avant", name: "image", widget: "image", required: false }
-              - { label: "Extrait court (accroche)", name: "extrait", widget: "text" }
-              - { label: "Texte complet de l’article", name: "body", widget: "markdown", required: false }
-              - { label: "Lien vers le PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
+              - { label: "Date", name: "date", widget: "string", hint: "Ex : 2025-03-01" }
+              - { label: "Pays / région", name: "pays", widget: "string", required: false }
+              - { label: "Thématique", name: "theme", widget: "string", required: false }
+              - { label: "Extrait (résumé court)", name: "extrait", widget: "text", required: false }
+              - label: "Contenu complet (Markdown)"
+                name: "markdown"
+                widget: "markdown"
+              - label: "PDF (optionnel)"
+                name: "pdf"
+                widget: "string"
+                required: false
+                hint: "Chemin vers le PDF, ex : assets/uploads/diplomag-no1.pdf"
 
-  # ✅ 2. MEMORANDUMS
-  - name: "memorandums"
+  # === 2. MEMORANDUMS ===
+  - name: "memos"
     label: "Mémorandums"
+    label_singular: "Mémorandum"
+    description: "Mémorandums Diploval (analyses et notes officielles)."
+    format: "json"
+    editor:
+      preview: false
     files:
-      - label: "Mémorandums"
-        name: "memorandums_data"
-        file: "content/memorandums.json"
-        format: "json"
+      - file: "content/memos.json"
+        label: "Liste des mémorandums"
+        name: "memos_items"
         fields:
-          - label: "Mémorandums"
+          - label: "Mémos"
             name: "items"
             widget: "list"
-            summary: "{{date}} — {{title}}"
+            summary: "{{fields.date}} — {{fields.titre}} ({{fields.type}})"
             fields:
-              - { label: "Titre", name: "title", widget: "string" }
-              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
-              - { label: "Type de dossier", name: "type", widget: "string", required: false }
-              - { label: "Résumé", name: "excerpt", widget: "text" }
-              - { label: "Texte", name: "body", widget: "markdown", required: false }
-              - { label: "Lien vers PDF (optionnel)", name: "pdf_url", widget: "string", required: false }
+              - { label: "ID technique", name: "id", widget: "string" }
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Date", name: "date", widget: "string", required: false }
+              - { label: "Type (mémorandum, note, analyse…)", name: "type", widget: "string", required: false }
+              - { label: "Extrait (résumé court)", name: "extrait", widget: "text", required: false }
+              - label: "Contenu complet (Markdown)"
+                name: "markdown"
+                widget: "markdown"
+              - label: "PDF (optionnel)"
+                name: "pdf"
+                widget: "string"
+                required: false
+                hint: "Ex : assets/uploads/memo-chef-etat-major.pdf"
 
-  # ✅ 3. AGENDA
-  - name: "agenda"
-    label: "Agenda"
-    files:
-      - label: "Agenda Diploval"
-        name: "agenda_data"
-        file: "content/agenda.json"
-        format: "json"
-        fields:
-          - label: "Évènements"
-            name: "items"
-            widget: "list"
-            summary: "{{date}} — {{title}}"
-            fields:
-              - { label: "Date (texte libre)", name: "date", widget: "string" }
-              - { label: "Titre", name: "title", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
-
-  # ✅ 4. DOSSIERS EN COURS
+  # === 3. DOSSIERS EN COURS ===
   - name: "dossiers"
     label: "Dossiers en cours"
+    label_singular: "Dossier"
+    description: "Dossiers stratégiques suivis par Diploval."
+    format: "json"
+    editor:
+      preview: false
     files:
-      - label: "Dossiers"
-        name: "dossiers_data"
-        file: "content/dossiers.json"
-        format: "json"
+      - file: "content/dossiers.json"
+        label: "Liste des dossiers"
+        name: "dossiers_items"
         fields:
           - label: "Dossiers"
             name: "items"
             widget: "list"
-            summary: "{{zone}} — {{title}}"
+            summary: "{{fields.titre}} — {{fields.statut}}"
             fields:
-              - { label: "Titre du dossier", name: "title", widget: "string" }
-              - { label: "Zone / territoire (anonyme)", name: "zone", widget: "string" }
-              - { label: "Résumé court", name: "excerpt", widget: "text" }
-              - { label: "Texte détaillé", name: "body", widget: "markdown" }
+              - { label: "ID technique", name: "id", widget: "string" }
+              - { label: "Titre du dossier", name: "titre", widget: "string" }
+              - { label: "Statut (préparation, en cours…)", name: "statut", widget: "string", required: false }
+              - { label: "Territoire / périmètre", name: "territoire", widget: "string", required: false }
+              - { label: "Extrait (résumé court)", name: "extrait", widget: "text", required: false }
+              - label: "Contenu détaillé (Markdown)"
+                name: "markdown"
+                widget: "markdown"
+              - label: "PDF / dossier complet (optionnel)"
+                name: "pdf"
+                widget: "string"
+                required: false
+
+  # === 4. AGENDA ===
+  - name: "agenda"
+    label: "Agenda"
+    label_singular: "Événement"
+    description: "Agenda stratégique (rencontres, interventions, sorties de dossiers)."
+    format: "json"
+    editor:
+      preview: false
+    files:
+      - file: "content/agenda.json"
+        label: "Liste des événements"
+        name: "agenda_items"
+        fields:
+          - label: "Événements"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.titre}} ({{fields.lieu}})"
+            fields:
+              - { label: "ID technique", name: "id", widget: "string" }
+              - { label: "Titre de l’événement", name: "titre", widget: "string" }
+              - { label: "Date", name: "date", widget: "string" }
+              - { label: "Lieu", name: "lieu", widget: "string", required: false }
+              - { label: "Type (conférence, RDV, publication…)", name: "type", widget: "string", required: false }
+              - label: "Détails (Markdown)"
+                name: "markdown"
+                widget: "markdown"
