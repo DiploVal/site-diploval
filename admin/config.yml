@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: DiploVal/site-diploval   # propriétaire/nom-du-dépôt
+  name: git-gateway
   branch: main
 
 media_folder: "assets/uploads"
