@@ -430,12 +430,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  /* plus fin pour aller avec le nouveau logo */
   padding: 0.5rem 1.3rem;
   border-radius: var(--radius-pill);
   border: 1px solid var(--blue-dark);
-
   font-size: 0.86rem;
   text-decoration: none;
   cursor: pointer;
@@ -446,6 +443,7 @@ body {
   text-transform: uppercase;
   box-shadow: 0 5px 14px rgba(12,44,80,0.14);
   transition: transform var(--transition-med), box-shadow var(--transition-med), background var(--transition-med), color var(--transition-med);
+  white-space: nowrap; /* reste sur une seule ligne */
 }
 
 .btn-primary:hover {
@@ -568,7 +566,7 @@ body {
   min-width: 280px;
 }
 
-/* >>> LOGO DIPLOMAG PLUS GRAND <<< */
+/* >>> LOGO DIPLOMAG <<< */
 
 .diplomag-logo-wrap {
   flex-shrink: 0;
@@ -580,7 +578,7 @@ body {
 
 .diplomag-logo {
   display: block;
-  height: 92px;   /* Taille desktop */
+  height: 92px;   /* desktop */
   width: auto;
 }
 
@@ -591,6 +589,7 @@ body {
   text-transform: uppercase;
   font-size: 1.25rem;
   color: #ffffff;
+  white-space: nowrap; /* DIPLOMAG sur une ligne */
 }
 
 .diplomag-hero-text .diplomag-subtitle {
@@ -1139,27 +1138,45 @@ body {
     align-items: flex-start;
   }
 
+  .diplomag-hero {
+    padding: 64px 14px 32px;
+  }
+
   .diplomag-hero-inner {
     padding: 1.4rem 1.2rem 2.1rem;
+    align-items: center;
+  }
+
+  .diplomag-hero-left {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .diplomag-logo-wrap {
+    margin-bottom: 0.6rem;
+  }
+
+  .diplomag-hero-text {
+    text-align: center;
   }
 
   .diplomag-hero-text .diplomag-title {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.16em;
   }
 
   .diplomag-hero-text .diplomag-subtitle {
     font-size: 0.86rem;
   }
 
-  /* Taille mobile */
-  .diplomag-logo {
-    height: 78px;
-  }
-
-  /* Bouton "Voir les articles" un peu plus compact sur mobile */
+  /* Bouton un peu plus compact sur mobile */
   .diplomag-cta .btn-primary {
     padding: 0.45rem 1.15rem;
     font-size: 0.82rem;
   }
-}
 
+  .diplomag-search-wrap {
+    max-width: 100%;
+  }
+}
