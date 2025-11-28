@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "id": "dossier-broceliande",
+      "title": "Protection du Tombeau de Merlin et lisière de Brocéliande",
+      "tag": "Dossier en cours",
+      "excerpt": "Préparation d’un argumentaire et d’un dispositif de sanctuarisation naturelle en appui des communautés locales et druidiques.",
+      "pdf": "assets/uploads/dossier-broceliande.pdf"
+    },
+    {
+      "id": "dossier-velona",
+      "title": "Monnaie vivante Velona – Territoires en transition",
+      "tag": "Dossier en cours",
+      "excerpt": "Réflexion stratégique autour d’une monnaie locale vivante destinée à renforcer la résilience économique et sociale des territoires.",
+      "pdf": "assets/uploads/dossier-velona.pdf"
+    }
+  ]
+}
