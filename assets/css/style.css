@@ -1,4 +1,3 @@
-
 /* ================================
    Palette Diploval & variables
    ================================ */
@@ -86,7 +85,7 @@ body {
 }
 
 .loader-dot:nth-child(1) { top: 4px; }
-loader-dot:nth-child(2) { right: 4px; }
+.loader-dot:nth-child(2) { right: 4px; }
 .loader-dot:nth-child(3) { bottom: 4px; }
 
 .loader-text {
@@ -544,21 +543,111 @@ loader-dot:nth-child(2) { right: 4px; }
 .diplomag-hero {
   background: linear-gradient(135deg, #0c2c50, #4a90e2);
   padding: 80px 20px 40px;
-  text-align: center;
   color: white;
   border-bottom: 4px solid rgba(255,255,255,0.2);
 }
 
-.diplomag-hero h1 {
-  font-size: 2.6rem;
-  margin-bottom: 10px;
-  letter-spacing: 0.18em;
+.diplomag-hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.8rem 1.6rem 2.4rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
-.diplomag-hero p {
-  font-size: 1.15rem;
-  opacity: 0.9;
-  margin-bottom: 24px;
+.diplomag-hero-left {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  min-width: 280px;
+}
+
+.diplomag-logo-wrap {
+  flex-shrink: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 1.2rem;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+}
+
+.diplomag-logo {
+  display: block;
+  height: 60px;
+  width: auto;
+}
+
+.diplomag-hero-text .diplomag-title {
+  margin: 0;
+  font-family: "Lora", "Times New Roman", serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  color: #ffffff;
+}
+
+.diplomag-hero-text .diplomag-subtitle {
+  margin: 0.35rem 0 0.9rem;
+  font-size: 0.96rem;
+  max-width: 34rem;
+  color: rgba(255,255,255,0.94);
+  line-height: 1.7;
+}
+
+.diplomag-cta {
+  margin-top: 0.2rem;
+}
+
+/* Zone de recherche */
+
+.diplomag-search-wrap {
+  max-width: 360px;
+  width: 100%;
+}
+
+.diplomag-search-label {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 0.4rem;
+}
+
+.diplomag-search-input-wrap {
+  position: relative;
+}
+
+#diplomag-search {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.85);
+  padding: 0.55rem 2.2rem 0.55rem 0.9rem;
+  font-size: 0.9rem;
+  background: rgba(255,255,255,0.96);
+  color: #0c2c50;
+  outline: none;
+}
+
+#diplomag-search::placeholder {
+  color: #9ba6b5;
+}
+
+.diplomag-search-icon {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.diplomag-search-help {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.9);
 }
 
 .diplomag-main {
@@ -713,7 +802,7 @@ loader-dot:nth-child(2) { right: 4px; }
 }
 
 /* ================================
-   Overlay générique (Pourquoi / Services / Articles)
+   Overlay générique
    ================================ */
 
 .overlay {
@@ -942,6 +1031,19 @@ loader-dot:nth-child(2) { right: 4px; }
   .contact-layout {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .diplomag-hero-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .diplomag-hero-left {
+    justify-content: flex-start;
+  }
+
+  .diplomag-logo {
+    height: 56px;
+  }
 }
 
 @media (max-width: 720px) {
@@ -1029,5 +1131,17 @@ loader-dot:nth-child(2) { right: 4px; }
   .cookie-inner {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .diplomag-hero-inner {
+    padding: 1.4rem 1.2rem 2.1rem;
+  }
+
+  .diplomag-hero-text .diplomag-title {
+    font-size: 1.05rem;
+  }
+
+  .diplomag-hero-text .diplomag-subtitle {
+    font-size: 0.86rem;
   }
 }
