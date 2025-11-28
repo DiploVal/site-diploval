@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,6 +12,7 @@
 </head>
 <body class="page-diplomag">
 
+  <!-- HEADER GLOBAL -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
@@ -40,12 +40,50 @@
     </div>
   </header>
 
+  <!-- HERO DIPLOMAG : logo + texte + recherche -->
   <section class="diplomag-hero">
-    <h1>DIPLOMAG</h1>
-    <p>La revue stratégique de la diplomatie éthique</p>
-    <a href="#articles" class="btn-primary">Voir les articles</a>
+    <div class="diplomag-hero-inner">
+      <div class="diplomag-hero-left">
+        <div class="diplomag-logo-wrap">
+          <img
+            src="assets/img/diplomag-logo.svg"
+            alt="DIPLOMAG – Revue stratégique"
+            class="diplomag-logo"
+          >
+        </div>
+        <div class="diplomag-hero-text">
+          <h1 class="diplomag-title">DIPLOMAG</h1>
+          <p class="diplomag-subtitle">
+            La revue stratégique de la diplomatie éthique – analyses, enquêtes
+            et éclairages pour une gouvernance vivante et responsable.
+          </p>
+          <a href="#articles" class="btn-primary diplomag-cta">
+            Voir les articles
+          </a>
+        </div>
+      </div>
+
+      <div class="diplomag-search-wrap">
+        <label for="diplomag-search" class="diplomag-search-label">
+          Rechercher un article
+        </label>
+        <div class="diplomag-search-input-wrap">
+          <input
+            type="search"
+            id="diplomag-search"
+            placeholder="Mot-clé, pays, thème, auteur…"
+            autocomplete="off"
+          >
+          <span class="diplomag-search-icon">🔍</span>
+        </div>
+        <p class="diplomag-search-help">
+          La recherche s’applique sur le titre, le chapeau, le pays et le thème.
+        </p>
+      </div>
+    </div>
   </section>
 
+  <!-- CONTENU PRINCIPAL -->
   <main class="diplomag-main">
     <section class="reveal">
       <header class="section-header">
@@ -82,11 +120,12 @@
 
     <section id="articles" class="reveal">
       <div class="article-grid" data-diplomag-articles>
-        <!-- JS -->
+        <!-- Cartes d’articles injectées en JS -->
       </div>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">Diploval Conseil</div>
@@ -98,7 +137,27 @@
     </div>
   </footer>
 
+  <!-- Librairie Markdown + JS principal -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <!-- Recherche texte Diplomag (filtre les .article-card) -->
+  <script>
+    (function () {
+      const input = document.getElementById("diplomag-search");
+      if (!input) return;
+
+      input.addEventListener("input", function () {
+        const query = input.value.trim().toLowerCase();
+        const cards = document.querySelectorAll(".article-card");
+
+        cards.forEach((card) => {
+          const text = card.innerText.toLowerCase();
+          const match = !query || text.includes(query);
+          card.style.display = match ? "" : "none";
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
