@@ -577,7 +577,7 @@ body {
 
 .diplomag-logo {
   display: block;
-  height: 80px;   /* Taille desktop */
+  height: 92px;   /* Taille desktop */
   width: auto;
 }
 
@@ -1045,7 +1045,7 @@ body {
 
   /* Taille tablette */
   .diplomag-logo {
-    height: 72px;
+    height: 82px;
   }
 }
 
@@ -1150,6 +1150,6 @@ body {
 
   /* Taille mobile */
   .diplomag-logo {
-    height: 68px;
+    height: 78px;
   }
 }
