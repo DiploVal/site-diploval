@@ -89,8 +89,12 @@
 
           <div class="hero-actions">
             <a href="#contact" class="btn-primary">Prendre contact</a>
-            <!-- OUVERTURE DIRECTE OVERLAY -->
-            <button class="btn-ghost" type="button" data-overlay-open="pourquoi">
+            <!-- Bouton overlay Pourquoi -->
+            <button
+              class="btn-ghost"
+              type="button"
+              data-overlay-open="pourquoi"
+              onclick="openOverlay('pourquoi')">
               Pourquoi Diploval&nbsp;?
             </button>
           </div>
@@ -155,8 +159,12 @@
             de droit et de terrain, avec une boussole simple&nbsp;: protéger l’humain, les territoires
             et le vivant à long terme.
           </p>
-          <!-- OUVERTURE DIRECTE OVERLAY VISION -->
-          <button class="btn-ghost" type="button" data-overlay-open="pourquoi">
+          <!-- Bouton vision complète -->
+          <button
+            class="btn-ghost"
+            type="button"
+            data-overlay-open="pourquoi"
+            onclick="openOverlay('pourquoi')">
             Lire la vision complète
           </button>
         </article>
@@ -171,8 +179,12 @@
             d’enquête ou un article Diplomag. L’objectif&nbsp;: rendre les enjeux lisibles,
             partageables, opposables si nécessaire.
           </p>
-          <!-- OUVERTURE DIRECTE OVERLAY SERVICES -->
-          <button class="btn-ghost" type="button" data-overlay-open="services">
+          <!-- Bouton services -->
+          <button
+            class="btn-ghost"
+            type="button"
+            data-overlay-open="services"
+            onclick="openOverlay('services')">
             Voir les services en détail
           </button>
         </article>
@@ -292,7 +304,13 @@
   <div class="overlay" aria-hidden="true">
     <div class="overlay-panel" data-overlay-id="pourquoi">
       <!-- FERMETURE DIRECTE OVERLAY -->
-      <button class="overlay-close" type="button" data-overlay-close>&times;</button>
+      <button
+        class="overlay-close"
+        type="button"
+        data-overlay-close
+        onclick="closeOverlay()">
+        &times;
+      </button>
       <h2>Pourquoi Diploval Conseil&nbsp;?</h2>
       <p>
         Diploval est né d’un constat simple&nbsp;: la diplomatie et le conseil sont trop souvent
@@ -317,7 +335,13 @@
 
     <div class="overlay-panel" data-overlay-id="services">
       <!-- FERMETURE DIRECTE OVERLAY -->
-      <button class="overlay-close" type="button" data-overlay-close>&times;</button>
+      <button
+        class="overlay-close"
+        type="button"
+        data-overlay-close
+        onclick="closeOverlay()">
+        &times;
+      </button>
       <h2>Services proposés</h2>
       <p>
         Diploval Conseil ne fonctionne pas comme une “usine à slides”. Chaque mission est
@@ -349,6 +373,54 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <!-- Script direct pour les overlays (indépendant de main.js) -->
+  <script>
+    function openOverlay(id) {
+      var overlay = document.querySelector(".overlay");
+      if (!overlay) return;
+
+      var panels = overlay.querySelectorAll(".overlay-panel");
+      var found = false;
+
+      panels.forEach(function (p) {
+        if (p.getAttribute("data-overlay-id") === id) {
+          p.style.display = "block";
+          found = true;
+        } else {
+          p.style.display = "none";
+        }
+      });
+
+      if (found) {
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
+      }
+    }
+
+    function closeOverlay() {
+      var overlay = document.querySelector(".overlay");
+      if (!overlay) return;
+      overlay.classList.remove("open");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+
+    // Fermer en cliquant sur le fond sombre
+    document.addEventListener("click", function (e) {
+      var overlay = document.querySelector(".overlay");
+      if (!overlay) return;
+      if (e.target === overlay) {
+        closeOverlay();
+      }
+    });
+
+    // Fermer avec la touche Échap
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" || e.key === "Esc") {
+        closeOverlay();
+      }
+    });
+  </script>
 </body>
 </html>
 
