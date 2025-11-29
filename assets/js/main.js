@@ -75,36 +75,35 @@ function initOverlays() {
   var panels = overlay.querySelectorAll(".overlay-panel");
 
   function openPanel(id) {
-    // Sélection du bon panneau
+    var found = false;
+
     panels.forEach(function (p) {
       if (p.dataset.overlayId === id) {
         p.style.display = "block";
+        found = true;
       } else {
         p.style.display = "none";
       }
     });
 
-    // Classe + fallback direct au cas où
-    overlay.classList.add("open");
-    overlay.style.display = "flex";
+    if (found) {
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden", "false");
+    }
   }
 
   function closeAll() {
     overlay.classList.remove("open");
-    // On laisse le CSS gérer l'opacité/visibility,
-    // mais on nettoie le display au cas où
-    overlay.style.display = "";
+    overlay.setAttribute("aria-hidden", "true");
   }
 
-  // 🔁 DÉLÉGATION GLOBALE : on écoute tous les clics sur la page
+  // Clics : ouverture / fermeture
   document.addEventListener("click", function (e) {
     var btnOpen = e.target.closest("[data-overlay-open]");
     if (btnOpen) {
       e.preventDefault();
       var id = btnOpen.getAttribute("data-overlay-open");
-      if (id) {
-        openPanel(id);
-      }
+      if (id) openPanel(id);
       return;
     }
 
@@ -116,6 +115,13 @@ function initOverlays() {
 
     // Clic sur le fond sombre
     if (e.target === overlay) {
+      closeAll();
+    }
+  });
+
+  // Fermeture au clavier (Échap)
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
       closeAll();
     }
   });
@@ -336,4 +342,3 @@ function initDiplomag() {
     searchInput.addEventListener("input", render);
   }
 }
-
