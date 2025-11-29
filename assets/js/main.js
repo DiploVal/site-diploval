@@ -89,17 +89,24 @@ function initOverlays() {
     });
 
     if (found) {
+      // on FORCE l’affichage de l’overlay
+      overlay.style.display = "flex";   // centré, même si le CSS ne le fait pas
       overlay.classList.add("open");
       overlay.setAttribute("aria-hidden", "false");
     }
   }
 
   function closeAll() {
+    // on cache tout proprement
+    panels.forEach(function (p) {
+      p.style.display = "none";
+    });
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden", "true");
+    overlay.style.display = "none";
   }
 
-  // Rendre accessibles depuis le HTML (onclick="openOverlay('...')")
+  // Rendre accessibles depuis le HTML au cas où
   window.openOverlay = openPanel;
   window.closeOverlay = closeAll;
 
