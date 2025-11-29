@@ -721,6 +721,64 @@ body {
 }
 
 /* ================================
+   Teaser Diplomag (accueil)
+   ================================ */
+
+.home-diplomag-teaser {
+  padding-top: 0;
+}
+
+.home-diplomag-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  padding: 1.8rem 2rem;
+  border-radius: 1.8rem;
+  background: linear-gradient(135deg, #0c2c50, #4a90e2);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+  color: #ffffff;
+}
+
+.home-diplomag-logo {
+  flex-shrink: 0;
+  padding: 0.9rem 1.1rem;
+  border-radius: 1.4rem;
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+}
+
+.home-diplomag-logo img {
+  display: block;
+  height: 80px;
+  width: auto;
+}
+
+.home-diplomag-text h2 {
+  margin: 0 0 0.55rem;
+  font-family: "Lora", "Times New Roman", serif;
+  font-size: 1.4rem;
+  color: #ffffff;
+}
+
+.home-diplomag-text p {
+  margin: 0 0 0.9rem;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.95);
+}
+
+.home-diplomag-text .btn-primary {
+  background: #ffffff;
+  color: #0c2c50;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.home-diplomag-text .btn-primary:hover {
+  background: #0c2c50;
+  color: #ffffff;
+}
+
+/* ================================
    Agenda
    ================================ */
 
@@ -868,103 +926,6 @@ body {
   margin: 0 0 1rem;
   font-size: 0.98rem;
   line-height: 1.7;
-}
-
-/* ================================
-   Teaser Diplomag (accueil)
-   ================================ */
-
-.home-diplomag-teaser {
-  padding-top: 0;
-}
-
-.home-diplomag-inner {
-  display: flex;
-  align-items: center;
-  gap: 1.8rem;
-  padding: 1.8rem 2rem;
-  border-radius: 1.8rem;
-  background: linear-gradient(135deg, #0c2c50, #4a90e2);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
-  color: #ffffff;
-}
-
-.home-diplomag-logo {
-  flex-shrink: 0;
-  padding: 0.9rem 1.1rem;
-  border-radius: 1.4rem;
-  background: rgba(255,255,255,0.96);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
-}
-
-.home-diplomag-logo img {
-  display: block;
-  height: 80px;
-  width: auto;
-}
-
-.home-diplomag-text h2 {
-  margin: 0 0 0.55rem;
-  font-family: "Lora", "Times New Roman", serif;
-  font-size: 1.4rem;
-  color: #ffffff;
-}
-
-.home-diplomag-text p {
-  margin: 0 0 0.9rem;
-  font-size: 0.96rem;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.95);
-}
-
-.home-diplomag-text .btn-primary {
-  background: #ffffff;
-  color: #0c2c50;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-.home-diplomag-text .btn-primary:hover {
-  background: #0c2c50;
-  color: #ffffff;
-}
-
-/* ================================
-   Formulaire
-   ================================ */
-
-.form-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  margin-bottom: 0.75rem;
-}
-
-.form-row label {
-  font-size: 0.86rem;
-  color: var(--text-main);
-}
-
-.form-row input,
-.form-row select,
-.form-row textarea {
-  border-radius: 0.7rem;
-  border: 1px solid rgba(12,44,80,0.2);
-  padding: 0.45rem 0.7rem;
-  font-family: inherit;
-  font-size: 0.9rem;
-  outline: none;
-  background: rgba(255,255,255,0.98);
-}
-
-.form-row textarea {
-  resize: vertical;
-}
-
-.form-row input:focus,
-.form-row select:focus,
-.form-row textarea:focus {
-  border-color: var(--blue-light);
-  box-shadow: 0 0 0 1px rgba(74,144,226,0.25);
 }
 
 /* ================================
@@ -1235,7 +1196,7 @@ body {
     font-size: 0.86rem;
   }
 
-  .diplomag-cta .btn-primary {
+  .diplomag-cta {
     padding: 0.45rem 1.15rem;
     font-size: 0.82rem;
   }
