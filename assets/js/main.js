@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-/* Loader */
+/* ================================
+   Loader
+   ================================ */
 
 function initLoader() {
   window.addEventListener("load", function () {
@@ -27,7 +29,9 @@ function initLoader() {
   });
 }
 
-/* Navigation mobile */
+/* ================================
+   Navigation mobile
+   ================================ */
 
 function initNav() {
   var toggle = document.querySelector(".nav-toggle");
@@ -38,18 +42,23 @@ function initNav() {
     navList.classList.toggle("open");
   });
 
-  navList.querySelectorAll("a").forEach(function (link) {
+  var links = navList.querySelectorAll("a");
+  links.forEach(function (link) {
     link.addEventListener("click", function () {
       navList.classList.remove("open");
     });
   });
 }
 
-/* Apparition progressive */
+/* ================================
+   Apparition progressive
+   ================================ */
 
 function initReveal() {
   var items = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window) || !items.length) {
+  if (!items.length) return;
+
+  if (!("IntersectionObserver" in window)) {
     items.forEach(function (el) { el.classList.add("visible"); });
     return;
   }
@@ -66,7 +75,9 @@ function initReveal() {
   items.forEach(function (el) { observer.observe(el); });
 }
 
-/* Overlays (Pourquoi / Services / etc.) */
+/* ================================
+   Overlays (Pourquoi / Services)
+   ================================ */
 
 function initOverlays() {
   var overlay = document.querySelector(".overlay");
@@ -76,16 +87,29 @@ function initOverlays() {
   var triggers = document.querySelectorAll("[data-overlay-open]");
   var closeButtons = overlay.querySelectorAll("[data-overlay-close]");
 
+  if (!triggers.length || !panels.length) return;
+
+  // On cache tous les panneaux au départ
+  panels.forEach(function (p) {
+    p.style.display = "none";
+  });
+
   function openPanel(id) {
+    var found = false;
+
     panels.forEach(function (p) {
-      if (p.dataset.overlayId === id) {
-        p.hidden = false;
+      if (p.getAttribute("data-overlay-id") === id) {
+        p.style.display = "block";
+        found = true;
       } else {
-        p.hidden = true;
+        p.style.display = "none";
       }
     });
-    overlay.classList.add("open");
-    overlay.setAttribute("aria-hidden", "false");
+
+    if (found) {
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden", "false");
+    }
   }
 
   function closeAll() {
@@ -93,44 +117,43 @@ function initOverlays() {
     overlay.setAttribute("aria-hidden", "true");
   }
 
-  // boutons d'ouverture
+  // Ouverture
   triggers.forEach(function (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       var id = btn.getAttribute("data-overlay-open");
-      if (id) openPanel(id);
+      if (!id) return;
+      openPanel(id);
     });
   });
 
-  // boutons de fermeture (croix)
+  // Fermeture (boutons)
   closeButtons.forEach(function (btn) {
     btn.addEventListener("click", function () {
       closeAll();
     });
   });
 
-  // clic sur le fond sombre
+  // Fermeture (clic sur le fond sombre)
   overlay.addEventListener("click", function (e) {
     if (e.target === overlay) {
       closeAll();
     }
   });
 
-  // touche Échap
+  // Fermeture (Échap)
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      closeAll();
+    if (e.key === "Escape" || e.key === "Esc") {
+      if (overlay.classList.contains("open")) {
+        closeAll();
+      }
     }
   });
-
-  // état initial : tout masqué
-  panels.forEach(function (p) {
-    p.hidden = true;
-  });
-  overlay.setAttribute("aria-hidden", "true");
 }
 
-/* Cookies */
+/* ================================
+   Cookies
+   ================================ */
 
 function initCookies() {
   var banner = document.querySelector(".cookie-banner");
@@ -154,7 +177,9 @@ function initCookies() {
   });
 }
 
-/* ===== Contenus dynamiques ===== */
+/* ================================
+   Utilitaire JSON
+   ================================ */
 
 function fetchJson(path) {
   return fetch(path).then(function (res) {
@@ -163,7 +188,9 @@ function fetchJson(path) {
   });
 }
 
-/* Mémorandums */
+/* ================================
+   Mémorandums (accueil)
+   ================================ */
 
 function loadHomeMemorandums() {
   var container = document.querySelector("[data-memos]");
@@ -197,7 +224,9 @@ function loadHomeMemorandums() {
     });
 }
 
-/* Dossiers */
+/* ================================
+   Dossiers (accueil)
+   ================================ */
 
 function loadHomeDossiers() {
   var container = document.querySelector("[data-dossiers]");
@@ -231,7 +260,9 @@ function loadHomeDossiers() {
     });
 }
 
-/* Agenda */
+/* ================================
+   Agenda (accueil)
+   ================================ */
 
 function loadHomeAgenda() {
   var container = document.querySelector("[data-agenda]");
@@ -263,7 +294,9 @@ function loadHomeAgenda() {
     });
 }
 
-/* Diplomag */
+/* ================================
+   Diplomag – page liste
+   ================================ */
 
 function initDiplomag() {
   var grid = document.querySelector("[data-diplomag-articles]");
