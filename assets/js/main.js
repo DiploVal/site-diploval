@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
   initLoader();
   initNav();
@@ -78,39 +77,57 @@ function initOverlays() {
   var closeButtons = overlay.querySelectorAll("[data-overlay-close]");
 
   function openPanel(id) {
-    overlay.classList.add("open");
     panels.forEach(function (p) {
       if (p.dataset.overlayId === id) {
-        p.style.display = "block";
+        p.hidden = false;
       } else {
-        p.style.display = "none";
+        p.hidden = true;
       }
     });
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
   }
 
   function closeAll() {
     overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden", "true");
   }
 
+  // boutons d'ouverture
   triggers.forEach(function (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       var id = btn.getAttribute("data-overlay-open");
-      openPanel(id);
+      if (id) openPanel(id);
     });
   });
 
+  // boutons de fermeture (croix)
   closeButtons.forEach(function (btn) {
     btn.addEventListener("click", function () {
       closeAll();
     });
   });
 
+  // clic sur le fond sombre
   overlay.addEventListener("click", function (e) {
     if (e.target === overlay) {
       closeAll();
     }
   });
+
+  // touche Échap
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeAll();
+    }
+  });
+
+  // état initial : tout masqué
+  panels.forEach(function (p) {
+    p.hidden = true;
+  });
+  overlay.setAttribute("aria-hidden", "true");
 }
 
 /* Cookies */
