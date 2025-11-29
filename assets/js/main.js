@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
   initLoader();
   initNav();
   initReveal();
-  initOverlays();
   initCookies();
 
   if (document.body.classList.contains("page-home")) {
@@ -66,78 +65,6 @@ function initReveal() {
   }, { threshold: 0.12 });
 
   items.forEach(function (el) { observer.observe(el); });
-}
-
-/* Overlays (Pourquoi / Services / etc.) */
-
-function initOverlays() {
-  var overlay = document.querySelector(".overlay");
-  if (!overlay) return;
-
-  var panels = overlay.querySelectorAll(".overlay-panel");
-
-  function openPanel(id) {
-    var found = false;
-
-    panels.forEach(function (p) {
-      if (p.getAttribute("data-overlay-id") === id) {
-        p.style.display = "block";
-        found = true;
-      } else {
-        p.style.display = "none";
-      }
-    });
-
-    if (found) {
-      // on FORCE l’affichage de l’overlay
-      overlay.style.display = "flex";   // centré, même si le CSS ne le fait pas
-      overlay.classList.add("open");
-      overlay.setAttribute("aria-hidden", "false");
-    }
-  }
-
-  function closeAll() {
-    // on cache tout proprement
-    panels.forEach(function (p) {
-      p.style.display = "none";
-    });
-    overlay.classList.remove("open");
-    overlay.setAttribute("aria-hidden", "true");
-    overlay.style.display = "none";
-  }
-
-  // Rendre accessibles depuis le HTML au cas où
-  window.openOverlay = openPanel;
-  window.closeOverlay = closeAll;
-
-  // Clics : ouverture / fermeture via data-*
-  document.addEventListener("click", function (e) {
-    var btnOpen = e.target.closest("[data-overlay-open]");
-    if (btnOpen) {
-      e.preventDefault();
-      var id = btnOpen.getAttribute("data-overlay-open");
-      if (id) openPanel(id);
-      return;
-    }
-
-    if (e.target.hasAttribute("data-overlay-close")) {
-      e.preventDefault();
-      closeAll();
-      return;
-    }
-
-    // Clic sur le fond sombre
-    if (e.target === overlay) {
-      closeAll();
-    }
-  });
-
-  // Fermeture au clavier (Échap)
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" || e.key === "Esc") {
-      closeAll();
-    }
-  });
 }
 
 /* Cookies */
