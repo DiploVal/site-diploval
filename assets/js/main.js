@@ -4,20 +4,25 @@ document.addEventListener("DOMContentLoaded", function () {
   initLoader();
   initNav();
   initReveal();
+  initOverlay();
   initCookies();
 
+  // Page d'accueil
   if (document.body.classList.contains("page-home")) {
     loadHomeMemorandums();
     loadHomeDossiers();
     loadHomeAgenda();
   }
 
+  // Page Diplomag
   if (document.body.classList.contains("page-diplomag")) {
     initDiplomag();
   }
 });
 
-/* Loader */
+/* =========================
+   Loader
+   ========================= */
 
 function initLoader() {
   window.addEventListener("load", function () {
@@ -28,7 +33,9 @@ function initLoader() {
   });
 }
 
-/* Navigation mobile */
+/* =========================
+   Navigation mobile
+   ========================= */
 
 function initNav() {
   var toggle = document.querySelector(".nav-toggle");
@@ -46,28 +53,107 @@ function initNav() {
   });
 }
 
-/* Apparition progressive */
+/* =========================
+   Apparition progressive
+   ========================= */
 
 function initReveal() {
   var items = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window) || !items.length) {
-    items.forEach(function (el) { el.classList.add("visible"); });
+  if (!items.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    items.forEach(function (el) {
+      el.classList.add("visible");
+    });
     return;
   }
 
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
 
-  items.forEach(function (el) { observer.observe(el); });
+  items.forEach(function (el) {
+    observer.observe(el);
+  });
 }
 
-/* Cookies */
+/* =========================
+   Overlay générique
+   ========================= */
+/*
+  Principe :
+  - Un bouton possède : data-overlay-target="#overlay-pourquoi"
+  - L’overlay correspondant a : <div class="overlay" id="overlay-pourquoi">
+*/
+
+function initOverlay() {
+  var triggers = document.querySelectorAll("[data-overlay-target]");
+  var overlays = document.querySelectorAll(".overlay");
+
+  if (!triggers.length || !overlays.length) return;
+
+  // OUVERTURE
+  triggers.forEach(function (btn) {
+    var selector = btn.getAttribute("data-overlay-target");
+    if (!selector) return;
+    var overlay = document.querySelector(selector);
+    if (!overlay) return;
+
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  // FERMETURE (bouton fermer + clic sur le fond)
+  overlays.forEach(function (overlay) {
+    // Boutons de fermeture
+    overlay.querySelectorAll(".overlay-close, [data-overlay-close]").forEach(function (closeBtn) {
+      closeBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        closeSingleOverlay(overlay);
+      });
+    });
+
+    // Clic sur le fond sombre
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) {
+        closeSingleOverlay(overlay);
+      }
+    });
+  });
+
+  // ESC global
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+      overlays.forEach(function (overlay) {
+        if (overlay.classList.contains("open")) {
+          closeSingleOverlay(overlay);
+        }
+      });
+    }
+  });
+
+  function closeSingleOverlay(overlay) {
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+}
+
+/* =========================
+   Cookies
+   ========================= */
 
 function initCookies() {
   var banner = document.querySelector(".cookie-banner");
@@ -91,7 +177,9 @@ function initCookies() {
   });
 }
 
-/* ===== Contenus dynamiques ===== */
+/* =========================
+   Utilitaire JSON
+   ========================= */
 
 function fetchJson(path) {
   return fetch(path).then(function (res) {
@@ -100,7 +188,9 @@ function fetchJson(path) {
   });
 }
 
-/* Mémorandums */
+/* =========================
+   Mémorandums
+   ========================= */
 
 function loadHomeMemorandums() {
   var container = document.querySelector("[data-memos]");
@@ -123,7 +213,7 @@ function loadHomeMemorandums() {
           "<h3>" + (item.title || "") + "</h3>",
           "</div>",
           "<p class='card-excerpt'>" + (item.excerpt || "") + "</p>",
-          (item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : "")
+          item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : ""
         ].join("");
         container.appendChild(div);
       });
@@ -134,7 +224,9 @@ function loadHomeMemorandums() {
     });
 }
 
-/* Dossiers */
+/* =========================
+   Dossiers
+   ========================= */
 
 function loadHomeDossiers() {
   var container = document.querySelector("[data-dossiers]");
@@ -157,7 +249,7 @@ function loadHomeDossiers() {
           "<h3>" + (item.title || "") + "</h3>",
           "</div>",
           "<p class='card-excerpt'>" + (item.excerpt || "") + "</p>",
-          (item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : "")
+          item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : ""
         ].join("");
         container.appendChild(div);
       });
@@ -168,7 +260,9 @@ function loadHomeDossiers() {
     });
 }
 
-/* Agenda */
+/* =========================
+   Agenda
+   ========================= */
 
 function loadHomeAgenda() {
   var container = document.querySelector("[data-agenda]");
@@ -200,7 +294,9 @@ function loadHomeAgenda() {
     });
 }
 
-/* Diplomag */
+/* =========================
+   Diplomag
+   ========================= */
 
 function initDiplomag() {
   var grid = document.querySelector("[data-diplomag-articles]");
