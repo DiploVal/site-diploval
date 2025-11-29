@@ -813,11 +813,11 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(5,13,26,0.86);
-  display: flex;
+  display: none; /* caché par défaut */
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
-  z-index: 1000;
+  z-index: 9998; /* sous le loader (9999), au-dessus du reste */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -825,6 +825,7 @@ body {
 }
 
 .overlay.open {
+  display: flex; /* visible quand .open est présent */
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -1268,3 +1269,4 @@ body {
     font-size: 0.9rem;
   }
 }
+
