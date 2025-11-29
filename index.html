@@ -344,5 +344,89 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <!-- Fallback direct pour les overlays (assure le fonctionnement des boutons) -->
+  <script>
+    (function () {
+      function initOverlayFallback() {
+        var overlay = document.querySelector(".overlay");
+        if (!overlay) return;
+
+        var panels = overlay.querySelectorAll(".overlay-panel");
+        var triggers = document.querySelectorAll("[data-overlay-open]");
+        var closeButtons = overlay.querySelectorAll("[data-overlay-close]");
+
+        // On cache tous les panneaux par défaut
+        for (var i = 0; i < panels.length; i++) {
+          panels[i].style.display = "none";
+        }
+
+        function openPanel(id) {
+          var found = false;
+
+          for (var i = 0; i < panels.length; i++) {
+            var p = panels[i];
+            if (p.getAttribute("data-overlay-id") === id) {
+              p.style.display = "block";
+              found = true;
+            } else {
+              p.style.display = "none";
+            }
+          }
+
+          if (found) {
+            overlay.classList.add("open");
+            overlay.setAttribute("aria-hidden", "false");
+          }
+        }
+
+        function closeAll() {
+          overlay.classList.remove("open");
+          overlay.setAttribute("aria-hidden", "true");
+        }
+
+        // Clic sur les boutons d’ouverture
+        for (var j = 0; j < triggers.length; j++) {
+          (function (btn) {
+            btn.addEventListener("click", function (e) {
+              e.preventDefault();
+              var id = btn.getAttribute("data-overlay-open");
+              if (!id) return;
+              openPanel(id);
+            });
+          })(triggers[j]);
+        }
+
+        // Clic sur les boutons de fermeture
+        for (var k = 0; k < closeButtons.length; k++) {
+          closeButtons[k].addEventListener("click", function () {
+            closeAll();
+          });
+        }
+
+        // Clic sur le fond sombre
+        overlay.addEventListener("click", function (e) {
+          if (e.target === overlay) {
+            closeAll();
+          }
+        });
+
+        // Touche Échap
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" || e.key === "Esc") {
+            if (overlay.classList.contains("open")) {
+              closeAll();
+            }
+          }
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initOverlayFallback);
+      } else {
+        initOverlayFallback();
+      }
+    })();
+  </script>
 </body>
 </html>
