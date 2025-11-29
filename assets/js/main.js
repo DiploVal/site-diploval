@@ -1,344 +1,425 @@
-document.addEventListener("DOMContentLoaded", function () {
-  initLoader();
-  initNav();
-  initReveal();
-  initOverlays();
-  initCookies();
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Diploval Conseil – Diplomatie éthique et vivante</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Diploval Conseil – Conseils diplomatiques pour une transition éthique, vivante et souveraine. Mémorandums, analyses, Diplomag, agenda stratégique et accompagnement des territoires.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="page-home">
 
-  if (document.body.classList.contains("page-home")) {
-    loadHomeMemorandums();
-    loadHomeDossiers();
-    loadHomeAgenda();
-  }
+  <!-- Loader -->
+  <div class="page-loader">
+    <div class="loader-orbit">
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+    </div>
+    <div class="loader-text">
+      DIPLOVAL CONSEIL
+      <span>Chargement de la diplomatie éthique…</span>
+    </div>
+  </div>
 
-  if (document.body.classList.contains("page-diplomag")) {
-    initDiplomag();
-  }
-});
+  <!-- En-tête -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <div class="brand-mark">
+          <img src="assets/img/logo-diploval.png" alt="Diploval Conseil">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Diploval Conseil</div>
+          <div class="brand-tagline">Conseils diplomatiques – Pour une transition éthique, vivante et souveraine</div>
+        </div>
+      </a>
 
-/* Loader */
+      <nav class="main-nav">
+        <button class="nav-toggle" aria-label="Ouvrir le menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-list">
+          <li><a href="#accueil" class="is-active">Accueil</a></li>
+          <li><a href="diplomag.html">Diplomag</a></li>
+          <li><a href="#memorandums">Mémorandums</a></li>
+          <li><a href="#dossiers">Dossiers</a></li>
+          <li><a href="#agenda">Agenda</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-function initLoader() {
-  window.addEventListener("load", function () {
-    var loader = document.querySelector(".page-loader");
-    if (loader) {
-      loader.classList.add("hidden");
-    }
-  });
-}
+  <!-- HERO -->
+  <main id="accueil">
+    <section class="hero-section">
+      <div class="hero-bg-layer"></div>
+      <div class="hero-inner">
+        <div class="hero-content reveal">
+          <div class="hero-intro">
+            <h1 class="hero-title">
+              Une diplomatie au service
+              <span class="accent">du vivant et des territoires.</span>
+            </h1>
+            <p class="hero-subtitle">
+              Diploval Conseil accompagne les élus, collectivités, organisations et citoyens
+              qui veulent gouverner autrement&nbsp;: avec rigueur juridique, vision stratégique
+              et respect du vivant.
+            </p>
+            <div class="hero-grid">
+              <article class="hero-pill">
+                <div class="pill-label">Éclairage stratégique</div>
+                <p>Analyses géopolitiques, mémorandums et notes de contexte pour prendre des décisions éclairées.</p>
+              </article>
+              <article class="hero-pill">
+                <div class="pill-label">Territoires &amp; communes</div>
+                <p>Accompagnement des équipes municipales et projets de redynamisation alignés avec la transition.</p>
+              </article>
+              <article class="hero-pill">
+                <div class="pill-label">Justice &amp; vivant</div>
+                <p>Approche vivantocratique&nbsp;: ne plus penser uniquement “créances et sanctions”, mais “responsabilités et réparations”.</p>
+              </article>
+            </div>
+          </div>
 
-/* Navigation mobile */
+          <div class="hero-actions">
+            <a href="#contact" class="btn-primary">Prendre contact</a>
+            <!-- Bouton overlay Pourquoi -->
+            <button
+              class="btn-ghost"
+              type="button"
+              data-overlay-open="pourquoi"
+              onclick="openOverlay('pourquoi')">
+              Pourquoi Diploval&nbsp;?
+            </button>
+          </div>
+        </div>
 
-function initNav() {
-  var toggle = document.querySelector(".nav-toggle");
-  var navList = document.querySelector(".nav-list");
-  if (!toggle || !navList) return;
+        <aside class="hero-sidecard reveal">
+          <h2>Champs d’intervention</h2>
+          <ul>
+            <li>Conseil stratégique pour élus locaux et institutions</li>
+            <li>Mémorandums diplomatiques et notes publiques</li>
+            <li>Dossiers d’enquête et argumentaires vivants</li>
+            <li>Protection des biens communs (eau, territoires, patrimoine)</li>
+            <li>Médiation et pédagogie citoyenne</li>
+          </ul>
+          <p class="muted">
+            Diploval Conseil a été fondé par Franck Saubin (Souix Nathorod),
+            diplomate indépendant engagé pour une gouvernance éthique,
+            vivante et souveraine.
+          </p>
+        </aside>
+      </div>
+    </section>
 
-  toggle.addEventListener("click", function () {
-    navList.classList.toggle("open");
-  });
+    <!-- TEASER DIPLOMAG -->
+    <section class="section home-diplomag-teaser reveal" id="diplomag-teaser">
+      <div class="home-diplomag-inner">
+        <div class="home-diplomag-logo">
+          <img
+            src="assets/img/diplomag-logo.svg"
+            alt="Diplomag – revue stratégique de la diplomatie éthique">
+        </div>
+        <div class="home-diplomag-text">
+          <h2>Diplomag – la revue stratégique de la diplomatie éthique</h2>
+          <p>
+            Analyses, enquêtes et éclairages pour une gouvernance vivante et responsable.
+            Une revue indépendante pour décrypter les tensions actuelles et les transitions à venir.
+          </p>
+          <a href="diplomag.html" class="btn-primary">
+            Découvrir les articles
+          </a>
+        </div>
+      </div>
+    </section>
 
-  navList.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function () {
-      navList.classList.remove("open");
-    });
-  });
-}
+    <!-- POURQUOI DIPLOVAL -->
+    <section id="pourquoi" class="section section-alt reveal">
+      <div class="section-header">
+        <h2>Pourquoi Diploval Conseil&nbsp;?</h2>
+        <p>
+          Parce que les crises actuelles – climatiques, sociales, institutionnelles – exigent une parole claire,
+          structurée, capable d’ouvrir des issues plutôt que d’ajouter du bruit à la confusion.
+        </p>
+      </div>
+      <div class="cards-grid">
+        <article class="card">
+          <div class="card-heading">
+            <span class="card-tag">Approche</span>
+            <h3>Indépendance &amp; impartialité vivante</h3>
+          </div>
+          <p class="card-excerpt">
+            Diploval ne vend ni idéologie ni slogan. Le travail repose sur une analyse de faits,
+            de droit et de terrain, avec une boussole simple&nbsp;: protéger l’humain, les territoires
+            et le vivant à long terme.
+          </p>
+          <!-- Bouton vision complète -->
+          <button
+            class="btn-ghost"
+            type="button"
+            data-overlay-open="pourquoi"
+            onclick="openOverlay('pourquoi')">
+            Lire la vision complète
+          </button>
+        </article>
 
-/* Apparition progressive */
+        <article class="card">
+          <div class="card-heading">
+            <span class="card-tag">Outils</span>
+            <h3>Mémorandums, dossiers et pédagogie</h3>
+          </div>
+          <p class="card-excerpt">
+            Chaque sujet peut donner lieu à un mémorandum (analyse structurée), un dossier
+            d’enquête ou un article Diplomag. L’objectif&nbsp;: rendre les enjeux lisibles,
+            partageables, opposables si nécessaire.
+          </p>
+          <!-- Bouton services -->
+          <button
+            class="btn-ghost"
+            type="button"
+            data-overlay-open="services"
+            onclick="openOverlay('services')">
+            Voir les services en détail
+          </button>
+        </article>
 
-function initReveal() {
-  var items = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window) || !items.length) {
-    items.forEach(function (el) { el.classList.add("visible"); });
-    return;
-  }
+        <article class="card">
+          <div class="card-heading">
+            <span class="card-tag">Posture</span>
+            <h3>Diplomatie éthique &amp; vivantocratie</h3>
+          </div>
+          <p class="card-excerpt">
+            La diplomatie n’est pas un vernis de politesse&nbsp;: c’est l’art de poser des
+            limites claires, de désamorcer les tensions et de proposer des alternatives
+            concrètes, au service du bien commun.
+          </p>
+        </article>
+      </div>
+    </section>
 
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
+    <!-- MEMORANDUMS -->
+    <section id="memorandums" class="section reveal">
+      <div class="section-header">
+        <h2>Mémorandums &amp; prises de position</h2>
+        <p>
+          Sélection de mémorandums publiés par Diploval Conseil. Certains sont destinés aux
+          communes ou institutions, d’autres sont rendus publics pour nourrir le débat citoyen.
+        </p>
+      </div>
+      <div class="cards-grid" data-memos>
+        <!-- JS -->
+      </div>
+    </section>
 
-  items.forEach(function (el) { observer.observe(el); });
-}
+    <!-- DOSSIERS EN COURS -->
+    <section id="dossiers" class="section section-alt reveal">
+      <div class="section-header">
+        <h2>Dossiers en cours</h2>
+        <p>
+          Enquêtes, argumentaires, veilles stratégiques. Ces dossiers peuvent être menés en soutien
+          à des collectifs, des communes, des associations ou des citoyens.
+        </p>
+      </div>
+      <div class="cards-grid" data-dossiers>
+        <!-- JS -->
+      </div>
+    </section>
 
-/* Overlays (Pourquoi / Services / etc.) */
+    <!-- AGENDA -->
+    <section id="agenda" class="section reveal">
+      <div class="section-header">
+        <h2>Agenda &amp; interventions</h2>
+        <p>
+          Quelques dates clés de l’agenda Diploval&nbsp;: rencontres, publications, interventions,
+          travaux avec des territoires.
+        </p>
+      </div>
+      <div class="agenda-timeline" data-agenda>
+        <!-- JS -->
+      </div>
+    </section>
 
-function initOverlays() {
-  var overlay = document.querySelector(".overlay");
-  if (!overlay) return;
+    <!-- CONTACT -->
+    <section id="contact" class="section section-alt reveal">
+      <div class="section-header">
+        <h2>Contact &amp; coordonnées</h2>
+        <p>
+          Pour toute demande d’accompagnement, de prise de parole ou de collaboration,
+          vous pouvez écrire directement à Diploval Conseil.
+        </p>
+      </div>
 
-  var panels = overlay.querySelectorAll(".overlay-panel");
+      <div class="contact-layout">
+        <div class="contact-block">
+          <h3>Coordonnées officielles</h3>
+          <p><strong>Dénomination&nbsp;:</strong> Diploval Conseil</p>
+          <p><strong>Entrepreneur individuel&nbsp;:</strong> Franck Saubin (Souix Nathorod)</p>
+          <p><strong>SIREN&nbsp;:</strong> 478&nbsp;406&nbsp;663</p>
+          <p><strong>SIRET (siège)&nbsp;:</strong> 478&nbsp;406&nbsp;663&nbsp;00052</p>
+          <p><strong>Forme juridique&nbsp;:</strong> Entrepreneur individuel</p>
+          <p><strong>E-mail&nbsp;:</strong> <a href="mailto:contact@diplovalconseil.fr">contact@diplovalconseil.fr</a></p>
+          <p class="muted">
+            Pour des raisons de confidentialité et de sécurité, l’adresse postale complète
+            est communiquée dans le cadre des échanges professionnels.
+          </p>
+        </div>
 
-  function openPanel(id) {
-    var found = false;
+        <div class="contact-block">
+          <h3>Demande de contact</h3>
+          <form action="mailto:contact@diplovalconseil.fr" method="post" enctype="text/plain">
+            <div class="form-row">
+              <label for="nom">Nom / structure</label>
+              <input id="nom" name="nom" type="text" required>
+            </div>
+            <div class="form-row">
+              <label for="email">Adresse e-mail</label>
+              <input id="email" name="email" type="email" required>
+            </div>
+            <div class="form-row">
+              <label for="objet">Objet de la demande</label>
+              <input id="objet" name="objet" type="text">
+            </div>
+            <div class="form-row">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Envoyer une demande</button>
+            <p class="muted">
+              En envoyant ce message, vous acceptez que vos données soient utilisées uniquement
+              pour vous répondre. Aucune donnée n’est transmise à des tiers.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    panels.forEach(function (p) {
-      if (p.dataset.overlayId === id) {
-        p.style.display = "block";
-        found = true;
-      } else {
-        p.style.display = "none";
-      }
-    });
+  <!-- Overlay (Pourquoi / Services) -->
+  <div class="overlay" aria-hidden="true">
+    <div class="overlay-panel" data-overlay-id="pourquoi">
+      <!-- FERMETURE DIRECTE OVERLAY -->
+      <button
+        class="overlay-close"
+        type="button"
+        data-overlay-close
+        onclick="closeOverlay()">
+        &times;
+      </button>
+      <h2>Pourquoi Diploval Conseil&nbsp;?</h2>
+      <p>
+        Diploval est né d’un constat simple&nbsp;: la diplomatie et le conseil sont trop souvent
+        réservés aux plus puissants, tandis que les territoires, les citoyens et les petites
+        structures doivent “se débrouiller” face à des enjeux complexes.
+      </p>
+      <p>
+        La vocation de Diploval est de remettre de la clarté, de la rigueur et de l’éthique là
+        où les discours deviennent flous. Chaque dossier est abordé avec une méthode combinant&nbsp;:
+      </p>
+      <ul>
+        <li>analyse de terrain, des acteurs et des équilibres en jeu ;</li>
+        <li>lecture juridique et institutionnelle (droit national, international, environnemental) ;</li>
+        <li>prise en compte du vivant et des impacts à long terme ;</li>
+        <li>mise en forme pédagogique, pour que les citoyens puissent se saisir des sujets.</li>
+      </ul>
+      <p>
+        L’objectif n’est pas d’imposer une vérité, mais de construire un socle factuel solide
+        pour permettre des décisions justes, assumées et opposables.
+      </p>
+    </div>
 
-    if (found) {
-      overlay.classList.add("open");
-      overlay.setAttribute("aria-hidden", "false");
-    }
-  }
+    <div class="overlay-panel" data-overlay-id="services">
+      <!-- FERMETURE DIRECTE OVERLAY -->
+      <button
+        class="overlay-close"
+        type="button"
+        data-overlay-close
+        onclick="closeOverlay()">
+        &times;
+      </button>
+      <h2>Services proposés</h2>
+      <p>
+        Diploval Conseil ne fonctionne pas comme une “usine à slides”. Chaque mission est
+        construite sur-mesure, à partir des besoins réels et des contraintes du terrain.
+      </p>
+      <ul>
+        <li><strong>Mémorandums &amp; notes diplomatiques&nbsp;:</strong> analyses argumentées, structurées, pouvant être publiées ou utilisées en appui d’élus ou de collectifs.</li>
+        <li><strong>Dossiers d’enquête stratégique&nbsp;:</strong> collecte de sources, mise en perspective, scénarios et recommandations.</li>
+        <li><strong>Accompagnement de communes &amp; territoires&nbsp;:</strong> soutien à la construction de programmes municipaux, démarches de sanctuarisation, protection des biens communs.</li>
+        <li><strong>Prises de parole &amp; pédagogie citoyenne&nbsp;:</strong> articles, interventions, supports pour expliquer les enjeux au plus grand nombre.</li>
+      </ul>
+      <p>
+        Dans tous les cas, la logique reste la même&nbsp;: clarifier, protéger, ouvrir des
+        chemins de transition éthique et vivante.
+      </p>
+    </div>
+  </div>
 
-  function closeAll() {
-    overlay.classList.remove("open");
-    overlay.setAttribute("aria-hidden", "true");
-  }
+  <!-- Bannière cookies -->
+  <div class="cookie-banner">
+    <div class="cookie-inner">
+      <p>
+        Ce site utilise uniquement des cookies techniques essentiels à son bon fonctionnement.
+        Aucun cookie publicitaire ou de suivi n’est déposé.
+      </p>
+      <button type="button" class="cookie-btn" data-cookie-accept>J’ai compris</button>
+    </div>
+  </div>
 
-  // Clics : ouverture / fermeture
-  document.addEventListener("click", function (e) {
-    var btnOpen = e.target.closest("[data-overlay-open]");
-    if (btnOpen) {
-      e.preventDefault();
-      var id = btnOpen.getAttribute("data-overlay-open");
-      if (id) openPanel(id);
-      return;
-    }
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="assets/js/main.js"></script>
 
-    if (e.target.matches("[data-overlay-close]")) {
-      e.preventDefault();
-      closeAll();
-      return;
-    }
+  <!-- Script direct pour les overlays (indépendant de main.js) -->
+  <script>
+    function openOverlay(id) {
+      var overlay = document.querySelector(".overlay");
+      if (!overlay) return;
 
-    // Clic sur le fond sombre
-    if (e.target === overlay) {
-      closeAll();
-    }
-  });
+      var panels = overlay.querySelectorAll(".overlay-panel");
+      var found = false;
 
-  // Fermeture au clavier (Échap)
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" || e.key === "Esc") {
-      closeAll();
-    }
-  });
-}
-
-/* Cookies */
-
-function initCookies() {
-  var banner = document.querySelector(".cookie-banner");
-  if (!banner) return;
-  var btn = banner.querySelector("[data-cookie-accept]");
-  if (!btn) return;
-
-  var KEY = "diplovalCookiesOk";
-  try {
-    if (localStorage.getItem(KEY) === "1") {
-      banner.style.display = "none";
-      return;
-    }
-  } catch (e) {}
-
-  btn.addEventListener("click", function () {
-    banner.style.display = "none";
-    try {
-      localStorage.setItem(KEY, "1");
-    } catch (e) {}
-  });
-}
-
-/* ===== Contenus dynamiques ===== */
-
-function fetchJson(path) {
-  return fetch(path).then(function (res) {
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    return res.json();
-  });
-}
-
-/* Mémorandums */
-
-function loadHomeMemorandums() {
-  var container = document.querySelector("[data-memos]");
-  if (!container) return;
-
-  fetchJson("content/memorandums.json")
-    .then(function (data) {
-      var items = (data && data.items) || [];
-      if (!items.length) {
-        container.innerHTML = "<p class='muted'>Aucun mémorandum public pour le moment.</p>";
-        return;
-      }
-      container.innerHTML = "";
-      items.slice(0, 3).forEach(function (item) {
-        var div = document.createElement("article");
-        div.className = "card reveal";
-        div.innerHTML = [
-          "<div class='card-heading'>",
-          "<span class='card-tag'>" + (item.tag || "Mémorandum") + "</span>",
-          "<h3>" + (item.title || "") + "</h3>",
-          "</div>",
-          "<p class='card-excerpt'>" + (item.excerpt || "") + "</p>",
-          item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : ""
-        ].join("");
-        container.appendChild(div);
+      panels.forEach(function (p) {
+        if (p.getAttribute("data-overlay-id") === id) {
+          p.style.display = "block";
+          found = true;
+        } else {
+          p.style.display = "none";
+        }
       });
-      initReveal();
-    })
-    .catch(function () {
-      container.innerHTML = "<p class='muted'>Les mémorandums seront bientôt en ligne.</p>";
-    });
-}
 
-/* Dossiers */
-
-function loadHomeDossiers() {
-  var container = document.querySelector("[data-dossiers]");
-  if (!container) return;
-
-  fetchJson("content/dossiers.json")
-    .then(function (data) {
-      var items = (data && data.items) || [];
-      if (!items.length) {
-        container.innerHTML = "<p class='muted'>Aucun dossier public pour le moment.</p>";
-        return;
+      if (found) {
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
       }
-      container.innerHTML = "";
-      items.slice(0, 3).forEach(function (item) {
-        var div = document.createElement("article");
-        div.className = "card reveal";
-        div.innerHTML = [
-          "<div class='card-heading'>",
-          "<span class='card-tag'>" + (item.tag || "Dossier") + "</span>",
-          "<h3>" + (item.title || "") + "</h3>",
-          "</div>",
-          "<p class='card-excerpt'>" + (item.excerpt || "") + "</p>",
-          item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : ""
-        ].join("");
-        container.appendChild(div);
-      });
-      initReveal();
-    })
-    .catch(function () {
-      container.innerHTML = "<p class='muted'>Les dossiers seront bientôt en ligne.</p>";
-    });
-}
-
-/* Agenda */
-
-function loadHomeAgenda() {
-  var container = document.querySelector("[data-agenda]");
-  if (!container) return;
-
-  fetchJson("content/agenda.json")
-    .then(function (data) {
-      var items = (data && data.items) || [];
-      if (!items.length) {
-        container.innerHTML = "<p class='muted'>Aucun événement à afficher pour le moment.</p>";
-        return;
-      }
-      container.innerHTML = "";
-      items.slice(0, 4).forEach(function (item) {
-        var block = document.createElement("div");
-        block.className = "agenda-item reveal";
-        block.innerHTML =
-          "<div class='agenda-date'>" + (item.date || "") + "</div>" +
-          "<div class='agenda-content'>" +
-          "<h3>" + (item.title || "") + "</h3>" +
-          "<p>" + (item.description || "") + "</p>" +
-          "</div>";
-        container.appendChild(block);
-      });
-      initReveal();
-    })
-    .catch(function () {
-      container.innerHTML = "<p class='muted'>L'agenda sera bientôt disponible.</p>";
-    });
-}
-
-/* Diplomag */
-
-function initDiplomag() {
-  var grid = document.querySelector("[data-diplomag-articles]");
-  var selectTheme = document.querySelector("[data-filter-theme]");
-  var selectPays = document.querySelector("[data-filter-pays]");
-  var searchInput = document.getElementById("diplomag-search");
-  var allArticles = [];
-
-  if (!grid) return;
-
-  function normalize(str) {
-    return (str || "").toString().toLowerCase();
-  }
-
-  function render() {
-    grid.innerHTML = "";
-    var theme = selectTheme ? selectTheme.value : "";
-    var pays = selectPays ? selectPays.value : "";
-    var search = normalize(searchInput ? searchInput.value : "");
-
-    var filtered = allArticles.filter(function (a) {
-      var okTheme = !theme || (a.theme && a.theme === theme);
-      var okPays = !pays || (a.pays && a.pays === pays);
-
-      var text = normalize(
-        (a.titre || "") + " " +
-        (a.extrait || "") + " " +
-        (a.theme || "") + " " +
-        (a.pays || "")
-      );
-
-      var okSearch = !search || text.indexOf(search) !== -1;
-
-      return okTheme && okPays && okSearch;
-    });
-
-    if (!filtered.length) {
-      grid.innerHTML = "<p class='muted'>Aucun article ne correspond à ces critères pour le moment.</p>";
-      return;
     }
 
-    filtered.forEach(function (a) {
-      var card = document.createElement("article");
-      card.className = "article-card";
-      card.innerHTML =
-        "<div class='article-meta'>" + (a.date || "") +
-        (a.pays ? " — " + a.pays : "") +
-        (a.theme ? " · " + a.theme : "") +
-        "</div>" +
-        "<h3>" + (a.titre || "") + "</h3>" +
-        "<p>" + (a.extrait || "") + "</p>";
+    function closeOverlay() {
+      var overlay = document.querySelector(".overlay");
+      if (!overlay) return;
+      overlay.classList.remove("open");
+      overlay.setAttribute("aria-hidden", "true");
+    }
 
-      if (a.url) {
-        card.addEventListener("click", function () {
-          window.open(a.url, "_blank");
-        });
+    // Fermer en cliquant sur le fond sombre
+    document.addEventListener("click", function (e) {
+      var overlay = document.querySelector(".overlay");
+      if (!overlay) return;
+      if (e.target === overlay) {
+        closeOverlay();
       }
-
-      grid.appendChild(card);
-    });
-  }
-
-  fetchJson("content/diplomag.json")
-    .then(function (data) {
-      allArticles = (data && data.items) || [];
-      render();
-    })
-    .catch(function () {
-      grid.innerHTML = "<p class='muted'>Les articles Diplomag seront bientôt disponibles.</p>";
     });
 
-  if (selectTheme) {
-    selectTheme.addEventListener("change", render);
-  }
-  if (selectPays) {
-    selectPays.addEventListener("change", render);
-  }
-  if (searchInput) {
-    searchInput.addEventListener("input", render);
-  }
-}
+    // Fermer avec la touche Échap
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" || e.key === "Esc") {
+        closeOverlay();
+      }
+    });
+  </script>
+</body>
+</html>
