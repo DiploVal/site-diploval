@@ -93,7 +93,7 @@
             <button
               class="btn-ghost"
               type="button"
-              data-overlay-open="pourquoi">
+              onclick="openOverlay('pourquoi')">
               Pourquoi Diploval&nbsp;?
             </button>
           </div>
@@ -162,7 +162,7 @@
           <button
             class="btn-ghost"
             type="button"
-            data-overlay-open="pourquoi">
+            onclick="openOverlay('pourquoi')">
             Lire la vision complète
           </button>
         </article>
@@ -181,7 +181,7 @@
           <button
             class="btn-ghost"
             type="button"
-            data-overlay-open="services">
+            onclick="openOverlay('services')">
             Voir les services en détail
           </button>
         </article>
@@ -303,7 +303,7 @@
       <button
         class="overlay-close"
         type="button"
-        data-overlay-close>
+        onclick="closeOverlay()">
         &times;
       </button>
       <h2>Pourquoi Diploval Conseil&nbsp;?</h2>
@@ -332,7 +332,7 @@
       <button
         class="overlay-close"
         type="button"
-        data-overlay-close>
+        onclick="closeOverlay()">
         &times;
       </button>
       <h2>Services proposés</h2>
@@ -366,5 +366,58 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <!-- Script direct pour les overlays -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var overlay = document.querySelector(".overlay");
+      if (!overlay) return;
+
+      var panels = overlay.querySelectorAll(".overlay-panel");
+
+      window.openOverlay = function (id) {
+        var found = false;
+
+        for (var i = 0; i < panels.length; i++) {
+          var p = panels[i];
+          if (p.getAttribute("data-overlay-id") === id) {
+            p.style.display = "block";
+            found = true;
+          } else {
+            p.style.display = "none";
+          }
+        }
+
+        if (found) {
+          overlay.style.display = "flex"; // force l'affichage
+          overlay.classList.add("open");
+          overlay.setAttribute("aria-hidden", "false");
+        }
+      };
+
+      window.closeOverlay = function () {
+        for (var i = 0; i < panels.length; i++) {
+          panels[i].style.display = "none";
+        }
+        overlay.classList.remove("open");
+        overlay.style.display = "none";
+        overlay.setAttribute("aria-hidden", "true");
+      };
+
+      // Fermer en cliquant sur le fond sombre
+      overlay.addEventListener("click", function (e) {
+        if (e.target === overlay) {
+          window.closeOverlay();
+        }
+      });
+
+      // Fermer avec la touche Échap
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" || e.key === "Esc") {
+          window.closeOverlay();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
