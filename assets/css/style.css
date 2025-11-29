@@ -818,7 +818,8 @@ body {
   transition: opacity 220ms ease-out, visibility 220ms ease-out;
 }
 
-.overlay.open {
+/* Affichage quand l'overlay est ciblé par l'URL (#overlay-...) */
+.overlay:target {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -848,6 +849,7 @@ body {
   color: var(--text-muted);
   padding: 0.2rem;
   border-radius: 999px;
+  text-decoration: none;
 }
 
 .overlay-close:hover {
