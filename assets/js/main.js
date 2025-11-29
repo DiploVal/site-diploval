@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-/* ================================
-   Loader
-   ================================ */
+/* Loader */
 
 function initLoader() {
   window.addEventListener("load", function () {
@@ -29,9 +27,7 @@ function initLoader() {
   });
 }
 
-/* ================================
-   Navigation mobile
-   ================================ */
+/* Navigation mobile */
 
 function initNav() {
   var toggle = document.querySelector(".nav-toggle");
@@ -42,23 +38,18 @@ function initNav() {
     navList.classList.toggle("open");
   });
 
-  var links = navList.querySelectorAll("a");
-  links.forEach(function (link) {
+  navList.querySelectorAll("a").forEach(function (link) {
     link.addEventListener("click", function () {
       navList.classList.remove("open");
     });
   });
 }
 
-/* ================================
-   Apparition progressive
-   ================================ */
+/* Apparition progressive */
 
 function initReveal() {
   var items = document.querySelectorAll(".reveal");
-  if (!items.length) return;
-
-  if (!("IntersectionObserver" in window)) {
+  if (!("IntersectionObserver" in window) || !items.length) {
     items.forEach(function (el) { el.classList.add("visible"); });
     return;
   }
@@ -75,85 +66,62 @@ function initReveal() {
   items.forEach(function (el) { observer.observe(el); });
 }
 
-/* ================================
-   Overlays (Pourquoi / Services)
-   ================================ */
+/* Overlays (Pourquoi / Services / etc.) */
 
 function initOverlays() {
   var overlay = document.querySelector(".overlay");
   if (!overlay) return;
 
   var panels = overlay.querySelectorAll(".overlay-panel");
-  var triggers = document.querySelectorAll("[data-overlay-open]");
-  var closeButtons = overlay.querySelectorAll("[data-overlay-close]");
-
-  if (!triggers.length || !panels.length) return;
-
-  // On cache tous les panneaux au départ
-  panels.forEach(function (p) {
-    p.style.display = "none";
-  });
 
   function openPanel(id) {
-    var found = false;
-
+    // Sélection du bon panneau
     panels.forEach(function (p) {
-      if (p.getAttribute("data-overlay-id") === id) {
+      if (p.dataset.overlayId === id) {
         p.style.display = "block";
-        found = true;
       } else {
         p.style.display = "none";
       }
     });
 
-    if (found) {
-      overlay.classList.add("open");
-      overlay.setAttribute("aria-hidden", "false");
-    }
+    // Classe + fallback direct au cas où
+    overlay.classList.add("open");
+    overlay.style.display = "flex";
   }
 
   function closeAll() {
     overlay.classList.remove("open");
-    overlay.setAttribute("aria-hidden", "true");
+    // On laisse le CSS gérer l'opacité/visibility,
+    // mais on nettoie le display au cas où
+    overlay.style.display = "";
   }
 
-  // Ouverture
-  triggers.forEach(function (btn) {
-    btn.addEventListener("click", function (e) {
+  // 🔁 DÉLÉGATION GLOBALE : on écoute tous les clics sur la page
+  document.addEventListener("click", function (e) {
+    var btnOpen = e.target.closest("[data-overlay-open]");
+    if (btnOpen) {
       e.preventDefault();
-      var id = btn.getAttribute("data-overlay-open");
-      if (!id) return;
-      openPanel(id);
-    });
-  });
+      var id = btnOpen.getAttribute("data-overlay-open");
+      if (id) {
+        openPanel(id);
+      }
+      return;
+    }
 
-  // Fermeture (boutons)
-  closeButtons.forEach(function (btn) {
-    btn.addEventListener("click", function () {
+    if (e.target.matches("[data-overlay-close]")) {
+      e.preventDefault();
       closeAll();
-    });
-  });
+      return;
+    }
 
-  // Fermeture (clic sur le fond sombre)
-  overlay.addEventListener("click", function (e) {
+    // Clic sur le fond sombre
     if (e.target === overlay) {
       closeAll();
     }
   });
-
-  // Fermeture (Échap)
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" || e.key === "Esc") {
-      if (overlay.classList.contains("open")) {
-        closeAll();
-      }
-    }
-  });
 }
 
-/* ================================
-   Cookies
-   ================================ */
+/* Cookies */
 
 function initCookies() {
   var banner = document.querySelector(".cookie-banner");
@@ -177,9 +145,7 @@ function initCookies() {
   });
 }
 
-/* ================================
-   Utilitaire JSON
-   ================================ */
+/* ===== Contenus dynamiques ===== */
 
 function fetchJson(path) {
   return fetch(path).then(function (res) {
@@ -188,9 +154,7 @@ function fetchJson(path) {
   });
 }
 
-/* ================================
-   Mémorandums (accueil)
-   ================================ */
+/* Mémorandums */
 
 function loadHomeMemorandums() {
   var container = document.querySelector("[data-memos]");
@@ -224,9 +188,7 @@ function loadHomeMemorandums() {
     });
 }
 
-/* ================================
-   Dossiers (accueil)
-   ================================ */
+/* Dossiers */
 
 function loadHomeDossiers() {
   var container = document.querySelector("[data-dossiers]");
@@ -260,9 +222,7 @@ function loadHomeDossiers() {
     });
 }
 
-/* ================================
-   Agenda (accueil)
-   ================================ */
+/* Agenda */
 
 function loadHomeAgenda() {
   var container = document.querySelector("[data-agenda]");
@@ -294,27 +254,41 @@ function loadHomeAgenda() {
     });
 }
 
-/* ================================
-   Diplomag – page liste
-   ================================ */
+/* Diplomag */
 
 function initDiplomag() {
   var grid = document.querySelector("[data-diplomag-articles]");
   var selectTheme = document.querySelector("[data-filter-theme]");
   var selectPays = document.querySelector("[data-filter-pays]");
+  var searchInput = document.getElementById("diplomag-search");
   var allArticles = [];
 
   if (!grid) return;
+
+  function normalize(str) {
+    return (str || "").toString().toLowerCase();
+  }
 
   function render() {
     grid.innerHTML = "";
     var theme = selectTheme ? selectTheme.value : "";
     var pays = selectPays ? selectPays.value : "";
+    var search = normalize(searchInput ? searchInput.value : "");
 
     var filtered = allArticles.filter(function (a) {
       var okTheme = !theme || (a.theme && a.theme === theme);
       var okPays = !pays || (a.pays && a.pays === pays);
-      return okTheme && okPays;
+
+      var text = normalize(
+        (a.titre || "") + " " +
+        (a.extrait || "") + " " +
+        (a.theme || "") + " " +
+        (a.pays || "")
+      );
+
+      var okSearch = !search || text.indexOf(search) !== -1;
+
+      return okTheme && okPays && okSearch;
     });
 
     if (!filtered.length) {
@@ -358,4 +332,8 @@ function initDiplomag() {
   if (selectPays) {
     selectPays.addEventListener("change", render);
   }
+  if (searchInput) {
+    searchInput.addEventListener("input", render);
+  }
 }
+
