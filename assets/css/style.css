@@ -824,7 +824,6 @@ body {
   display: flex;
 }
 
-/* panneau : caché par défaut, seulement .is-active est visible */
 .overlay-panel {
   position: relative;
   background: #ffffff;
@@ -835,11 +834,6 @@ body {
   border-radius: var(--radius-xl);
   padding: 2.5rem 2rem 2.25rem;
   box-shadow: var(--shadow-soft);
-  display: none;
-}
-
-.overlay-panel.is-active {
-  display: block;
 }
 
 /* Bouton Fermer */
