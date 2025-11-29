@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
   initLoader();
   initNav();
   initReveal();
-  initOverlay();
   initCookies();
+  initOverlaySystem(); // <- gestion des overlays
 
   // Page d'accueil
   if (document.body.classList.contains("page-home")) {
@@ -86,69 +86,71 @@ function initReveal() {
 }
 
 /* =========================
-   Overlay générique
+   Système d’overlays (simplifié)
    ========================= */
-/*
-  Principe :
-  - Un bouton possède : data-overlay-target="#overlay-pourquoi"
-  - L’overlay correspondant a : <div class="overlay" id="overlay-pourquoi">
-*/
 
-function initOverlay() {
-  var triggers = document.querySelectorAll("[data-overlay-target]");
+function initOverlaySystem() {
   var overlays = document.querySelectorAll(".overlay");
 
-  if (!triggers.length || !overlays.length) return;
+  if (!overlays.length) {
+    return;
+  }
 
-  // OUVERTURE
-  triggers.forEach(function (btn) {
-    var selector = btn.getAttribute("data-overlay-target");
-    if (!selector) return;
-    var overlay = document.querySelector(selector);
+  function openOverlay(overlay) {
     if (!overlay) return;
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
 
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      overlay.classList.add("open");
-      overlay.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    });
-  });
-
-  // FERMETURE (bouton fermer + clic sur le fond)
-  overlays.forEach(function (overlay) {
-    // Boutons de fermeture
-    overlay.querySelectorAll(".overlay-close, [data-overlay-close]").forEach(function (closeBtn) {
-      closeBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        closeSingleOverlay(overlay);
-      });
-    });
-
-    // Clic sur le fond sombre
-    overlay.addEventListener("click", function (e) {
-      if (e.target === overlay) {
-        closeSingleOverlay(overlay);
-      }
-    });
-  });
-
-  // ESC global
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" || e.key === "Esc") {
-      overlays.forEach(function (overlay) {
-        if (overlay.classList.contains("open")) {
-          closeSingleOverlay(overlay);
-        }
-      });
-    }
-  });
-
-  function closeSingleOverlay(overlay) {
+  function closeOverlay(overlay) {
+    if (!overlay) return;
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
   }
+
+  // CLICS (ouverture / fermeture) – délégués sur tout le document
+  document.addEventListener("click", function (e) {
+    // Ouverture : bouton avec data-overlay-target
+    var trigger = e.target.closest("[data-overlay-target]");
+    if (trigger) {
+      var selector = trigger.getAttribute("data-overlay-target");
+      if (!selector) return;
+      var overlay = document.querySelector(selector);
+      if (!overlay) return;
+      e.preventDefault();
+      openOverlay(overlay);
+      return;
+    }
+
+    // Fermeture : bouton avec data-overlay-close ou .overlay-close
+    var closeBtn = e.target.closest("[data-overlay-close], .overlay-close");
+    if (closeBtn) {
+      var overlayToClose = closeBtn.closest(".overlay");
+      if (overlayToClose) {
+        e.preventDefault();
+        closeOverlay(overlayToClose);
+      }
+      return;
+    }
+
+    // Clic sur le fond sombre de l’overlay
+    if (e.target.classList.contains("overlay")) {
+      closeOverlay(e.target);
+    }
+  });
+
+  // Échap pour fermer l’overlay ouvert
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+      overlays.forEach(function (overlay) {
+        if (overlay.classList.contains("open")) {
+          closeOverlay(overlay);
+        }
+      });
+    }
+  });
 }
 
 /* =========================
@@ -213,7 +215,7 @@ function loadHomeMemorandums() {
           "<h3>" + (item.title || "") + "</h3>",
           "</div>",
           "<p class='card-excerpt'>" + (item.excerpt || "") + "</p>",
-          item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : ""
+          (item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : "")
         ].join("");
         container.appendChild(div);
       });
@@ -249,7 +251,7 @@ function loadHomeDossiers() {
           "<h3>" + (item.title || "") + "</h3>",
           "</div>",
           "<p class='card-excerpt'>" + (item.excerpt || "") + "</p>",
-          item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : ""
+          (item.pdf ? "<a class='btn-ghost' href='" + item.pdf + "' target='_blank' rel='noopener'>Télécharger le PDF</a>" : "")
         ].join("");
         container.appendChild(div);
       });
