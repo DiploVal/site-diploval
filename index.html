@@ -89,13 +89,10 @@
 
           <div class="hero-actions">
             <a href="#contact" class="btn-primary">Prendre contact</a>
-            <!-- Bouton overlay Pourquoi -->
-            <button
-              class="btn-ghost"
-              type="button"
-              data-overlay-target="#overlay-pourquoi">
+            <!-- Lien overlay Pourquoi (CSS :target) -->
+            <a href="#overlay-pourquoi" class="btn-ghost">
               Pourquoi Diploval&nbsp;?
-            </button>
+            </a>
           </div>
         </div>
 
@@ -158,13 +155,10 @@
             de droit et de terrain, avec une boussole simple&nbsp;: protéger l’humain, les territoires
             et le vivant à long terme.
           </p>
-          <!-- Bouton vision complète -->
-          <button
-            class="btn-ghost"
-            type="button"
-            data-overlay-target="#overlay-pourquoi">
+          <!-- Lien vision complète -->
+          <a href="#overlay-pourquoi" class="btn-ghost">
             Lire la vision complète
-          </button>
+          </a>
         </article>
 
         <article class="card">
@@ -177,13 +171,10 @@
             d’enquête ou un article Diplomag. L’objectif&nbsp;: rendre les enjeux lisibles,
             partageables, opposables si nécessaire.
           </p>
-          <!-- Bouton services -->
-          <button
-            class="btn-ghost"
-            type="button"
-            data-overlay-target="#overlay-services">
+          <!-- Lien services -->
+          <a href="#overlay-services" class="btn-ghost">
             Voir les services en détail
-          </button>
+          </a>
         </article>
 
         <article class="card">
@@ -302,12 +293,12 @@
   <!-- Overlay : Pourquoi Diploval -->
   <div class="overlay" id="overlay-pourquoi" aria-hidden="true">
     <div class="overlay-panel">
-      <button
+      <a
+        href="#accueil"
         class="overlay-close"
-        type="button"
-        data-overlay-close>
+        aria-label="Fermer la fenêtre">
         &times;
-      </button>
+      </a>
       <h2>Pourquoi Diploval Conseil&nbsp;?</h2>
       <p>
         Diploval est né d’un constat simple&nbsp;: la diplomatie et le conseil sont trop souvent
@@ -334,12 +325,12 @@
   <!-- Overlay : Services proposés -->
   <div class="overlay" id="overlay-services" aria-hidden="true">
     <div class="overlay-panel">
-      <button
+      <a
+        href="#accueil"
         class="overlay-close"
-        type="button"
-        data-overlay-close>
+        aria-label="Fermer la fenêtre">
         &times;
-      </button>
+      </a>
       <h2>Services proposés</h2>
       <p>
         Diploval Conseil ne fonctionne pas comme une “usine à slides”. Chaque mission est
