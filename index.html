@@ -373,54 +373,5 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="assets/js/main.js"></script>
-
-  <!-- Script direct pour les overlays (indépendant de main.js) -->
-  <script>
-    function openOverlay(id) {
-      var overlay = document.querySelector(".overlay");
-      if (!overlay) return;
-
-      var panels = overlay.querySelectorAll(".overlay-panel");
-      var found = false;
-
-      panels.forEach(function (p) {
-        if (p.getAttribute("data-overlay-id") === id) {
-          p.style.display = "block";
-          found = true;
-        } else {
-          p.style.display = "none";
-        }
-      });
-
-      if (found) {
-        overlay.classList.add("open");
-        overlay.setAttribute("aria-hidden", "false");
-      }
-    }
-
-    function closeOverlay() {
-      var overlay = document.querySelector(".overlay");
-      if (!overlay) return;
-      overlay.classList.remove("open");
-      overlay.setAttribute("aria-hidden", "true");
-    }
-
-    // Fermer en cliquant sur le fond sombre
-    document.addEventListener("click", function (e) {
-      var overlay = document.querySelector(".overlay");
-      if (!overlay) return;
-      if (e.target === overlay) {
-        closeOverlay();
-      }
-    });
-
-    // Fermer avec la touche Échap
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" || e.key === "Esc") {
-        closeOverlay();
-      }
-    });
-  </script>
 </body>
 </html>
-
