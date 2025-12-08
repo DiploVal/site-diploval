@@ -1,2 +1,0 @@
-# Diplomag
-Contenu à venir.
